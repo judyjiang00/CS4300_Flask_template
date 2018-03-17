@@ -3,7 +3,7 @@ from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
 project_name = "What's Next - A Travel Destination Recommendation System"
-net_id = "Wanming Hu: wh298\n Smit Jain: scj39\n Judy Jiang: jj353\n Noah Kaplan: nk425\n Tatsuhiro Koshi: tk474\n"
+net_id = "Wanming Hu: wh298, Smit Jain: scj39, Judy Jiang: jj353, Noah Kaplan: nk425, Tatsuhiro Koshi: tk474"
 
 @irsystem.route('/', methods=['GET'])
 def search():
