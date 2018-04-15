@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="/static/app.component.css">
 </head>
 <body>
+
+    {% if output_message}
     <form class="form-signin">
         <div class="text-center mb-4">
             <h1 class="h3 mb-3 font-weight-normal">Travel App</h1>
@@ -34,6 +36,8 @@
                     <input id = "query.description" placeholder="description" name="description"></div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
-            </form>
-        </body>
-        </html>
+    </form>
+
+
+    </body>
+</html>

@@ -32,17 +32,22 @@ vocab_idx = pickle.load(vocab_idx_pickle)
 @irsystem.route('/', methods=['GET'])
 def search():
 	#query = request.args.get('search')
-
+	output_message = ""
 	activity_query = request.args.get('activity')
 	location_query = request.args.get('location')
 	description_query = request.args.get('description')
-	if not activity_query:
-		data = []
-		output_message = ''
-	else:
-		output_message = "Your search: " + query
-		data = getPlaces(query)
-	return render_template('search.html', activity_query = activity_query, location_query = location_query, description_query= description_query)
+
+
+
+
+	location.query + "|" + description_query
+	return render_template('search.html', activity_query = activity_query, 
+		location_query = location_query, 
+		description_query= description_query,
+		output_message = (output_message == ""))
+
+
+
 
 def getPlaces(input_query):
 	raw_query = tokenize(input_query)
