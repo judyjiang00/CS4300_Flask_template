@@ -61,7 +61,23 @@ def getPlaces(input_query):
 			filt_ranking.append(r)
 			regions.append(region)
 			repeated.add(region)
-	return regions
+
+	topPlaces = []
+	for region in regions:
+		topPlaces.append(getTopPlacesInRegion(region))
+
+	return topPlaces
+
+def getTopPlacesInRegion(region):
+    topPlaces = []
+    
+    sortedPlaces = sorted(google_places[region.lower()], key = lambda x: x[1], reverse = True)
+    for place in sortedPlaces:
+    	if len(topPlaces) >= NUM_PLACES_PER_REGION:
+    		break
+        topPlaces.append((place[0], place[2]))
+    
+    return topPlaces
 
 def tokenize(sent):
 	return re.findall('[a-zA-Z]+', sent)
