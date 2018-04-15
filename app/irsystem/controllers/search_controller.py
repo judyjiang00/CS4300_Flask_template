@@ -3,6 +3,7 @@ from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
 import pickle
+import json
 import nltk
 from nltk.stem.porter import *
 
@@ -14,20 +15,32 @@ stemmer = PorterStemmer()
 project_name = "Where Next - A Travel Destination Recommendation System"
 net_id = "Wanming Hu: wh298, Smit Jain: scj39, Judy Jiang: jj353, Noah Kaplan: nk425, Tatsuhiro Koshi: tk474"
 
-google_place_pickle = open("data/google_place.pickle","rb")
-google_places = pickle.load(google_place_pickle)
+with open("data/google_place.pickle", "rb") as f:
+	google_places = pickle.load(f)
 
-lp_raw_pickle = open("data/LP_raw.pickle","rb")
-data = pickle.load(lp_raw_pickle)
+with open("data/LP_raw.pickle","rb") as f:
+	data = pickle.load(f)
 
-inv_idx_pickle = open("data/inv_idx.pickle","rb")
-inv_idx = pickle.load(inv_idx_pickle)
+with open("data/inv_idx.pickle","rb") as f:
+	inv_idx = pickle.load(f)
 
-tfidf_mat_pickle = open("data/tfidf_mat.pickle","rb")
-doc_mat = pickle.load(tfidf_mat_pickle)
+with open("data/tfidf_mat.pickle","rb") as f:
+	doc_mat = pickle.load(f)
 
-vocab_idx_pickle = open("data/vocab_idx.pickle","rb")
-vocab_idx = pickle.load(vocab_idx_pickle)
+with open("data/vocab_idx.pickle","rb") as f:
+	vocab_idx = pickle.load(f)
+
+with open('data/stems.pickle', 'rb') as f:
+	stems = pickle.load(f)
+
+with open('data/word_sent_idx.pickle', 'rb') as f:
+	word_sent_idx = pickle.load(f)
+
+with open('data/sent_idx.pickle', 'rb') as f:
+	sent_idx = pickle.load(f)
+
+with open('data/destination_geocode.json') as f:
+	geocode = json.load(f)
 
 @irsystem.route('/', methods=['GET'])
 def search():
@@ -53,9 +66,6 @@ def search():
 		results = results)
 
 
-
-
-
 def getPlaces(input_query):
 	raw_query = tokenize(input_query)
 	query = [stemmer.stem(w) for w in raw_query]
@@ -78,22 +88,48 @@ def getPlaces(input_query):
 			regions.append(region)
 			repeated.add(region)
 
-	topPlaces = []
-	for region in regions:
-		topPlaces.append(getTopPlacesInRegion(region))
+	# Retrieve snippets from LP descriptions
+	snippets = [[] for _ in range(NUM_REGIONS)]
+	MAX_SNIPPETS = 3
+	query_words = set(query)
+	for k, r in enumerate(filt_ranking[:NUM_REGIONS]):
+		snip = snippets[k]
+		sents = sent_idx[r]
+		text = data[r][3]
+		flags = [False] * len(sents)
+		for j, stem in enumerate(stems[r]):
+			if len(snip) == MAX_SNIPPETS:
+				break
+			if stem in query_words:
+				s = word_sent_idx[r][j]
+				if not flags[s]:
+					flags[s] = True
+					if s == len(sents) - 1:
+						snip.append(text[sents[s]:])
+					else:
+						snip.append(text[sents[s]:sents[s+1]])
+		snippets[k] = ''.join(snip)
+
+	# The order goes as [region name, region coordinates, snippets, list of Google places]
+	topPlaces = [[] for _ in range(NUM_REGIONS)]
+	for i, region in enumerate(regions):
+		topPlaces[i].append(region)
+		topPlaces[i].append(geocode[region.lower()]['results'][0]['geometry']['location'].values())
+		topPlaces[i].append(snippets[i])
+		topPlaces[i].append(getTopPlacesInRegion(region))
 
 	return topPlaces
 
 def getTopPlacesInRegion(region):
-    topPlaces = []
-    
-    sortedPlaces = sorted(google_places[region.lower()], key = lambda x: x[1], reverse = True)
-    for place in sortedPlaces:
-    	if len(topPlaces) >= NUM_PLACES_PER_REGION:
-    		break
-        topPlaces.append((place[0], place[2]))
-    
-    return topPlaces
+	topPlaces = []
+	
+	sortedPlaces = sorted(google_places[region.lower()], key = lambda x: x[1], reverse = True)
+	for place in sortedPlaces:
+		if len(topPlaces) >= NUM_PLACES_PER_REGION:
+			break
+		topPlaces.append((place[0], place[2]))
+	
+	return topPlaces
 
 def tokenize(sent):
 	return re.findall('[a-zA-Z]+', sent)
