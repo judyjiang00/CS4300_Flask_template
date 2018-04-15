@@ -42,12 +42,12 @@ def search():
 		location_query = ""
 	if not (description_query):
 		description_query = ""
+	output_tupes = (location_query, description_query)		
 
-	output_message = location_query + "|" + description_query
 	return render_template('search.html', activity_query = activity_query, 
 		location_query = location_query, 
 		description_query= description_query,
-		output_message = (output_message != ""))
+		output_message = (output_tupes[0] == "" and output_tupes[1] == ""))
 
 
 
