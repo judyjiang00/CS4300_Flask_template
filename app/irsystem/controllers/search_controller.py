@@ -54,12 +54,14 @@ def getPlaces(input_query):
 	repeated = set()
 	regions = []
 	for r in ranking:
+		if len(regions) == NUM_REGIONS:
+			break
 		region = data[r][1]
 		if region not in repeated:
 			filt_ranking.append(r)
 			regions.append(region)
 			repeated.add(region)
-	return regions[:NUM_REGIONS]
+	return regions
 
 def tokenize(sent):
 	return re.findall('[a-zA-Z]+', sent)
