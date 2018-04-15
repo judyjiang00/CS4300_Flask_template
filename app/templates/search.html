@@ -39,9 +39,11 @@
     </form>
 
     {% else %}
+    <ul class="list-group">
         {% for result in results %}
-            <div> {{ result }} </div>
+          <li class="list-group-item">{{ result }}</li>
         {% endfor %}
+    </ul>
     {% endif %}
 
     </body>
