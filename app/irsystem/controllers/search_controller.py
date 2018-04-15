@@ -59,7 +59,7 @@ def getPlaces(input_query):
 			filt_ranking.append(r)
 			regions.append(region)
 			repeated.add(region)
-	return regions
+	return regions[:NUM_REGIONS]
 
 def tokenize(sent):
 	return re.findall('[a-zA-Z]+', sent)
