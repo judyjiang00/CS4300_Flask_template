@@ -49,6 +49,7 @@ def search():
 		description_query= description_query,
 		output_message = (output_tupes[0] == "" and output_tupes[1] == ""))
 
+	print(getPlaces(output_tupes[0] + " " + output_tupes[1]))
 
 
 
