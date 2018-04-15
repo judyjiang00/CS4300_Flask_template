@@ -1,39 +1,51 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="/static/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/main.css">
-    </head>
-    <body>
-        <div class="topcorner">
-            <p>Project Name: {{ name }}</p>
-            <p>Student Name: ({{ netid }})</p>
-        </div>
-        <form class="form-inline global-search">
-            <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
-                C
-                <font color=#EA4335>S</font>
-                <font color=#FBBC05>4</font>
-                3
-                <font color=#34A853>0</font>
-                <font color=#EA4335>0</font>
-            </h1>
-            
-            <br><br>
-            
-            <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
-            </div>
-            <button type="submit" class="btn btn-info"> Go! </button>
-        </form>
-        <form class="form-inline global-search">
-        {% if data %}
-            <h1>{{output_message}}</h1>
-            {% for d in data %}  
-                <br>
-                <p>{{d}}</p>
-            {% endfor %}
-        {% endif %}
-        </form>
-    </body>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DemoDeploy</title>
+  <base href="/">
 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/main.css">
+  <link rel="stylesheet" href="/static/app.component.css">
+</head>
+<body>
+
+    {% if output_message %}
+    <form class="form-signin">
+        <div class="text-center mb-4">
+            <h1 class="h3 mb-3 font-weight-normal">Travel App</h1>
+        </div>
+
+        <div class="form-label-group">
+            <div class = "text-center mb-4">Skiing, hiking, surfing and more: what would you like to do?
+                <input id ="query.activity" placeholder="activity" name="activity">
+            </div>
+
+        </div>
+
+        <div class="form-label-group">
+            <div class = "text-center mb-4">Paris, Barcelona, Hong Kong or maybe somewhere else: where would you like to go?
+                <input id = "query.location" placeholder="location" name="location"></div>
+            </div>
+
+            <div class="form-label-group">
+                <div class = "text-center mb-4">Tropical, urban, or off-beat: describe away!
+                    <input id = "query.description" placeholder="description" name="description"></div>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
+    </form>
+
+    {% else %}
+    <h1 class="h3 mb-3 font-weight-normal">Results</h1>
+    <ul class="list-group list-group-flush">
+        {% for result in results %}
+          <li class="list-group-item">{{ result }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    </body>
 </html>
