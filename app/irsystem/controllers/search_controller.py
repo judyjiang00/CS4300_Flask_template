@@ -47,7 +47,7 @@ def search():
 	return render_template('search.html', activity_query = activity_query, 
 		location_query = location_query, 
 		description_query= description_query,
-		output_message = (output_message == ""))
+		output_message = (output_message != ""))
 
 
 
