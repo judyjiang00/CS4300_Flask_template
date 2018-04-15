@@ -42,7 +42,7 @@ def search():
 	else:
 		output_message = "Your search: " + query
 		data = getPlaces(query)
-	return render_template('index.html', activity_query = activity_query, location_query = location_query, description_query= description_query)
+	return render_template('search.html', activity_query = activity_query, location_query = location_query, description_query= description_query)
 
 def getPlaces(input_query):
 	raw_query = tokenize(input_query)
