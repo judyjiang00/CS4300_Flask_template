@@ -36,7 +36,7 @@ def search():
 	activity_query = request.args.get('activity')
 	location_query = request.args.get('location')
 	description_query = request.args.get('description')
-	if not query:
+	if not activity_query:
 		data = []
 		output_message = ''
 	else:
