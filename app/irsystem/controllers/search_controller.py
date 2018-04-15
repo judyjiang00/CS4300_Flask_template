@@ -38,7 +38,7 @@ def search():
 	else:
 		output_message = "Your search: " + query
 		data = getPlaces(query)
-	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
+	return render_template('index.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 def getPlaces(input_query):
 	raw_query = tokenize(input_query)
