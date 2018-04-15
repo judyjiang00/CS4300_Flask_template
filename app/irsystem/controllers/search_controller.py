@@ -42,14 +42,17 @@ def search():
 		location_query = ""
 	if not (description_query):
 		description_query = ""
-	output_tupes = (location_query, description_query)		
+	output_tupes = (location_query, description_query)	
+
+	results = getPlaces(output_tupes[0] + " " + output_tupes[1])	
 
 	return render_template('search.html', activity_query = activity_query, 
 		location_query = location_query, 
 		description_query= description_query,
-		output_message = (output_tupes[0] == "" and output_tupes[1] == ""))
+		output_message = (output_tupes[0] == "" and output_tupes[1] == ""), 
+		results = results)
 
-	print(getPlaces(output_tupes[0] + " " + output_tupes[1]))
+
 
 
 
