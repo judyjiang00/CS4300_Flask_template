@@ -145,7 +145,6 @@ if (map_geo) {
     
 
     function draw_map() {
-        window.scrollTo(0,document.body.scrollHeight);
         projection.fitExtent([[0,0], [svg_map.attr("width"), svg_map.attr("height")]], countries);
         var pathGenerator = d3.geoPath().projection(projection);
 
