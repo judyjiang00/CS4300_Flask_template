@@ -42,6 +42,9 @@ with open('data/sent_idx.pickle', 'rb') as f:
 with open('data/destination_geocode.json') as f:
 	geocode = json.load(f)
 
+with open('data/map_geo_data.json') as f:
+	map_geo = json.load(f)
+
 @irsystem.route('/', methods=['GET'])
 def search():
 	#query = request.args.get('search')
@@ -63,7 +66,8 @@ def search():
 		location_query = location_query, 
 		description_query= description_query,
 		output_message = (output_tupes[0] == "" and output_tupes[1] == ""), 
-		results = results)
+		results = results.json(),
+		map_geo = map_geo)
 
 
 def getPlaces(input_query):

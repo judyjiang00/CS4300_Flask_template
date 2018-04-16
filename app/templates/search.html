@@ -1,15 +1,26 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>DemoDeploy</title>
-  <base href="/">
+    <meta charset="utf-8">
+    <title>DemoDeploy</title>
+    <base href="/">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <link rel="stylesheet" href="/static/main.css">
-  <link rel="stylesheet" href="/static/app.component.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/app.component.css">
+    <link rel="stylesheet" href="/static/map_style.css">
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://d3js.org/d3-geo.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <script src="https://d3js.org/d3-color.v1.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Gaegu|Stylish" rel="stylesheet">
 </head>
 <body>
 
@@ -39,12 +50,35 @@
     </form>
 
     {% else %}
-    <h1 class="h3 mb-3 font-weight-normal">Results</h1>
+
+    <h1 class="h3 mb-3 font-weight-normal center">Results</h1>
     <ul class="list-group list-group-flush">
         {% for result in results %}
-          <li class="list-group-item">{{ result }}</li>
+            <li class="list-group-item result_rows">
+                <h5>{{ result[0] }}</h5><br>
+                {{ result[2] }}<br><br>
+                Attraction recommendation:<br>
+                {% for recm in result[3] %}
+                    {{recm}}<br>
+                {% endfor %}
+            </li>
         {% endfor %}
     </ul>
+
+    <svg height="700" width="1200" id="svg_map">
+        
+    </svg>
+
+    <div id="info_modal">
+        <span class="exit_crosses">X</span>
+        <p>Place Name: <span id="modal_place_name_span"></span></p>
+        <p>Description: <span id="modal_description_span"></span></p> 
+        <p>Recommendations: <span id="modal_recommendations_span"></span></p>
+    </div>
+
+    <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
+    <script type="text/javascript">var results = {{results|tojson}}</script>
+    <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
     {% endif %}
 
     </body>
