@@ -66,7 +66,7 @@ def search():
 		location_query = location_query, 
 		description_query= description_query,
 		output_message = (output_tupes[0] == "" and output_tupes[1] == ""), 
-		results = results.json(),
+		results = results,
 		map_geo = map_geo)
 
 
