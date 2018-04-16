@@ -10,7 +10,8 @@ text-align:center;
 }
 body {
 /*padding-top: 15%;*/
-padding-bottom: 15px;
+/*padding-bottom: 15px;*/
+	margin-bottom: 20em;
 }
 
 .global-search {
@@ -36,6 +37,12 @@ border: none
 }
 .step-links a{
 color: #4285F4;
+}
+
+#map_button{
+	margin-top: 5em;
+	margin-bottom: 3em;
+	cursor: initial;
 }
 
 #svg_map {

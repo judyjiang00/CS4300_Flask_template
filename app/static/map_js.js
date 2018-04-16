@@ -121,210 +121,237 @@ if (map_geo) {
     var projection = d3.geoMiller().scale(75);
     var pathGenerator = d3.geoPath().projection(projection);
 
+
+
     var svg_map = d3.select("#svg_map");
-    projection.fitExtent([[0,0], [svg_map.attr("width"), svg_map.attr("height")]], countries);
-    var pathGenerator = d3.geoPath().projection(projection);
-
-    var paths = svg_map.selectAll("path")
-    .data(countries.features);
-
-    paths = paths.enter().append("path").merge(paths);
-
-    paths
-    .attr("d",function (country) {
-        return pathGenerator(country);
-    })
-    .attr("stroke", "grey")
-    .attr("fill",d=>getRandomColor())
-    .style("opacity","0.5")
-    .attr("stroke-width","0.8px");
-
-    //show circles on interested points
-    var place_dots = svg_map.selectAll(".place_dots")
-    .data(loc_to_display);
-
-    place_dots = place_dots.enter().append("circle")
-    .attr("r",4).merge(place_dots);
-
-    place_dots
-    .attr("cx", function (d) {
-        return projection([d[1][1],d[1][0]])[0];
-    })
-    .attr("cy", function (d) {
-        return projection([d[1][1],d[1][0]])[1];
-
-    })
-    .attr("class", "place_dots")
-    .attr("id",function (d,i) {
-        return "place_dot_"+i;
-    })
-    .attr("fill", original_place_dots_color)
-    .style("opacity","0.7");
-
-    //line connecting circle and text
-    var info_lines = svg_map.selectAll(".info_lines")
-    .data(loc_to_display);
-
-    info_lines = info_lines.enter().append("line")
-    .merge(info_lines);
-
-    info_lines
-    .attr("x1", function (d) {
-        return projection([d[1][1],d[1][0]])[0];
-    })
-    .attr("y1", function (d) {
-        return projection([d[1][1],d[1][0]])[1];
-    })
-    .attr("x2", function (d) {
-        return projection([d[1][1],d[1][0]])[0]+10;
-    })
-    .attr("y2", function (d) {
-        return projection([d[1][1],d[1][0]])[1]+10;
-    })
-    .attr("class", "info_lines")
-    .attr("id",function (d,i) {
-        return "info_line_"+i;
-    })
-    .style("stroke-width","1")
-    .style("stroke","#5184AF")
-    .style("stroke-linecap","round")
-    .style("stroke-dasharray","2, 2");
-
-    //pop-up box for each location
-    // var info_boxes = svg_map.selectAll(".info_boxes")
-    // .data(loc_to_display);
-
-    // info_boxes = info_boxes.enter().append("rect")
-    // .attr("width",0)
-    // .attr("height",0)
-    // .merge(info_boxes);
-
-    // info_boxes
-    // .attr("x", function (d) {
-    //     return projection([d[1][1],d[1][0]])[0];
-    // })
-    // .attr("y", function (d) {
-    //     return projection([d[1][1],d[1][0]])[1];
-    // })
-    // .attr("rx",15)
-    // .attr("ry",15)
-    // .attr("class", "info_boxes")
-    // .attr("id",function (d,i) {
-    //     return "info_box_"+i;
-    // })
-    // .style("opacity",0.75)
-    // .style("z-index",20)
-    // .on("click",function (d,i) {
-    //     d3.select("#info_modal"+i)
-    //     .style("display","block");
-    // })
-    // .on("mouseover",function (d,i) {
-    //     d3.select(this)
-    //     .style("stroke-width","5px");
-
-    //     d3.select(this).style("display","block");
-
-    // })
-    // .on("mouseout", function (d,i) {
-    //     // d3.select(this)
-    //     // .transition()
-    //     // .duration(200)
-    //     // .attr("width", 0)
-    //     // .attr("height",0);
-    //     // // d3.select(this)
-    //     // // .transition()
-    //     // // .style("display", "none");
-
-    //     // //make the place label and dashed line disappear when info box poped up
-    //     // d3.select("#info_line_"+i)
-    //     // .transition()
-    //     // .delay(200)
-    //     // .attr("display","block");
-    //     // d3.select("#place_label_"+i)
-    //     // .transition()
-    //     // .delay(200)
-    //     // .attr("display","block");
-    //     // //make the place circle a different color
-    //     // d3.select("#place_dot_"+i)
-    //     // .transition()
-    //     // .delay(200)
-    //     // .style("fill",original_place_dots_color);
+    // d3.select("#map_button")
+    // .on("click",function () {
+    //     if (svg_map.attr("height")==0) {
+    //         svg_map
+    //         .transition()
+    //         .duration(500)
+    //         .attr("height",700);
+    //         setTimeout(draw_map,501);
+    //     }
+    //     else{
+    //         svg_map
+    //         .transition()
+    //         .duration(500)
+    //         .attr("height",0)
+    //     }
     // });
+    draw_map();
 
-    //place labels text
-    var place_labels = svg_map.selectAll(".place_labels")
-    .data(loc_to_display);
+    
 
-    place_labels = place_labels.enter().append("text")
-    .style("font-size","10px")
-    .merge(place_labels);
+    function draw_map() {
+        window.scrollTo(0,document.body.scrollHeight);
+        projection.fitExtent([[0,0], [svg_map.attr("width"), svg_map.attr("height")]], countries);
+        var pathGenerator = d3.geoPath().projection(projection);
 
-    place_labels
-    .attr("x", function (d) {
-        return projection([d[1][1],d[1][0]])[0]+10;
-    })
-    .attr("y", function (d) {
-        return projection([d[1][1],d[1][0]])[1]+15;
-    })
-    .attr("class", "place_labels")
-    .attr("id",function (d,i) {
-        return "place_label_"+i;
-    })
-    .text(function (d,i) {
-        return i+1+". "+d[0];
-    })
-    .style("font-size","1em")
-    .on("click", function (d,i) {
-        // d3.select("#info_box_"+i)
-        // .transition()
-        // .duration(600)
-        // .attr("width", info_box_width)
-        // .attr("height",info_box_height);
-        // d3.select("#info_text_"+i)
-        // .transition()
-        // .delay(600)
-        // .style("display", "block");
-        // d3.select("#exit_cross_"+i)
-        // .transition()
-        // .delay(600)
-        // .style("display", "block");
-        d3.select("#info_modal")
-        .style("display","block");
-        d3.select("#modal_place_name_span")
-        .html(d[0]);
-        d3.select("#modal_description_span")
-        .html(d[2]);
+        var paths = svg_map.selectAll("path")
+        .data(countries.features);
+
+        paths = paths.enter().append("path").merge(paths);
+
+        paths
+        .attr("d",function (country) {
+            return pathGenerator(country);
+        })
+        .attr("stroke", "grey")
+        .attr("fill",d=>getRandomColor())
+        .style("opacity","0.5")
+        .attr("stroke-width","0.8px");
+
+        //show circles on interested points
+        var place_dots = svg_map.selectAll(".place_dots")
+        .data(loc_to_display);
+
+        place_dots = place_dots.enter().append("circle")
+        .attr("r",4).merge(place_dots);
+
+        place_dots
+        .attr("cx", function (d) {
+            return projection([d[1][1],d[1][0]])[0];
+        })
+        .attr("cy", function (d) {
+            return projection([d[1][1],d[1][0]])[1];
+
+        })
+        .attr("class", "place_dots")
+        .attr("id",function (d,i) {
+            return "place_dot_"+i;
+        })
+        .attr("fill", original_place_dots_color)
+        .style("opacity","0.7");
+
+        //line connecting circle and text
+        var info_lines = svg_map.selectAll(".info_lines")
+        .data(loc_to_display);
+
+        info_lines = info_lines.enter().append("line")
+        .merge(info_lines);
+
+        info_lines
+        .attr("x1", function (d) {
+            return projection([d[1][1],d[1][0]])[0];
+        })
+        .attr("y1", function (d) {
+            return projection([d[1][1],d[1][0]])[1];
+        })
+        .attr("x2", function (d) {
+            return projection([d[1][1],d[1][0]])[0]+10;
+        })
+        .attr("y2", function (d) {
+            return projection([d[1][1],d[1][0]])[1]+10;
+        })
+        .attr("class", "info_lines")
+        .attr("id",function (d,i) {
+            return "info_line_"+i;
+        })
+        .style("stroke-width","1")
+        .style("stroke","#5184AF")
+        .style("stroke-linecap","round")
+        .style("stroke-dasharray","2, 2");
+
+        //pop-up box for each location
+        // var info_boxes = svg_map.selectAll(".info_boxes")
+        // .data(loc_to_display);
+
+        // info_boxes = info_boxes.enter().append("rect")
+        // .attr("width",0)
+        // .attr("height",0)
+        // .merge(info_boxes);
+
+        // info_boxes
+        // .attr("x", function (d) {
+        //     return projection([d[1][1],d[1][0]])[0];
+        // })
+        // .attr("y", function (d) {
+        //     return projection([d[1][1],d[1][0]])[1];
+        // })
+        // .attr("rx",15)
+        // .attr("ry",15)
+        // .attr("class", "info_boxes")
+        // .attr("id",function (d,i) {
+        //     return "info_box_"+i;
+        // })
+        // .style("opacity",0.75)
+        // .style("z-index",20)
+        // .on("click",function (d,i) {
+        //     d3.select("#info_modal"+i)
+        //     .style("display","block");
+        // })
+        // .on("mouseover",function (d,i) {
+        //     d3.select(this)
+        //     .style("stroke-width","5px");
+
+        //     d3.select(this).style("display","block");
+
+        // })
+        // .on("mouseout", function (d,i) {
+        //     // d3.select(this)
+        //     // .transition()
+        //     // .duration(200)
+        //     // .attr("width", 0)
+        //     // .attr("height",0);
+        //     // // d3.select(this)
+        //     // // .transition()
+        //     // // .style("display", "none");
+
+        //     // //make the place label and dashed line disappear when info box poped up
+        //     // d3.select("#info_line_"+i)
+        //     // .transition()
+        //     // .delay(200)
+        //     // .attr("display","block");
+        //     // d3.select("#place_label_"+i)
+        //     // .transition()
+        //     // .delay(200)
+        //     // .attr("display","block");
+        //     // //make the place circle a different color
+        //     // d3.select("#place_dot_"+i)
+        //     // .transition()
+        //     // .delay(200)
+        //     // .style("fill",original_place_dots_color);
+        // });
+
+        //place labels text
+        var place_labels = svg_map.selectAll(".place_labels")
+        .data(loc_to_display);
+
+        place_labels = place_labels.enter().append("text")
+        .style("font-size","10px")
+        .merge(place_labels);
+
+        place_labels
+        .attr("x", function (d) {
+            return projection([d[1][1],d[1][0]])[0]+10;
+        })
+        .attr("y", function (d) {
+            return projection([d[1][1],d[1][0]])[1]+15;
+        })
+        .attr("class", "place_labels")
+        .attr("id",function (d,i) {
+            return "place_label_"+i;
+        })
+        .text(function (d,i) {
+            return i+1+". "+d[0];
+        })
+        .style("font-size","1em")
+        .on("click", function (d,i) {
+            // d3.select("#info_box_"+i)
+            // .transition()
+            // .duration(600)
+            // .attr("width", info_box_width)
+            // .attr("height",info_box_height);
+            // d3.select("#info_text_"+i)
+            // .transition()
+            // .delay(600)
+            // .style("display", "block");
+            // d3.select("#exit_cross_"+i)
+            // .transition()
+            // .delay(600)
+            // .style("display", "block");
+            d3.select("#info_modal")
+            .style("display","block");
+            d3.select("#modal_place_name_span")
+            .html(d[0]);
+            d3.select("#modal_description_span")
+            .html(d[2]);
 
 
-        d3.select("#modal_recommendations_span")
-        .html(d[3].map(e => e[0]).join(", "));
+            d3.select("#modal_recommendations_span")
+            .html(d[3].map(e => e[0]).join(", "));
 
-        //make the place label and dashed line disappear when info box poped up
-        // d3.select("#info_line_"+i)
-        // .attr("display","none");
-        // d3.select("#place_label_"+i)
-        // .attr("display","none");
-        //make the place circle a different color
-        d3.select("#place_dot_"+i)
-        .style("fill",clicked_place_dots_color);
+            //make the place label and dashed line disappear when info box poped up
+            // d3.select("#info_line_"+i)
+            // .attr("display","none");
+            // d3.select("#place_label_"+i)
+            // .attr("display","none");
+            //make the place circle a different color
+            d3.select("#place_dot_"+i)
+            .style("fill",clicked_place_dots_color);
 
-        // update_box_position();
-    });
+            // update_box_position();
+        });
 
-    //close modal when clicking exit cross
-    d3.selectAll(".exit_crosses")
-    .on('click',function () {
-        d3.select("#info_modal")
-        .style("display","none");
-        //make the place label and dashed line disappear when info box poped up
-        d3.selectAll(".info_lines")
-        .attr("display","block");
-        d3.selectAll(".place_labels")
-        .attr("display","block");
-        //make the place circle a different color
-        d3.selectAll(".place_dots")
-        .style("fill",original_place_dots_color);
-    });
+        //close modal when clicking exit cross
+        d3.selectAll(".exit_crosses")
+        .on('click',function () {
+            d3.select("#info_modal")
+            .style("display","none");
+            //make the place label and dashed line disappear when info box poped up
+            d3.selectAll(".info_lines")
+            .attr("display","block");
+            d3.selectAll(".place_labels")
+            .attr("display","block");
+            //make the place circle a different color
+            d3.selectAll(".place_dots")
+            .style("fill",original_place_dots_color);
+        });
+    }
+
+    
 
 
     // //info texts in the info box
