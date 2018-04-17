@@ -3,7 +3,7 @@ var original_place_dots_color = '#5184AF';
 var clicked_place_dots_color = 'f44262';
 // var info_box_width = 250;
 // var info_box_height = 60;
-
+console.log(version);
 
 function getRandomColor() {
   var letters = '0123456789ABCDEF';

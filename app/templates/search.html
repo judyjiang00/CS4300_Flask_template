@@ -35,19 +35,29 @@
             <div class = "text-center mb-4">Skiing, hiking, surfing and more:<br />what would you like to do?<br />
                 <input id ="query.activity" placeholder="activity" name="activity">
             </div>
-
         </div>
 
         <div class="form-label-group">
             <div class = "text-center mb-4">Paris, Barcelona, Hong Kong or maybe somewhere else:<br />where would you like to go?<br />
-                <input id = "query.location" placeholder="location" name="location"></div>
+                <input id = "query.location" placeholder="location" name="location">
             </div>
+        </div>
 
-            <div class="form-label-group">
-                <div class = "text-center mb-4">Tropical, urban, or off-beat: describe away!<br />
-                    <input id = "query.description" placeholder="description" name="description"></div>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
+        <div class="form-label-group">
+            <div class = "text-center mb-4">Tropical, urban, or off-beat: describe away!<br />
+                <input id = "query.description" placeholder="description" name="description">
+            </div>
+        </div>
+
+        <div class="form-label-group">
+            <div class = "text-center mb-4">Which version? V1 or V2:<br />
+                <select name="version">
+                    <option value="v1">v1</option>
+                    <option value="v2">v2</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
     </form>
 
     {% else %}
@@ -85,6 +95,7 @@
 
     <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
     <script type="text/javascript">var results = {{results|tojson}}</script>
+    <script type="text/javascript">var version = "{{version}}"</script>
     <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
     {% endif %}
 
