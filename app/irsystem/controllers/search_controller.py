@@ -117,8 +117,12 @@ def getPlaces(input_query):
 	# The order goes as [region name, region coordinates, snippets, list of Google places]
 	topPlaces = [[] for _ in range(NUM_REGIONS)]
 	for i, region in enumerate(regions):
+		latLong = []
+		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lat'])
+		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lng'])
+
 		topPlaces[i].append(region)
-		topPlaces[i].append(geocode[region.lower()]['results'][0]['geometry']['location'].values())
+		topPlaces[i].append(latLong)
 		topPlaces[i].append(snippets[i])
 		topPlaces[i].append(getTopPlacesInRegion(region))
 
