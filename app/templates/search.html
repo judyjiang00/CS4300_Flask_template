@@ -37,16 +37,16 @@
         <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
+        <a class="nav-link" href="#about">About</a>
       </li>
       </li>
     </ul>
   </div>
 </nav>
-<div class="bg" alt="Responsive image"></div>  
- <form class="form-signin">
+<div class="bg" alt="Responsive image">  
+<form class="form-signin">
         <div class="text-center mb-4">
-            <h1 class="h3 mb-3 font-weight-normal">Where Next?</h1>
+            	<h1 class="h3 mb-3 font-weight-normal">Where Next?</h1>
         </div>
 
         <div class="form-label-group">
@@ -77,7 +77,19 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
  </form>
+</div>
+<div id="about" class="container marketing">
+<hr class="featurette-divider">
+  <div class="col-md-7">
+     <h2 class="featurette-heading">About Us. <span class="text-muted">A web application where people can find inspiration for their next travel!</span></h2>
+     <p class="lead">Developed by Smit, Tatsuhiro, Noah, Judy and Jasmine on Heroku + Flask. </p>
+  </div>
+  <div class="col-md-5">
+      <img class="featurette-image img-fluid mx-auto" src="../static/pict/generic.jpeg" alt="Generic placeholder image">
+  </div>
+</div>
 
+</div>
     {% else %}
 
     <svg height="700" width="1200" id="svg_map">
