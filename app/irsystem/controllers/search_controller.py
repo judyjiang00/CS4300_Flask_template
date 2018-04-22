@@ -6,6 +6,8 @@ import pickle
 import json
 import nltk
 from nltk.stem.porter import *
+import requests
+from math import sin, cos, sqrt, atan2, radians
 
 NUM_REGIONS = 10
 NUM_PLACES_PER_REGION = 3
@@ -44,6 +46,9 @@ with open('data/destination_geocode.json') as f:
 
 with open('data/map_geo_data.json') as f:
 	map_geo = json.load(f)
+
+with open('data/fact_data.pickle') as f:
+	fact_data = json.load(f)
 
 @irsystem.route('/', methods=['GET'])
 def search():
@@ -89,7 +94,7 @@ def search():
 			version = system_version)
 
 
-def getPlaces(input_query):
+def getPlaces(input_query, maxDistanceKM = -1):
 	raw_query = tokenize(input_query)
 	query = [stemmer.stem(w) for w in raw_query]
 
@@ -98,7 +103,9 @@ def getPlaces(input_query):
 		if q in vocab_idx:
 			for doc in inv_idx[q]:
 				accum[doc] += doc_mat[doc, vocab_idx[q]]
-	ranking = accum.argsort()[::-1]
+	ranking = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM)
+
+	# Filter out redundancy in regions
 	filt_ranking = []
 	repeated = set()
 	regions = []
@@ -115,7 +122,7 @@ def getPlaces(input_query):
 	snippets = [[] for _ in range(NUM_REGIONS)]
 	MAX_SNIPPETS = 3
 	query_words = set(query)
-	for k, r in enumerate(filt_ranking[:NUM_REGIONS]):
+	for k, r in enumerate(filt_ranking):
 		snip = snippets[k]
 		sents = sent_idx[r]
 		text = data[r][3]
@@ -133,7 +140,7 @@ def getPlaces(input_query):
 						snip.append(text[sents[s]:sents[s+1]])
 		snippets[k] = ''.join(snip)
 
-	# The order goes as [region name, region coordinates, snippets, list of Google places]
+	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict]
 	topPlaces = [[] for _ in range(NUM_REGIONS)]
 	for i, region in enumerate(regions):
 		latLong = []
@@ -144,6 +151,7 @@ def getPlaces(input_query):
 		topPlaces[i].append(latLong)
 		topPlaces[i].append(snippets[i])
 		topPlaces[i].append(getTopPlacesInRegion(region))
+		topPlaces[i].append(fact_data[region])
 
 	return topPlaces
 
@@ -160,3 +168,44 @@ def getTopPlacesInRegion(region):
 
 def tokenize(sent):
 	return re.findall('[a-zA-Z]+', sent)
+
+def getUsersLatLong():
+    send_url = 'http://freegeoip.net/json'
+    r = requests.get(send_url)
+    j = json.loads(r.text)
+    lat = j['latitude']
+    lon = j['longitude']
+    return lat, lon
+
+def distBetweenLatLongKM(lat1, lon1, lat2, lon2):
+    lat1 = radians(lat1)
+    lon1 = radians(lon1)
+    lat2 = radians(lat2)
+    lon2 = radians(lon2)
+
+    R = 6373.0
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    distance = R * c
+    
+    return distance
+
+def filterRegionsWithinDistance(regions, maxDistanceKM = -1):
+	if maxDistanceKM == -1:
+		return regions
+
+	userLat, userLong = getUsersLatLong()
+	filteredRegions = []
+
+	for region in regions:
+		lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
+		lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
+		if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
+			filteredRegions.append(region)
+
+	return filteredRegions
