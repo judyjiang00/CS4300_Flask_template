@@ -25,10 +25,28 @@
 </head>
 <body>
 
-    {% if output_message %}
-    <form class="form-signin">
+ {% if output_message %}
+
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbarNavDropdown"> 
+    <span class="navbar-toggler-icon"></span>
+ </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#about">About</a>
+      </li>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="bg" alt="Responsive image">  
+<form class="form-signin">
         <div class="text-center mb-4">
-            <h1 class="h3 mb-3 font-weight-normal">Where Next?</h1>
+            	<h1 class="h3 mb-3 font-weight-normal">Where Next?</h1>
         </div>
 
         <div class="form-label-group">
@@ -58,12 +76,33 @@
             </div>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
-    </form>
+ </form>
+</div>
+<div id="about" class="container marketing">
+<hr class="featurette-divider">
+  <div class="col-md-7">
+     <h2 class="featurette-heading">About Us. <span class="text-muted">A web application where people can find inspiration for their next travel!</span></h2>
+     <p class="lead">Developed by Smit, Tatsuhiro, Noah, Judy and Jasmine on Heroku + Flask. </p>
+  </div>
+  <div class="col-md-5">
+      <img class="featurette-image img-fluid mx-auto" src="../static/pict/generic.jpeg" alt="Generic placeholder image">
+  </div>
+</div>
 
+</div>
     {% else %}
 
-    <h1 class="h3 mb-3 font-weight-normal center">Results</h1>
+    <div id="info_modal">
+        <span class="exit_crosses">X</span>
+        <p>Place Name: <span id="modal_place_name_span"></span></p>
+        <p>Description: <span id="modal_description_span"></span></p> 
+        <p>Recommendations: <span id="modal_recommendations_span"></span></p>
+    </div>
+    <svg height="700" width="1200" id="svg_map">
+        
+    </svg>
     <ul class="list-group list-group-flush">
+    <h1 class="h3 mb-3 font-weight-normal center">Results</h1>
         {% for result in results %}
 
             <li class="list-group-item result_rows">
@@ -82,21 +121,12 @@
     </ul>
 
     <div class="btn btn-lg btn-primary btn-block" id="map_button">World Map!</div>
-    <svg height="700" width="1200" id="svg_map">
-        
-    </svg>
 
-    <div id="info_modal">
-        <span class="exit_crosses">X</span>
-        <p>Place Name: <span id="modal_place_name_span"></span></p>
-        <p>Description: <span id="modal_description_span"></span></p> 
-        <p>Recommendations: <span id="modal_recommendations_span"></span></p>
-    </div>
 
-    <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
-    <script type="text/javascript">var results = {{results|tojson}}</script>
-    <script type="text/javascript">var version = "{{version}}"</script>
-    <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
+  <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
+  <script type="text/javascript">var results = {{results|tojson}}</script>
+  <script type="text/javascript">var version = "{{version}}"</script>
+  <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
     {% endif %}
 
     </body>

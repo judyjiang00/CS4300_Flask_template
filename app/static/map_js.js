@@ -184,98 +184,8 @@ if (map_geo) {
         .attr("fill", original_place_dots_color)
         .style("opacity","0.7");
 
-        //line connecting circle and text
-        var info_lines = svg_map.selectAll(".info_lines")
-        .data(loc_to_display);
-
-        info_lines = info_lines.enter().append("line")
-        .merge(info_lines);
-
-        info_lines
-        .attr("x1", function (d) {
-            return projection([d[1][1],d[1][0]])[0];
-        })
-        .attr("y1", function (d) {
-            return projection([d[1][1],d[1][0]])[1];
-        })
-        .attr("x2", function (d) {
-            return projection([d[1][1],d[1][0]])[0]+10;
-        })
-        .attr("y2", function (d) {
-            return projection([d[1][1],d[1][0]])[1]+10;
-        })
-        .attr("class", "info_lines")
-        .attr("id",function (d,i) {
-            return "info_line_"+i;
-        })
-        .style("stroke-width","1")
-        .style("stroke","#5184AF")
-        .style("stroke-linecap","round")
-        .style("stroke-dasharray","2, 2");
-
-        //pop-up box for each location
-        // var info_boxes = svg_map.selectAll(".info_boxes")
-        // .data(loc_to_display);
-
-        // info_boxes = info_boxes.enter().append("rect")
-        // .attr("width",0)
-        // .attr("height",0)
-        // .merge(info_boxes);
-
-        // info_boxes
-        // .attr("x", function (d) {
-        //     return projection([d[1][1],d[1][0]])[0];
-        // })
-        // .attr("y", function (d) {
-        //     return projection([d[1][1],d[1][0]])[1];
-        // })
-        // .attr("rx",15)
-        // .attr("ry",15)
-        // .attr("class", "info_boxes")
-        // .attr("id",function (d,i) {
-        //     return "info_box_"+i;
-        // })
-        // .style("opacity",0.75)
-        // .style("z-index",20)
-        // .on("click",function (d,i) {
-        //     d3.select("#info_modal"+i)
-        //     .style("display","block");
-        // })
-        // .on("mouseover",function (d,i) {
-        //     d3.select(this)
-        //     .style("stroke-width","5px");
-
-        //     d3.select(this).style("display","block");
-
-        // })
-        // .on("mouseout", function (d,i) {
-        //     // d3.select(this)
-        //     // .transition()
-        //     // .duration(200)
-        //     // .attr("width", 0)
-        //     // .attr("height",0);
-        //     // // d3.select(this)
-        //     // // .transition()
-        //     // // .style("display", "none");
-
-        //     // //make the place label and dashed line disappear when info box poped up
-        //     // d3.select("#info_line_"+i)
-        //     // .transition()
-        //     // .delay(200)
-        //     // .attr("display","block");
-        //     // d3.select("#place_label_"+i)
-        //     // .transition()
-        //     // .delay(200)
-        //     // .attr("display","block");
-        //     // //make the place circle a different color
-        //     // d3.select("#place_dot_"+i)
-        //     // .transition()
-        //     // .delay(200)
-        //     // .style("fill",original_place_dots_color);
-        // });
-
         //place labels text
-        var place_labels = svg_map.selectAll(".place_labels")
+        var place_labels = svg_map.append("g").selectAll(".place_labels")
         .data(loc_to_display);
 
         place_labels = place_labels.enter().append("text")
@@ -283,12 +193,12 @@ if (map_geo) {
         .merge(place_labels);
 
         place_labels
-        .attr("x", function (d) {
-            return projection([d[1][1],d[1][0]])[0]+10;
-        })
-        .attr("y", function (d) {
-            return projection([d[1][1],d[1][0]])[1]+15;
-        })
+        // .attr("x", function (d) {
+        //     return projection([d[1][1],d[1][0]])[0]+10;
+        // })
+        // .attr("y", function (d) {
+        //     return projection([d[1][1],d[1][0]])[1]+15;
+        // })
         .attr("class", "place_labels")
         .attr("id",function (d,i) {
             return "place_label_"+i;
@@ -297,20 +207,13 @@ if (map_geo) {
             return i+1+". "+d[0];
         })
         .style("font-size","1em")
+        // .style("text-anchor",function(d,i) {
+        //     if (i%3==0) {return "start";}
+        //     if (i%3==1) {return "middle";}
+        //     if (i%3==2) {return "end";}
+        // })
+        .style("text-anchor","middle")
         .on("click", function (d,i) {
-            // d3.select("#info_box_"+i)
-            // .transition()
-            // .duration(600)
-            // .attr("width", info_box_width)
-            // .attr("height",info_box_height);
-            // d3.select("#info_text_"+i)
-            // .transition()
-            // .delay(600)
-            // .style("display", "block");
-            // d3.select("#exit_cross_"+i)
-            // .transition()
-            // .delay(600)
-            // .style("display", "block");
             d3.select("#info_modal")
             .style("display","block");
             d3.select("#modal_place_name_span")
@@ -330,9 +233,97 @@ if (map_geo) {
             //make the place circle a different color
             d3.select("#place_dot_"+i)
             .style("fill",clicked_place_dots_color);
-
-            // update_box_position();
+        })
+        .on("mouseover",function(d,i) {
+            d3.select("#info_line_"+i)
+            .style("stroke-width",2)
+            .style("stroke","#213a4f");
+            d3.select("#place_dot_"+i)
+            .attr("r",6)
+            .style("fill","#213a4f");
+            d3.select(this)
+            .style("text-decoration","underline black");
+        })
+        .on("mouseout",function(d,i) {
+            d3.select("#info_line_"+i)
+            .style("stroke-width",1)
+            .style("stroke","#5184AF");
+            d3.select("#place_dot_"+i)
+            .attr("r",4)
+            .style("fill","#5184AF");
+            d3.select(this)
+            .style("text-decoration","none");
         });
+
+        //add collision forces
+        var label_simulation = d3.forceSimulation(loc_to_display);
+        label_simulation
+        .velocityDecay(0.5)
+        .force("x", d3.forceX(d => projection([d[1][1],d[1][0]])[0]+5).strength(0.5))
+        .force("y", d3.forceY(d => projection([d[1][1],d[1][0]])[1]+5).strength(0.5))
+        .force("collision", d3.forceCollide(30))
+        .on("tick", label_updateDisplay);
+        // Consult the docs: https://github.com/d3/d3-force
+
+
+        // Tell the simulation about the nodes, attach a self-moving event.
+        // label_simulation
+        // .nodes(loc_to_display)
+        
+
+        //line connecting circle and text
+        var info_lines = svg_map.selectAll(".info_lines")
+        .data(loc_to_display);
+
+        info_lines = info_lines.enter().append("line")
+        .merge(info_lines);
+
+        info_lines
+        .attr("x1", function (d) {
+            return projection([d[1][1],d[1][0]])[0];
+        })
+        .attr("y1", function (d) {
+            return projection([d[1][1],d[1][0]])[1];
+        })
+        .attr("x2", function (d,i) {
+            var label_i_x = d3.select("#place_label_"+i).attr("x");
+            return label_i_x;
+        })
+        .attr("y2", function (d,i) {
+            var label_i_y = d3.select("#place_label_"+i).attr("y");
+            return label_i_y-5;
+        })
+        .attr("class", "info_lines")
+        .attr("id",function (d,i) {
+            return "info_line_"+i;
+        })
+        .style("stroke-width","1")
+        .style("stroke","#5184AF")
+        .style("stroke-linecap","round")
+        .style("stroke-dasharray","2, 2");
+        
+
+        // Move the label to their locations.
+        // label_updateDisplay();
+
+        function label_updateDisplay() {
+            place_labels
+            .attr("x", function(d) { return d.x; })
+            .attr("y", function(d) { return d.y-10; });
+            info_lines
+            .attr("x2", function (d,i) {
+                var label_i_x = d3.select("#place_label_"+i).attr("x");
+                return label_i_x;
+            })
+            .attr("y2", function (d,i) {
+                var label_i_y = d3.select("#place_label_"+i).attr("y");
+                return label_i_y;
+            }); 
+        }
+
+        
+
+
 
         //close modal when clicking exit cross
         d3.selectAll(".exit_crosses")
@@ -450,6 +441,67 @@ if (map_geo) {
     //     d3.select(this)
     //     .attr("display","none");
     // });
+
+    //pop-up box for each location
+        // var info_boxes = svg_map.selectAll(".info_boxes")
+        // .data(loc_to_display);
+
+        // info_boxes = info_boxes.enter().append("rect")
+        // .attr("width",0)
+        // .attr("height",0)
+        // .merge(info_boxes);
+
+        // info_boxes
+        // .attr("x", function (d) {
+        //     return projection([d[1][1],d[1][0]])[0];
+        // })
+        // .attr("y", function (d) {
+        //     return projection([d[1][1],d[1][0]])[1];
+        // })
+        // .attr("rx",15)
+        // .attr("ry",15)
+        // .attr("class", "info_boxes")
+        // .attr("id",function (d,i) {
+        //     return "info_box_"+i;
+        // })
+        // .style("opacity",0.75)
+        // .style("z-index",20)
+        // .on("click",function (d,i) {
+        //     d3.select("#info_modal"+i)
+        //     .style("display","block");
+        // })
+        // .on("mouseover",function (d,i) {
+        //     d3.select(this)
+        //     .style("stroke-width","5px");
+
+        //     d3.select(this).style("display","block");
+
+        // })
+        // .on("mouseout", function (d,i) {
+        //     // d3.select(this)
+        //     // .transition()
+        //     // .duration(200)
+        //     // .attr("width", 0)
+        //     // .attr("height",0);
+        //     // // d3.select(this)
+        //     // // .transition()
+        //     // // .style("display", "none");
+
+        //     // //make the place label and dashed line disappear when info box poped up
+        //     // d3.select("#info_line_"+i)
+        //     // .transition()
+        //     // .delay(200)
+        //     // .attr("display","block");
+        //     // d3.select("#place_label_"+i)
+        //     // .transition()
+        //     // .delay(200)
+        //     // .attr("display","block");
+        //     // //make the place circle a different color
+        //     // d3.select("#place_dot_"+i)
+        //     // .transition()
+        //     // .delay(200)
+        //     // .style("fill",original_place_dots_color);
+        // });
 
 }
 

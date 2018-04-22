@@ -82,11 +82,24 @@ body {
 
 /*Custom Project CSS*/
 body{
-  font-family: 'Droid Serif', serif;  
+}
+
+.bg { 
+    /* The image used */
+    background-image: url("pict/pic.jpeg");
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .form-signin{
-
+ padding: 12% 0 0 0; 
+ 
 }
 
 .btn{
