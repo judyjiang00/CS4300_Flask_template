@@ -47,6 +47,9 @@ with open('data/destination_geocode.json') as f:
 with open('data/map_geo_data.json') as f:
 	map_geo = json.load(f)
 
+with open('data/fact_data.pickle') as f:
+	fact_data = json.load(f)
+
 @irsystem.route('/', methods=['GET'])
 def search():
 	#query = request.args.get('search')
@@ -101,6 +104,8 @@ def getPlaces(input_query, maxDistanceKM = -1):
 			for doc in inv_idx[q]:
 				accum[doc] += doc_mat[doc, vocab_idx[q]]
 	ranking = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM)
+
+	# Filter out redundancy in regions
 	filt_ranking = []
 	repeated = set()
 	regions = []
@@ -117,7 +122,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	snippets = [[] for _ in range(NUM_REGIONS)]
 	MAX_SNIPPETS = 3
 	query_words = set(query)
-	for k, r in enumerate(filt_ranking[:NUM_REGIONS]):
+	for k, r in enumerate(filt_ranking):
 		snip = snippets[k]
 		sents = sent_idx[r]
 		text = data[r][3]
@@ -135,7 +140,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 						snip.append(text[sents[s]:sents[s+1]])
 		snippets[k] = ''.join(snip)
 
-	# The order goes as [region name, region coordinates, snippets, list of Google places]
+	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict]
 	topPlaces = [[] for _ in range(NUM_REGIONS)]
 	for i, region in enumerate(regions):
 		latLong = []
@@ -146,6 +151,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		topPlaces[i].append(latLong)
 		topPlaces[i].append(snippets[i])
 		topPlaces[i].append(getTopPlacesInRegion(region))
+		topPlaces[i].append(fact_data[region])
 
 	return topPlaces
 
