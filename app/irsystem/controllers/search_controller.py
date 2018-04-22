@@ -48,7 +48,7 @@ with open('data/map_geo_data.json') as f:
 	map_geo = json.load(f)
 
 with open('data/fact_data.pickle') as f:
-	fact_data = json.load(f)
+	fact_data = pickle.load(f)
 
 @irsystem.route('/', methods=['GET'])
 def search():
