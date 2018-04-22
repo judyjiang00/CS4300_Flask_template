@@ -92,6 +92,12 @@
 </div>
     {% else %}
 
+    <div id="info_modal">
+        <span class="exit_crosses">X</span>
+        <p>Place Name: <span id="modal_place_name_span"></span></p>
+        <p>Description: <span id="modal_description_span"></span></p> 
+        <p>Recommendations: <span id="modal_recommendations_span"></span></p>
+    </div>
     <svg height="700" width="1200" id="svg_map">
         
     </svg>
@@ -116,12 +122,6 @@
 
     <div class="btn btn-lg btn-primary btn-block" id="map_button">World Map!</div>
 
-    <div id="info_modal">
-        <span class="exit_crosses">X</span>
-        <p>Place Name: <span id="modal_place_name_span"></span></p>
-        <p>Description: <span id="modal_description_span"></span></p> 
-        <p>Recommendations: <span id="modal_recommendations_span"></span></p>
-    </div>
 
   <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
   <script type="text/javascript">var results = {{results|tojson}}</script>
