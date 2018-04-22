@@ -8,6 +8,7 @@ import nltk
 from nltk.stem.porter import *
 import requests
 from math import sin, cos, sqrt, atan2, radians
+from collections import Counter
 
 NUM_REGIONS = 10
 NUM_PLACES_PER_REGION = 3
@@ -49,6 +50,9 @@ with open('data/map_geo_data.json') as f:
 
 with open('data/fact_data.pickle') as f:
 	fact_data = pickle.load(f)
+
+with open('data/idf.pickle') as f:
+	idf = pickle.load(f)
 
 @irsystem.route('/', methods=['GET'])
 def search():
@@ -102,13 +106,16 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	for q in query:
 		if q in vocab_idx:
 			for doc in inv_idx[q]:
-				accum[doc] += doc_mat[doc, vocab_idx[q]]
-	ranking = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM)
+				accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
+	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query).items() if q in idf))
+	raw_scores = accum / q_norm
 
+	ranking = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM)
 	# Filter out redundancy in regions
 	filt_ranking = []
 	repeated = set()
 	regions = []
+	scores = []
 	for r in ranking:
 		if len(regions) == NUM_REGIONS:
 			break
@@ -116,31 +123,12 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		if region not in repeated:
 			filt_ranking.append(r)
 			regions.append(region)
+			scores.append(int(round(raw_scores[r]**(1./7)*100)))  # some non-linear transformation
 			repeated.add(region)
 
-	# Retrieve snippets from LP descriptions
-	snippets = [[] for _ in range(NUM_REGIONS)]
-	MAX_SNIPPETS = 3
-	query_words = set(query)
-	for k, r in enumerate(filt_ranking):
-		snip = snippets[k]
-		sents = sent_idx[r]
-		text = data[r][3]
-		flags = [False] * len(sents)
-		for j, stem in enumerate(stems[r]):
-			if len(snip) == MAX_SNIPPETS:
-				break
-			if stem in query_words:
-				s = word_sent_idx[r][j]
-				if not flags[s]:
-					flags[s] = True
-					if s == len(sents) - 1:
-						snip.append(text[sents[s]:])
-					else:
-						snip.append(text[sents[s]:sents[s+1]])
-		snippets[k] = ''.join(snip)
+	snippets = get_snippets(query, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
-	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict]
+	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
 	topPlaces = [[] for _ in range(NUM_REGIONS)]
 	for i, region in enumerate(regions):
 		latLong = []
@@ -152,6 +140,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		topPlaces[i].append(snippets[i])
 		topPlaces[i].append(getTopPlacesInRegion(region))
 		topPlaces[i].append(fact_data[region])
+		topPlaces[i].append(scores[i])
 
 	return topPlaces
 
@@ -209,3 +198,28 @@ def filterRegionsWithinDistance(regions, maxDistanceKM = -1):
 			filteredRegions.append(region)
 
 	return filteredRegions
+
+
+def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
+	# Retrieve snippets from LP descriptions
+	snippets = [[] for _ in range(NUM_REGIONS)]
+	MAX_SNIPPETS = 3
+	query_words = set(query)
+	for k, rank in enumerate(ranking):
+		snip = snippets[k]
+		sents = sent_idx[rank]
+		text = data[rank][3]
+		flags = [False] * len(sents)
+		for j, stem in enumerate(stems[rank]):
+			if len(snip) == MAX_SNIPPETS:
+				break
+			if stem in query_words:
+				s = word_sent_idx[rank][j]
+				if not flags[s]:
+					flags[s] = True
+					if s == len(sents) - 1:
+						snip.append(text[sents[s]:])
+					else:
+						snip.append(text[sents[s]:sents[s+1]])
+		snippets[k] = ''.join(snip)
+	return snippets
