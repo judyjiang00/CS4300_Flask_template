@@ -19,6 +19,7 @@ def search():
 	location_query = request.args.get('location')
 	description_query = request.args.get('description')
 	system_version = request.args.get('version')
+	unsplashed_quries = request.args.get('queries')
 
 	if system_version == "v1":
 		if not (location_query):
@@ -28,6 +29,15 @@ def search():
 		output_tupes = (location_query, description_query)	
 
 		results = v1.getPlaces(output_tupes[0] + " " + output_tupes[1])	
+		queries = []
+		raw_country = ""
+		for result in results:
+			if(len(result[3]) > 0):
+				raw_country = result[3][0][1]
+				print(raw_country)
+				queries.append(raw_country)
+			else:
+				queries.append(None)
 
 		return render_template('search.html', activity_query = activity_query, 
 			location_query = location_query, 
@@ -35,7 +45,8 @@ def search():
 			output_message = (output_tupes[0] == "" and output_tupes[1] == ""), 
 			results = results,
 			map_geo = map_geo,
-			version = system_version)
+			version = system_version,
+			unsplashed_quries = queries)
 	elif system_version == "v2":
 		# change this to the newer version of backend system
 		if not (location_query):
@@ -44,7 +55,16 @@ def search():
 			description_query = ""
 		output_tupes = (location_query, description_query)	
 
-		results = v2.getPlaces(output_tupes)	
+		results = v2.getPlaces(output_tupes)
+		queries = []
+		raw_country = ""
+		for result in results:
+			if(len(result[3]) > 0):
+				raw_country = result[3][0][1]
+				print(raw_country)
+				queries.append(raw_country)
+			else:
+				queries.append(None)
 
 		return render_template('search.html', activity_query = activity_query, 
 			location_query = location_query, 
@@ -52,13 +72,23 @@ def search():
 			output_message = (output_tupes[0] == "" and output_tupes[1] == ""), 
 			results = results,
 			map_geo = map_geo,
-			version = system_version)
+			version = system_version,
+			unsplashed_quries = queries)
 	else:#this is the homepage render
 		if not (location_query):
 			location_query = ""
 		if not (description_query):
 			description_query = ""
 		results = []
+		queries = []
+		raw_country = ""
+		for result in results:
+			if(len(result[3]) > 0):
+				raw_country = result[3][0][1]
+				print(raw_country)
+				queries.append(raw_country)
+			else:
+				queries.append(None)
 		return render_template('search.html', activity_query = activity_query, 
 			location_query = location_query, 
 			description_query= description_query,
@@ -66,5 +96,6 @@ def search():
 			results = results,
 			map_geo = map_geo,
 			version = system_version,
+			unsplashed_quries = queries,
 			autocomplete_data = "TESTTTTT!")
 
