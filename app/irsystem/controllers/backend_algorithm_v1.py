@@ -9,7 +9,7 @@ def getPlaces(input_query):
 	"""
  	raw_query = tokenize(input_query)
  	query = [stemmer.stem(w) for w in raw_query]
- 
+
  	accum = np.zeros(len(data))
  	for q in query:
  		if q in vocab_idx:
@@ -27,7 +27,7 @@ def getPlaces(input_query):
  			filt_ranking.append(r)
  			regions.append(region)
  			repeated.add(region)
- 
+
  	# Retrieve snippets from LP descriptions
  	snippets = [[] for _ in range(NUM_REGIONS)]
  	MAX_SNIPPETS = 3
@@ -49,19 +49,19 @@ def getPlaces(input_query):
  					else:
  						snip.append(text[sents[s]:sents[s+1]])
  		snippets[k] = ''.join(snip)
- 
+
  	# The order goes as [region name, region coordinates, snippets, list of Google places]
  	topPlaces = [[] for _ in range(NUM_REGIONS)]
  	for i, region in enumerate(regions):
  		latLong = []
  		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lat'])
  		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lng'])
- 
+
  		topPlaces[i].append(region)
  		topPlaces[i].append(latLong)
  		topPlaces[i].append(snippets[i])
  		topPlaces[i].append(getTopPlacesInRegion(region))
- 
+
  	return topPlaces
 
 
@@ -73,37 +73,11 @@ def getTopPlacesInRegion(region):
 	Data Source: Google Place API data
 	"""
 	topPlaces = []
-	
+
 	sortedPlaces = sorted(google_places[region.lower()], key = lambda x: x[1], reverse = True)
 	for place in sortedPlaces:
 		if len(topPlaces) >= NUM_PLACES_PER_REGION:
 			break
 		topPlaces.append((place[0], place[2]))
-	
+
 	return topPlaces
-
-
-def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
-	# Retrieve snippets from LP descriptions
-	snippets = [[] for _ in range(NUM_REGIONS)]
-	MAX_SNIPPETS = 3
-	query_words = set(query)
-	for k, rank in enumerate(ranking):
-		snip = snippets[k]
-		sents = sent_idx[rank]
-		text = data[rank][3]
-		flags = [False] * len(sents)
-		for j, stem in enumerate(stems[rank]):
-			if len(snip) == MAX_SNIPPETS:
-				break
-			if stem in query_words:
-				s = word_sent_idx[rank][j]
-				if not flags[s]:
-					flags[s] = True
-					if s == len(sents) - 1:
-						snip.append(text[sents[s]:])
-					else:
-						snip.append(text[sents[s]:sents[s+1]])
-		snippets[k] = ''.join(snip)
-
-	return snippets
