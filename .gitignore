@@ -1,6 +1,10 @@
 venv
 *.pyc
+app/.DS_Store
 migrations 
 vagrant/.vagrant
 vagrant/site.retry
 vagrant/a4keypair.pem
+data/Complete_TAVG_LatLong1.nc
+data/Complete_TMAX_LatLong1.nc
+data/Complete_TMIN_LatLong1.nc
