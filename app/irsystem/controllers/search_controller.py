@@ -6,9 +6,6 @@ from defs import *
 import backend_algorithm_v1 as v1
 import backend_algorithm_v2 as v2
 
-NUM_REGIONS = 10
-NUM_PLACES_PER_REGION = 3
-
 
 project_name = "Where Next - A Travel Destination Recommendation System"
 net_id = "Wanming Hu: wh298, Smit Jain: scj39, Judy Jiang: jj353, Noah Kaplan: nk425, Tatsuhiro Koshi: tk474"
