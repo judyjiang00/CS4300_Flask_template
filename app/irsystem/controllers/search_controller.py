@@ -188,7 +188,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 				for doc in inv_idx[q]:
 					accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
 	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query).items() if q in idf))
-	raw_scores = accum / q_norm
+	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
 
 	ranking = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM)
@@ -249,16 +249,16 @@ def getTopPlacesInRegion(region):
 	Return empty list if region not in wikitravel dataset
 	Data Source: Wikivoyage/WikiTravel
 	"""
-	 try:
-        full_spots_list = wikitravel_place[region]
-        if len(full_spots_list) > 3:
-            spot_list = random.sample(full_spots_list,3)
-        else:
-            spot_list = full_spots_list
-        out_list = [[spot[2],spot[3],spot[-1]] for spot in spot_list]
-        return out_list
-    except:
-        return []
+	try:
+		full_spots_list = wikitravel_place[region]
+		if len(full_spots_list) > 3:
+			spot_list = random.sample(full_spots_list,3)
+		else:
+			spot_list = full_spots_list
+		out_list = [[spot[2],spot[3],spot[-1]] for spot in spot_list]
+		return out_list
+	except:
+		return []
 
 
 def tokenize(sent):
