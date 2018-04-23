@@ -71,7 +71,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	snippets = get_snippets(query, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
-	topPlaces = [[] for _ in range(NUM_REGIONS)]
+	topPlaces = [[] for _ in range(len(regions))]
 	for i, region in enumerate(regions):
 		latLong = []
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lat'])
@@ -86,7 +86,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 
 	#print regions
 	#print len(regions)
-	return topPlaces[:i+1]
+	return topPlaces
 
 
 def getTopPlacesInRegion(region):
