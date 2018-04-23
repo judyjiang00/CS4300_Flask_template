@@ -1,9 +1,45 @@
 
 var original_place_dots_color = '#5184AF';
 var clicked_place_dots_color = 'f44262';
-// var info_box_width = 250;
-// var info_box_height = 60;
-console.log(version);
+// d3.select("#home_button")
+// .on("click",function() {
+//     d3.select("#home_search_form")
+//     .style("display","block");
+//     d3.select("#about")
+//     .style("display","none");
+//     console.log("hi");
+//     console.log(d3.select("#about")
+//     .style("display"));
+// });
+
+// d3.select("#about_button")
+// .on("click",function() {
+//     d3.select("#home_search_form")
+//     .style("display","none");
+//     d3.select("#about")
+//     .style("display","block");
+// });
+d3.select("#toggle_button")
+.on("click",function() {
+    console.log("hi");
+    var list_display = d3.select("#result_list").style("display");
+    var map_display = d3.select("#svg_map").style("display");
+    var toggle_text = document.getElementById("toggle_button");
+    var toggle_text = d3.select("#toggle_button")
+
+    //display the result list
+    if (list_display=="none") {
+        d3.select("#result_list").style("display","block");
+        d3.select("#svg_map").style("display","none");
+        toggle_text.attr("value","Result Map");
+    }
+    //display the result map
+    else{
+        d3.select("#svg_map").style("display","block");
+        d3.select("#result_list").style("display","none");
+        toggle_text.attr("value","Result List");
+    }
+})
 
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
@@ -27,90 +63,6 @@ function getRandomLocation(geo_data_input) {
 function get_tspan_html(x,y,line_height, text) {
     return "<tspan x="+x+" dy="+(y+line_height)+">"+text+"</tspan>";
 }
-
-// function update_box_position() {
-//     var rects = [d3.select("#info_box_0"),d3.select("#info_box_1"),d3.select("#info_box_2"),d3.select("#info_box_3"),d3.select("#info_box_4")];
-//     for (var i = 0; i < rects.length; i++) {
-//         for (var j = i+1; j < rects.length; j++) {
-//             var rect_i = rects[i];
-//             var rect_j = rects[j];
-//             console.log("i:");
-//             console.log(rect_i);
-//             console.log("j:");
-//             console.log(rect_j);
-
-//             var rect_i_left = parseInt(rect_i.attr('x'));
-//             var rect_i_top = parseInt(rect_i.attr('y'));
-//             var rect_i_right = rect_i_left+info_box_width;
-//             var rect_i_bottom = rect_i_top+info_box_height;
-//             // console.log("i left:");
-//             // console.log(rect_i_left);
-//             // console.log("i top:");
-//             // console.log(rect_i_top);
-//             // console.log("i right:");
-//             // console.log(rect_i_right);
-//             // console.log("i bottom:");
-//             // console.log(rect_i_bottom);
-
-//             var rect_j_left = parseInt(rect_j.attr('x'));
-//             var rect_j_top = parseInt(rect_j.attr('y'));
-//             var rect_j_right = rect_j_left+info_box_width;
-//             var rect_j_bottom = rect_j_top+info_box_height;
-//             // console.log("j left:");
-//             // console.log(rect_j_left);
-//             // console.log("j top:");
-//             // console.log(rect_j_top);
-//             // console.log("j right:");
-//             // console.log(rect_j_right);
-//             // console.log("j bottom:");
-//             // console.log(rect_j_bottom);
-
-//             var j_too_left = rect_i_right>rect_j_left && rect_i_left<rect_j_left;
-//             var j_too_right = rect_i_left<rect_j_right && rect_i_right>rect_j_right;
-//             var j_too_high = rect_i_bottom>rect_j_top && rect_i_top<rect_j_top;
-//             var j_too_low = rect_i_top<rect_j_bottom && rect_i_bottom>rect_j_bottom;
-
-//             console.log(j_too_left);
-//             console.log(j_too_right);
-//             console.log(j_too_high);
-//             console.log(j_too_low);
-
-//             if (j_too_left){
-//                 rect_j
-//                 .transition()
-//                 .duration(1000)
-//                 .attr('x',function (d) {
-//                     return parseInt(d3.select(this).attr('x'))+(rect_i_right-rect_j_left)+5;
-//                 });
-//             }
-//             if (j_too_right) {
-//                 rect_j
-//                 .transition()
-//                 .duration(1000)
-//                 .attr('x',function (d) {
-//                     return parseInt(d3.select(this).attr('x'))-(rect_j_right-rect_i_left)-5;
-//                 });
-//             }
-//             if (j_too_high) {
-//                 rect_j
-//                 .transition()
-//                 .duration(1000)
-//                 .attr('y',function (d) {
-//                     return parseInt(d3.select(this).attr('y'))+(rect_j_bottom-rect_i_top)+5;
-//                 });
-//             }
-//             if (j_too_low) {
-//                 rect_j
-//                 .transition()
-//                 .duration(1000)
-//                 .attr('y',function (d) {
-//                     return parseInt(d3.select(this).attr('y'))-(rect_i_bottom-rect_j_top)+5;
-//                 });
-//             }
-//         }
-//     }
-
-// }
 
 if (map_geo) {
     var loc_to_display = results;
