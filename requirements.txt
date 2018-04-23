@@ -11,7 +11,7 @@ bleach==2.1.3
 certifi==2018.1.18
 cffi==1.11.5
 chardet==3.0.4
-conda==4.3.0
+conda==4.3.16
 configparser==3.5.0
 cookies==2.2.1
 cryptography==2.1.4
