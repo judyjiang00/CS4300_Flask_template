@@ -90,7 +90,7 @@ def search():
 			results = results,
 			map_geo = map_geo,
 			version = system_version)
-	else:
+	elif system_version == "v2":
 		# change this to the newer version of backend system
 		if not (location_query):
 			location_query = ""
@@ -107,6 +107,20 @@ def search():
 			results = results,
 			map_geo = map_geo,
 			version = system_version)
+	else:#this is the homepage render
+		if not (location_query):
+			location_query = ""
+		if not (description_query):
+			description_query = ""
+		results = []
+		return render_template('search.html', activity_query = activity_query, 
+			location_query = location_query, 
+			description_query= description_query,
+			output_message = True, 
+			results = results,
+			map_geo = map_geo,
+			version = system_version,
+			autocomplete_data = "TESTTTTT!")
 
 
 def getPlacesV1(input_query):

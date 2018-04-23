@@ -54,6 +54,7 @@
 
 
  {% if output_message%}
+   <script type="text/javascript">var autocomplete_data = "{{autocomplete_data}}"</script>
 <div class="bg" alt="Responsive image" id="home_search_form">  
 <form class="form-signin">
         <div class="text-center mb-4">
@@ -151,6 +152,7 @@
   <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
   <script type="text/javascript">var results = {{results|tojson}}</script>
   <script type="text/javascript">var version = "{{version}}"</script>
+
   <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
     {% endif %}
     </body>
