@@ -21,7 +21,9 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	query = [stemmer.stem(w) for w in activity_query]
 	query_word_expaneded = [expand_word(word) for word in query]
 
+
 	accum = np.zeros(len(data))
+	#print query_word_expaneded
 	for query_expanded in query_word_expaneded:
 		for q in query_expanded:
 			if q in vocab_idx:
@@ -43,7 +45,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	#TODO
 	if activity_query == []:
 		ranking = ranking_hierarchy
-	elif location_query == []:
+	elif location_query == ['']:
 		ranking = ranking_distance
 	else:
 		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
@@ -82,6 +84,9 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		topPlaces[i].append(fact_data[region])
 		topPlaces[i].append(scores[i])
 
+	#print regions
+	#print len(regions)
+	#print len(topPlaces)
 	return topPlaces
 
 
