@@ -16,7 +16,7 @@ def search():
 
 
 	#query = request.args.get('search')
-	output_message = "25222"
+	output_message = ""
 	activity_query = request.args.get('activity')
 	location_query = request.args.get('location')
 	description_query = request.args.get('description')
