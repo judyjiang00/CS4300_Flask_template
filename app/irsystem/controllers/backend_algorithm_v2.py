@@ -112,20 +112,21 @@ def distBetweenLatLongKM(lat1, lon1, lat2, lon2):
     
     return distance
 
-def filterRegionsWithinDistance(regions, maxDistanceKM = -1):
+def filterRegionsWithinDistance(regionIndices, maxDistanceKM = -1):
 	if maxDistanceKM == -1:
-		return regions
+		return regionIndices
 
 	userLat, userLong = getUsersLatLong()
-	filteredRegions = []
+	filteredRegionIndices = []
 
-	for region in regions:
+	for regionIndex in regionIndices:
+		region = data[regionIndex][1]
 		lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
 		lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
 		if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
-			filteredRegions.append(region)
+			filteredRegionIndices.append(region)
 
-	return filteredRegions
+	return filteredRegionIndices
 
 def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 	# Retrieve snippets from LP descriptions
