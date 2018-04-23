@@ -1,13 +1,13 @@
 from . import *
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
-
 import pickle
 import json
 import nltk
 from nltk.stem.porter import *
 import requests
 from math import sin, cos, sqrt, atan2, radians
+from pyunsplash import PyUnsplash
 
 NUM_REGIONS = 10
 NUM_PLACES_PER_REGION = 3
@@ -16,6 +16,11 @@ stemmer = PorterStemmer()
 
 project_name = "Where Next - A Travel Destination Recommendation System"
 net_id = "Wanming Hu: wh298, Smit Jain: scj39, Judy Jiang: jj353, Noah Kaplan: nk425, Tatsuhiro Koshi: tk474"
+	
+#unsplash (image) API authentication object + variables
+api_key = "b8b97c600f23143a0b8903946cba3618a0766fe11e2e38349977f6390d6c8231"
+py_un = PyUnsplash(api_key = api_key)
+
 
 with open("data/google_place.pickle", "rb") as f:
 	google_places = pickle.load(f)
@@ -52,12 +57,15 @@ with open('data/fact_data.pickle') as f:
 
 @irsystem.route('/', methods=['GET'])
 def search():
+
+
 	#query = request.args.get('search')
-	output_message = ""
+	output_message = "25222"
 	activity_query = request.args.get('activity')
 	location_query = request.args.get('location')
 	description_query = request.args.get('description')
 	system_version = request.args.get('version')
+	unsplashed_queries = request.args.get('queries')
 
 	if system_version == "v1":
 		if not (location_query):
@@ -66,15 +74,24 @@ def search():
 			description_query = ""
 		output_tupes = (location_query, description_query)	
 
-		results = getPlaces(output_tupes[0] + " " + output_tupes[1])	
-
+		results = getPlaces(output_tupes[0] + " " + output_tupes[1])
+		queries = []	
+		raw_country = ""
+		for result in results: 	
+			if(len(result[3]) > 0): 
+				raw_country = result[3][0][1]
+				print(raw_country)
+				queries.append(raw_country)
+			else: 
+				queries.append(None)
 		return render_template('search.html', activity_query = activity_query, 
 			location_query = location_query, 
 			description_query= description_query,
 			output_message = (output_tupes[0] == "" and output_tupes[1] == ""), 
 			results = results,
 			map_geo = map_geo,
-			version = system_version)
+			version = system_version, 
+			unsplashed_queries = queries)
 	else:
 		# change this to the newer version of backend system
 		if not (location_query):
@@ -83,16 +100,24 @@ def search():
 			description_query = ""
 		output_tupes = (location_query, description_query)	
 
-		results = getPlaces(output_tupes[0] + " " + output_tupes[1])	
-
+		results = getPlaces(output_tupes[0] + " " + output_tupes[1])
+		queries = []	
+		raw_country = ""
+		for result in results: 	
+			if(len(result[3]) > 0): 
+				raw_country = result[3][0][1]
+				print(raw_country)
+				queries.append(raw_country)
+			else: 
+				queries.append(None)
 		return render_template('search.html', activity_query = activity_query, 
 			location_query = location_query, 
 			description_query= description_query,
 			output_message = (output_tupes[0] == "" and output_tupes[1] == ""), 
 			results = results,
 			map_geo = map_geo,
-			version = system_version)
-
+			version = system_version,
+			unsplashed_queries = queries)
 
 def getPlaces(input_query, maxDistanceKM = -1):
 	raw_query = tokenize(input_query)
