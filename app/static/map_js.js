@@ -1,27 +1,9 @@
 
 var original_place_dots_color = '#5184AF';
 var clicked_place_dots_color = 'f44262';
-// d3.select("#home_button")
-// .on("click",function() {
-//     d3.select("#home_search_form")
-//     .style("display","block");
-//     d3.select("#about")
-//     .style("display","none");
-//     console.log("hi");
-//     console.log(d3.select("#about")
-//     .style("display"));
-// });
 
-// d3.select("#about_button")
-// .on("click",function() {
-//     d3.select("#home_search_form")
-//     .style("display","none");
-//     d3.select("#about")
-//     .style("display","block");
-// });
 d3.select("#toggle_button")
 .on("click",function() {
-    console.log("hi");
     var list_display = d3.select("#result_list").style("display");
     var map_display = d3.select("#svg_map").style("display");
     var toggle_text = document.getElementById("toggle_button");
@@ -39,7 +21,19 @@ d3.select("#toggle_button")
         d3.select("#result_list").style("display","none");
         toggle_text.attr("value","Result List");
     }
-})
+});
+
+$("body")
+.on("click","#modal_more_detail",function(argument) {
+    if (d3.select("#more_detail_div").style("display")=="none") {
+        d3.select("#more_detail_div").style("display","block");
+        $(".lnr-chevron-right").removeClass("lnr-chevron-right").addClass("lnr-chevron-down");
+    }else{
+        d3.select("#more_detail_div").style("display","none");
+        $(".lnr-chevron-down").removeClass("lnr-chevron-down").addClass("lnr-chevron-right")
+    }
+    
+});
 
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
@@ -76,22 +70,7 @@ if (map_geo) {
 
 
     var svg_map = d3.select("#svg_map");
-    // d3.select("#map_button")
-    // .on("click",function () {
-    //     if (svg_map.attr("height")==0) {
-    //         svg_map
-    //         .transition()
-    //         .duration(500)
-    //         .attr("height",700);
-    //         setTimeout(draw_map,501);
-    //     }
-    //     else{
-    //         svg_map
-    //         .transition()
-    //         .duration(500)
-    //         .attr("height",0)
-    //     }
-    // });
+
     draw_map();
 
     
@@ -173,9 +152,38 @@ if (map_geo) {
             d3.select("#modal_description_span")
             .html(d[2]);
 
+            for (var j = 0; j < d[3].length; j++) {
+                if (version=="v1") {
+                    $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+': '+'</h6>');
+                }else if (version=="v2") {
+                    $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+': '+'</h6>'+'<span class="modal_temp indent">'+d[3][j][2])+'</span>';
+                }
+                $("div#info_modal").append('<a class="indent modal_temp" target="_blank" href="'+d[3][j][1]+'" id="modal_recommendation_a_'+j+'">(link)</a>');
+                
+            }
 
-            d3.select("#modal_recommendations_span")
-            .html(d[3].map(e => e[0]).join(", "));
+            if (d[4]["When to Go"]) {
+                $("div#info_modal").append('<h5 class="modal_temp">When to Go: </h5> <span id="modal_whentogo_span" class="modal_temp indent">'+d[4]["When to Go"]+'</span>');
+            }
+            if (d[4]["Events"]) {
+                $("div#info_modal").append('<h5 class="modal_temp">Events: </h5> <span id="modal_events_span" class="modal_temp indent">'+d[4]["Events"]+'</span>');
+            }
+
+            if (Object.keys(d[4]).length>2) {
+                $("div#info_modal").append('<h5 id="modal_more_detail" class="modal_temp">More details: <span class="lnr lnr-chevron-right"></span></h5>');
+                $("div#info_modal").append('<div id="more_detail_div" class="modal_temp indent">');
+                
+                // d[4].forEach(function(description,index) {
+                for (var index in d[4]){
+                    var description = d[4][index];
+                    if (index!="When to Go" && index!="Events") {
+                        $("div#more_detail_div").append('<h5 class="modal_temp">'+index+': </h5> <span class="modal_temp indent">'+description+'</span>');
+                    }
+                }
+                // });
+                $("div#info_modal").append('</div>');
+            }
+            
 
             //make the place label and dashed line disappear when info box poped up
             // d3.select("#info_line_"+i)
@@ -213,7 +221,7 @@ if (map_geo) {
         .velocityDecay(0.5)
         .force("x", d3.forceX(d => projection([d[1][1],d[1][0]])[0]+5).strength(0.5))
         .force("y", d3.forceY(d => projection([d[1][1],d[1][0]])[1]+5).strength(0.5))
-        .force("collision", d3.forceCollide(30))
+        .force("collision", d3.forceCollide(35))
         .on("tick", label_updateDisplay);
         // Consult the docs: https://github.com/d3/d3-force
 
@@ -274,9 +282,6 @@ if (map_geo) {
         }
 
         
-
-
-
         //close modal when clicking exit cross
         d3.selectAll(".exit_crosses")
         .on('click',function () {
@@ -290,6 +295,8 @@ if (map_geo) {
             //make the place circle a different color
             d3.selectAll(".place_dots")
             .style("fill",original_place_dots_color);
+            d3.selectAll(".modal_temp")
+            .remove();
         });
     }
 

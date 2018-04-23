@@ -11,15 +11,19 @@ from defs import *
 
 def getPlaces(input_query, maxDistanceKM = -1):
 	"""
+	Params:
+		input_query: tuple of (location query, activity query)
 	Version 2 Method
 	Use SVD to expand query
 	"""
-	raw_query = tokenize(input_query)
-	query = [stemmer.stem(w) for w in raw_query]
+	activity_query = tokenize(input_query[1])
+	location_query = input_query[0].split(' ')
+	query = [stemmer.stem(w) for w in activity_query]
 	query_word_expaneded = [expand_word(word) for word in query]
-	#query_expanded_list = [q for q in product(*query_word_expaneded)]
+
 
 	accum = np.zeros(len(data))
+	#print query_word_expaneded
 	for query_expanded in query_word_expaneded:
 		for q in query_expanded:
 			if q in vocab_idx:
@@ -29,7 +33,26 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
 
-	ranking = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM)
+	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM) #input is idx instead of list of regions
+	ranking_hierarchy_by_region = []
+	#print location_query
+	for ll in location_query:
+		ranking_hierarchy_by_region += filterRegionWithHierarchy(ll) #list of regions
+	#print ranking_hierarchy_by_region
+	ranking_hierarchy = []
+	for place in ranking_hierarchy_by_region:
+		ranking_hierarchy += location_to_doc_idx[place]
+	#TODO
+	if activity_query == []:
+		ranking = ranking_hierarchy
+	elif location_query == ['']:
+		ranking = ranking_distance
+	else:
+		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
+	#print ranking
+	ranking = sorted(ranking, key=lambda x:accum[x])[::-1]
+	#print ranking
+	#print ranking[:20]
 	# Filter out redundancy in regions
 	filt_ranking = []
 	repeated = set()
@@ -44,11 +67,11 @@ def getPlaces(input_query, maxDistanceKM = -1):
 			regions.append(region)
 			scores.append(int(round(raw_scores[r]**(1./7)*100)))  # some non-linear transformation
 			repeated.add(region)
-
+	#print regions
 	snippets = get_snippets(query, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
-	topPlaces = [[] for _ in range(NUM_REGIONS)]
+	topPlaces = [[] for _ in range(len(regions))]
 	for i, region in enumerate(regions):
 		latLong = []
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lat'])
@@ -61,6 +84,8 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		topPlaces[i].append(fact_data[region])
 		topPlaces[i].append(scores[i])
 
+	#print regions
+	#print len(regions)
 	return topPlaces
 
 
@@ -77,7 +102,8 @@ def getTopPlacesInRegion(region):
 			spot_list = random.sample(full_spots_list,3)
 		else:
 			spot_list = full_spots_list
-		out_list = [[spot[2],spot[3],spot[-1]] for spot in spot_list]
+		for spot in spot_list:
+			out_list = [[spot[2],spot[3],spot[-1]] for spot in spot_list]
 		return out_list
 	except:
 		return []
@@ -112,20 +138,54 @@ def distBetweenLatLongKM(lat1, lon1, lat2, lon2):
     
     return distance
 
-def filterRegionsWithinDistance(regions, maxDistanceKM = -1):
+
+def filterRegionWithHierarchy(location):
+	"""
+    When input is a destinaiton with higher granualrity:
+    	output a list of destinations under the same region
+    """
+	out = []
+	if location == 'Asia':
+		lookup_key = [i for i in region_list if 'Asia' in i]
+	elif location == 'India':
+		lookup_key = ['Indian Subcontinent']
+	elif location == 'Australia':
+		lookup_key = ['Australasia']
+	else:
+		lookup_key = [location]
+
+	if lookup_key[0] in region_list:
+		for region in lookup_key:
+			tmp_out = geo_hierarchy[region].keys()
+			out += tmp_out
+			for country in tmp_out:
+				out += geo_hierarchy[region][country]
+		out += lookup_key
+		return out
+	elif lookup_key[0] in country_list:
+		country = lookup_key[0]
+		region = country_to_region[country]
+		out += geo_hierarchy[region][country]
+		out = out + lookup_key
+		return out
+	else:
+		return lookup_key
+
+def filterRegionsWithinDistance(regionIndices, maxDistanceKM = -1):
 	if maxDistanceKM == -1:
-		return regions
+		return regionIndices
 
 	userLat, userLong = getUsersLatLong()
-	filteredRegions = []
+	filteredRegionIndices = []
 
-	for region in regions:
+	for regionIndex in regionIndices:
+		region = data[regionIndex][1]
 		lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
 		lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
 		if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
-			filteredRegions.append(region)
+			filteredRegionIndices.append(region)
 
-	return filteredRegions
+	return filteredRegionIndices
 
 def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 	# Retrieve snippets from LP descriptions
@@ -149,6 +209,7 @@ def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 					else:
 						snip.append(text[sents[s]:sents[s+1]])
 		snippets[k] = ''.join(snip)
+	#print snippets
 	return snippets
 
 

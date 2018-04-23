@@ -28,6 +28,8 @@
     <script src="//d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Gaegu|Stylish" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
     
 </head>
 <body>
@@ -120,30 +122,53 @@
 
     <div id="info_modal">
         <span class="exit_crosses">X</span>
-        <p>Place Name: <span id="modal_place_name_span"></span></p>
-        <p>Description: <span id="modal_description_span"></span></p> 
-        <p>Recommendations: <span id="modal_recommendations_span"></span></p>
+        <h5>Place Name: </h5><span id="modal_place_name_span"></span>
+        <h5>Description: </h5> <span id="modal_description_span"></span>
+        <h5>Recommendations: </h5>
     </div>
     <svg height="700" width="1200" id="svg_map">
         
     </svg>
     <div id="result_list">
         <ul class="list-group list-group-flush">
+            {% if version == "v1"%}
         
                 {% for result in results %}
-                <li class="list-group-item result_rows">
-                    <h4>{{ result[0] }}</h4><br>
-                    <DL>
-                    <DT>What's Special?
-                    <DD>{{ result[2] }}
-                    <DT>Attraction recommendation:
+                    <li class="list-group-item result_rows">
+                        <h4>{{ result[0] }}</h4><br>
+                        <DL>
+                        <DT>What's Special?
+                        <DD>{{ result[2] }}
+                        <DT>Attraction recommendation:
 
-                    {% for recm in result[3] %}
-                        <DD>{{recm[0].decode('utf-8')}}: {{recm[1].decode('utf-8')}}
-                    {% endfor %}
-                    </DL>
-                </li>
-            {% endfor %}
+                        {% for recm in result[3] %}
+                            <DD>{{recm[0].decode('utf-8')}}: {{recm[1].decode('utf-8')}}
+                        {% endfor %}
+                        </DL>
+                    </li>
+                {% endfor %}
+            {% elif version == "v2"%}
+                {% for result in results %}
+                    <li class="list-group-item result_rows">
+                        <h4>{{ result[0] }}</h4><br>
+                        <DL>
+                        <DT>What's Special?
+                        <DD>{{ result[2] }}
+                        <DT>Attraction recommendation:
+
+                        {% for recm in result[3] %}
+                            <DD>{{recm[0].decode('utf-8')}}:
+                            <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
+                        {% endfor %}
+
+                        <DT>When to Go?
+                            <DD>{{ result[4]['When to Go'] }}
+                        <DT>Events
+                            <DD>{{ result[4]['Events'] }}
+                        </DL>
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 <!-- <div class="btn btn-lg btn-primary btn-block" id="map_button">World Map!</div> -->
