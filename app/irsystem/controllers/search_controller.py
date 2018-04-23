@@ -108,7 +108,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 			for doc in inv_idx[q]:
 				accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
 	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query).items() if q in idf))
-	raw_scores = accum / q_norm
+	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
 	ranking = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM)
 	# Filter out redundancy in regions
