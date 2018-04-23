@@ -36,7 +36,6 @@ def search():
 		for result in results: 	
 			if(len(result[3]) > 0): 
 				raw_country = result[3][0][1]
-				print(raw_country)
 				queries.append(raw_country)
 			else: 
 				queries.append(None)
@@ -61,7 +60,6 @@ def search():
 		for result in results: 	
 			if(len(result[3]) > 0): 
 				raw_country = result[3][0][1]
-				print(raw_country)
 				queries.append(raw_country)
 			else: 
 				queries.append(None)
@@ -84,7 +82,6 @@ def search():
 		for result in results: 	
 			if(len(result[3]) > 0): 
 				raw_country = result[3][0][1]
-				print(raw_country)
 				queries.append(raw_country)
 			else: 
 				queries.append(None)

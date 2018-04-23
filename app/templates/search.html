@@ -104,7 +104,6 @@
       <img class="featurette-image img-fluid mx-auto" src="../static/pict/generic.jpeg" alt="Generic placeholder image">
   </div>
 </div>
-<img src="https://source.unsplash.com/1600x900/?budapest, bulgaria">
 </div>
     {% else %}
 
@@ -153,7 +152,8 @@
                         <h4>{{ result[0] }}</h4><br>
                         <DL>
                         <DT>What's Special?
-                        <DD>{{ result[2] }}
+                        <DD>{{ queries[loop.index0] }}}
+			<DD>{{ result[2] }}
                         <DT>Attraction recommendation:
 
                         {% for recm in result[3] %}
