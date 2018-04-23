@@ -178,12 +178,15 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	"""
 	raw_query = tokenize(input_query)
 	query = [stemmer.stem(w) for w in raw_query]
-	query_word_expaneded = [expand_word(w) for w in query]
+	query_word_expaneded = [expand_word(word) for word in query]
+	print "QUERY WORD Expanded"
+	print query_word_expaneded
 	#query_expanded_list = [q for q in product(*query_word_expaneded)]
 
 	accum = np.zeros(len(data))
 	for query_expanded in query_word_expaneded:
 		for q in query_expanded:
+			print q
 			if q in vocab_idx:
 				for doc in inv_idx[q]:
 					accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
@@ -330,16 +333,14 @@ def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 	return snippets
 
 
-def expand_word(word_in, n_expansion=5):
-    # stem word_in first
-    #w = stemmer.stem(word_in.lower())
-    #using SVD
-    if w not in vocab_idx:
-        return [w]
-    else:
-        idx = vocab_idx[w]
-        sims = words_compressed.dot(words_compressed[idx,:])
-        asort = np.argsort(-sims)[:n_expansion+1]
-        out = [(idx_to_vocab[i],sims[i]) for i in asort]
-    return out
+def expand_word(w, n_expansion=2):
+	if w not in vocab_idx:
+		return [w]
+	else:
+		idx = vocab_idx[w]
+		sims = words_compressed.dot(words_compressed[idx,:])
+		asort = np.argsort(-sims)[:n_expansion+1]
+		out = [idx_to_vocab[i] for i in asort]
+		print out
+		return out
 
