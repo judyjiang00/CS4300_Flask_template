@@ -86,8 +86,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 
 	#print regions
 	#print len(regions)
-	#print len(topPlaces)
-	return topPlaces
+	return topPlaces[:i+1]
 
 
 def getTopPlacesInRegion(region):
