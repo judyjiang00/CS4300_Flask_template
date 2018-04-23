@@ -2,6 +2,7 @@ import pickle
 import json
 import nltk
 from nltk.stem.porter import *
+from collections import defaultdict
 
 NUM_REGIONS = 10
 NUM_PLACES_PER_REGION = 3
@@ -55,3 +56,21 @@ with open('data/idx_to_vocab.pickle') as f:
 
 with open('data/wikitravel_place.pickle') as f:
 	wikitravel_place = pickle.load(f)
+
+with open("data/geo_hierarchy_dict.pickle","rb") as f:
+    geo_hierarchy = pickle.load(f)
+
+
+region_list = geo_hierarchy.keys()
+
+country_list = []
+country_to_region = {}
+for region in region_list:
+	country_list += (geo_hierarchy[region].keys())
+	for country in geo_hierarchy[region].keys():
+		country_to_region[country] = region
+	
+    
+location_to_doc_idx = defaultdict(list)
+for idx, row in enumerate(data):
+    location_to_doc_idx[row[1]].append(idx)

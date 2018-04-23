@@ -44,7 +44,7 @@ def search():
 			description_query = ""
 		output_tupes = (location_query, description_query)	
 
-		results = v2.getPlaces(output_tupes[0] + " " + output_tupes[1])	
+		results = v2.getPlaces(output_tupes)	
 
 		return render_template('search.html', activity_query = activity_query, 
 			location_query = location_query, 
