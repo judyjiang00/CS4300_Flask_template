@@ -6,1048 +6,541 @@ dict
 p1
 tp2
 Rp3
-S'Europe'
+S'europe'
 p4
 (dp5
-VItaly
+Vengland
 p6
 (lp7
-VFlorence
+Vleeds
 p8
-aVBologna
+aVmanchester
 p9
-aVMilan
+aVbirmingham
 p10
-aVVenice
+aVlondon
 p11
-aVRome
+aVyork
 p12
-aVNaples
+aVliverpool
 p13
-asVBosnia Hercegovina
+asVczech republic
 p14
 (lp15
-sVFaroe Islands
+Vprague
 p16
-(lp17
-sVLithuania
-p18
-(lp19
-sVLuxembourg
+asVportugal
+p17
+(lp18
+Vlisbon
+p19
+asVaustria
 p20
 (lp21
-sVFrance
+Vsalzburg
 p22
-(lp23
-VNice
+aVvienna
+p23
+asVgreece
 p24
-aVBordeaux
-p25
-aVParis
+(lp25
+Vcyclades islands
 p26
-aVCorsica
+aVdodecanese islands
 p27
-asVAndorra
+aVcrete
 p28
-(lp29
-sVNetherlands
+aVathens
+p29
+aVionian islands
 p30
-(lp31
-VAmsterdam
-p32
-asVSlovakia
+asVhungary
+p31
+(lp32
+Vbudapest
 p33
-(lp34
-sVGibraltar
-p35
-(lp36
-sVIreland
+asVitaly
+p34
+(lp35
+Vflorence
+p36
+aVbologna
 p37
-(lp38
-VDublin
+aVmilan
+p38
+aVvenice
 p39
-aVBelfast
+aVrome
 p40
-asVWales
+aVnaples
 p41
-(lp42
-sVNorway
-p43
-(lp44
-VOslo
+asVscotland
+p42
+(lp43
+Vscottish highlands and islands
+p44
+aVedinburgh
 p45
-asVHoly See
+aVglasgow
 p46
-(lp47
-S'Vatican City'
-p48
-asVBelarus
+asVfrance
+p47
+(lp48
+Vnice
 p49
-(lp50
-sVScotland
+aVbordeaux
+p50
+aVparis
 p51
-(lp52
-VScottish Highlands And Islands
+aVcorsica
+p52
+asVireland
 p53
-aVEdinburgh
-p54
-aVGlasgow
+(lp54
+Vdublin
 p55
-asVIceland
+aVbelfast
 p56
-(lp57
-VReykjavik
-p58
-asVCzech Republic
+asVnorway
+p57
+(lp58
+Voslo
 p59
-(lp60
-VPrague
-p61
-asVSlovenia
+asViceland
+p60
+(lp61
+Vreykjavik
 p62
-(lp63
-sVGermany
-p64
-(lp65
-VHamburg
+asVgermany
+p63
+(lp64
+Vhamburg
+p65
+aVstuttgart
 p66
-aVStuttgart
+aVmunich
 p67
-aVMunich
+aVfrankfurt
 p68
-aVFrankfurt
+aVberlin
 p69
-aVBerlin
+asVbelgium
 p70
-asVArmenia
-p71
-(lp72
-sVBelgium
+(lp71
+Vantwerp
+p72
+aVbrussels
 p73
-(lp74
-VAntwerp
-p75
-aVBrussels
+asVspain
+p74
+(lp75
+Vmadrid
 p76
-asVSpain
+aVcanary islands
 p77
-(lp78
-VMadrid
+aVbarcelona
+p78
+aVmallorca
 p79
-aVCanary Islands
+aVseville
 p80
-aVBarcelona
+aVandalucia
 p81
-aVMallorca
+aValicante
 p82
-aVSeville
+aVbalearic islands
 p83
-aVAndalucia
+asVholy see
 p84
-aVAlicante
-p85
-aVBalearic Islands
+(lp85
+S'vatican city'
 p86
-asVUkraine
+asVnetherlands
 p87
 (lp88
-sVSan Marino
+Vamsterdam
 p89
-(lp90
-sVGeorgia
-p91
-(lp92
-sVDenmark
+asVdenmark
+p90
+(lp91
+Vcopenhagen
+p92
+asVfinland
 p93
 (lp94
-VCopenhagen
+Vhelsinki
 p95
-asVPoland
+asVsweden
 p96
 (lp97
-sVFinland
+Vstockholm
 p98
-(lp99
-VHelsinki
-p100
-asVMacedonia
+asVswitzerland
+p99
+(lp100
+Vzurich
 p101
-(lp102
-sVMoldova
+aVgeneva
+p102
+asVrussia
 p103
 (lp104
-sVSweden
+Vst petersburg
 p105
-(lp106
-VStockholm
+aVmoscow
+p106
+assS'caribbean'
 p107
-asVLatvia
-p108
-(lp109
-sVCroatia
-p110
-(lp111
-sVMalta
+(dp108
+Vpuerto rico
+p109
+(lp110
+Vsan juan
+p111
+asVcuba
 p112
 (lp113
-sVMonaco
+Vhavana
 p114
-(lp115
-sVSwitzerland
-p116
-(lp117
-VZurich
-p118
-aVGeneva
+assS'north east asia'
+p115
+(dp116
+Vjapan
+p117
+(lp118
+Vtokyo
 p119
-asVRussia
+aVkyoto
 p120
-(lp121
-VSt Petersburg
-p122
-aVMoscow
+asVtaiwan
+p121
+(lp122
+Vtaipei
 p123
-asVBulgaria
+asVchina
 p124
 (lp125
-sVRomania
+Vtibet
 p126
-(lp127
-sVGreenland
+aVbeijing
+p127
+aVshanghai
 p128
-(lp129
-sVEngland
-p130
-(lp131
-VLeeds
+asVsouth korea
+p129
+(lp130
+Vseoul
+p131
+assS'indian subcontinent'
 p132
-aVManchester
-p133
-aVBirmingham
+(dp133
+Vnepal
 p134
-aVLondon
-p135
-aVYork
+(lp135
+Vkathmandu
 p136
-aVLiverpool
+asVindia
 p137
-asVEstonia
-p138
-(lp139
-sVPortugal
+(lp138
+Vmumbai
+p139
+aVdelhi
 p140
-(lp141
-VLisbon
+aVkolkata
+p141
+aVgoa
 p142
-asVLiechtenstein
+assS'africa'
 p143
-(lp144
-sVAzerbaijan
+(dp144
+Vegypt
 p145
 (lp146
-sVAustria
+Vcairo
 p147
-(lp148
-VSalzburg
-p149
-aVVienna
+asVkenya
+p148
+(lp149
+Vnairobi
 p150
-asVGreece
+asVtanzania
 p151
 (lp152
-VCyclades Islands
+Vzanzibar
 p153
-aVDodecanese Islands
+asVsouth africa
 p154
-aVCrete
-p155
-aVAthens
+(lp155
+Vcape town
 p156
-aVIonian Islands
+assS'north america'
 p157
-asVHungary
-p158
-(lp159
-VBudapest
-p160
-asVCyprus
+(dp158
+Vcanada
+p159
+(lp160
+Vquebec city
 p161
-(lp162
-sVAlbania
+aVvancouver
+p162
+aVtoronto
 p163
-(lp164
-ssS'Caribbean'
+aVmontreal
+p164
+asVusa
 p165
-(dp166
-VSaint Martin
+(lp166
+Vbaltimore
 p167
-(lp168
-sVUs Virgin Islands
+aVseattle
+p168
+aVmarthas vineyard
 p169
-(lp170
-sVCuracao
+aVboston
+p170
+aVreno
 p171
-(lp172
-sVSaint Lucia
+aVsedona
+p172
+aVdetroit
 p173
-(lp174
-sVBahamas
+aVphoenix
+p174
+aVfort lauderdale
 p175
-(lp176
-sVTurks And Caicos
+aVphiladelphia
+p176
+aVjuneau
 p177
-(lp178
-sVAruba
+aVdallas
+p178
+aVcape cod
 p179
-(lp180
-sVAnguilla
+aVhawaii
+p180
+aVsanta barbara
 p181
-(lp182
-sVGuadeloupe
+aVmaui
+p182
+aVnashville
 p183
-(lp184
-sVCuba
+aVatlantic city
+p184
+aVaspen
 p185
-(lp186
-VHavana
+aVtaos
+p186
+aVsan diego
 p187
-asVPuerto Rico
+aVatlanta
 p188
-(lp189
-VSan Juan
+aVsanta fe
+p189
+aVtucson
 p190
-asVMartinique
+aVhonolulu
 p191
-(lp192
-sVHaiti
+aVsan francisco
+p192
+aVminneapolis
 p193
-(lp194
-sVSint Eustatius
+aVmolokai
+p194
+aVkey west
 p195
-(lp196
-sVDominica
+aVportland
+p196
+aVdenver
 p197
-(lp198
-sVCayman Islands
+aVoahu
+p198
+aVbranson
 p199
-(lp200
-sVSaint Kitts And Nevis
+aVanchorage
+p200
+aVorlando
 p201
-(lp202
-sVAntigua And Barbuda
+aVaustin
+p202
+aVcincinnati
 p203
-(lp204
-sVGrenada
+aVnew york city
+p204
+aVsalt lake city
 p205
-(lp206
-sVSaba
+aVmiami
+p206
+aValbuquerque
 p207
-(lp208
-sVJamaica
+aVnew orleans
+p208
+aVwashington dc
 p209
-(lp210
-sVBonaire
+aVsan antonio
+p210
+aVhouston
 p211
-(lp212
-sVTrinidad And Tobago
+aVnapa valley
+p212
+aVhalifax
 p213
-(lp214
-sVSaint Vincent And The Grenadines
+aVlas vegas
+p214
+aVchicago
 p215
-(lp216
-sVBritish Virgin Islands
+aValaska
+p216
+aVmemphis
 p217
-(lp218
-sVSint Maarten
+aVscottsdale
+p218
+aVfairbanks
 p219
-(lp220
-sVBarbados
+aVtampa
+p220
+aVlos angeles
 p221
-(lp222
-ssS'North East Asia'
-p223
-(dp224
-VMacau
+asVmexico
+p222
+(lp223
+Vacapulco
+p224
+aVcabo san lucas
 p225
-(lp226
-sVMongolia
+aVmexico city
+p226
+aVcancun
 p227
-(lp228
-sVNorth Korea
+aVmazatlan
+p228
+aVcozumel
 p229
-(lp230
-sVChina
+aVpuerto vallarta
+p230
+aVsan jose del cabo
 p231
-(lp232
-VTibet
-p233
-aVBeijing
+assS'australasia'
+p232
+(dp233
+Vnew zealand
 p234
-aVShanghai
-p235
-asVJapan
+(lp235
+Vauckland
 p236
-(lp237
-VTokyo
+aVchristchurch
+p237
+asVaustralia
 p238
-aVKyoto
-p239
-asVTaiwan
+(lp239
+Vnew south wales
 p240
-(lp241
-VTaipei
+aVsydney
+p241
+aVadelaide
 p242
-asVHong Kong
+aVdarwin
 p243
-(lp244
-sVSouth Korea
+aVhobart
+p244
+aVbrisbane
 p245
-(lp246
-VSeoul
+aVmelbourne
+p246
+aVcanberra
 p247
-assS'Central America'
+aVperth
 p248
-(dp249
-VHonduras
-p250
-(lp251
-sVEl Salvador
-p252
-(lp253
-sVPanama
+assS'south america'
+p249
+(dp250
+Vbrazil
+p251
+(lp252
+Vrio de janeiro
+p253
+asVuruguay
 p254
 (lp255
-sVCosta Rica
+Vmontevideo
 p256
-(lp257
-sVGuatemala
-p258
-(lp259
-sVBelize
+asVperu
+p257
+(lp258
+Vlima
+p259
+asVargentina
 p260
 (lp261
-sVNicaragua
+Vbuenos aires
 p262
-(lp263
-ssS'Indian Subcontinent'
-p264
-(dp265
-VPakistan
+asVvenezuela
+p263
+(lp264
+Vcaracas
+p265
+asVchile and easter island
 p266
 (lp267
-sVMaldives
+Vsantiago
 p268
-(lp269
-sVBangladesh
-p270
-(lp271
-sVBhutan
-p272
-(lp273
-sVNepal
+assS'south east asia'
+p269
+(dp270
+Vmalaysia
+p271
+(lp272
+Vkuala lumpur
+p273
+asVphilippines
 p274
 (lp275
-VKathmandu
+Vmanila
 p276
-asVIndia
+asVindonesia
 p277
 (lp278
-VMumbai
+Vjava
 p279
-aVDelhi
+aVjakarta
 p280
-aVKolkata
+aVlombok
 p281
-aVGoa
+aVbali
 p282
-asVSri Lanka
+aVsumatra
 p283
-(lp284
-ssS'Africa'
-p285
-(dp286
-VMadagascar
+asVthailand
+p284
+(lp285
+Vchiang mai
+p286
+aVbangkok
 p287
-(lp288
-sVMauritania
-p289
-(lp290
-sVGuinea
+asVvietnam
+p288
+(lp289
+Vhanoi
+p290
+aVho chi minh
 p291
-(lp292
-sVEthiopia
-p293
-(lp294
-sVRwanda
-p295
-(lp296
-sVSwaziland
+assS'middle east'
+p292
+(dp293
+Vturkey
+p294
+(lp295
+Vistanbul
+p296
+asVunited arab emirates
 p297
 (lp298
-sVNigeria
+Vdubai
 p299
-(lp300
-sVCameroon
+aVabu dhabi
+p300
+asViran
 p301
 (lp302
-sVBurkina Faso
+Vtehran
 p303
-(lp304
-sVBenin
-p305
-(lp306
-sVGhana
-p307
-(lp308
-sVComoros And Mayotte
-p309
-(lp310
-sVZambia
-p311
-(lp312
-sVCape Verde
-p313
-(lp314
-sVMalawi
-p315
-(lp316
-sVTogo
-p317
-(lp318
-sVZimbabwe
-p319
-(lp320
-sVGambia
-p321
-(lp322
-sVDjibouti
-p323
-(lp324
-sVEritrea
-p325
-(lp326
-sVLibya
-p327
-(lp328
-sVCote Divoire
-p329
-(lp330
-sVTanzania
-p331
-(lp332
-VZanzibar
-p333
-asVGuinea Bissau
-p334
-(lp335
-sVCentral African Republic
-p336
-(lp337
-sVMauritius
-p338
-(lp339
-sVMorocco
-p340
-(lp341
-sVGabon
-p342
-(lp343
-sVEgypt
-p344
-(lp345
-VCairo
-p346
-asVMali
-p347
-(lp348
-sVNamibia
-p349
-(lp350
-sVSao Tome And Principe
-p351
-(lp352
-sVSeychelles
-p353
-(lp354
-sVChad
-p355
-(lp356
-sVSouth Africa
-p357
-(lp358
-VCape Town
-p359
-asVTunisia
-p360
-(lp361
-sVEquatorial Guinea
-p362
-(lp363
-sVLesotho
-p364
-(lp365
-sVSenegal
-p366
-(lp367
-sVMozambique
-p368
-(lp369
-sVUganda
-p370
-(lp371
-sVReunion
-p372
-(lp373
-sVKenya
-p374
-(lp375
-VNairobi
-p376
-asVNiger
-p377
-(lp378
-sVBotswana
-p379
-(lp380
-ssS'Antarctica'
-p381
-(dp382
-VAntarctica
-p383
-(lp384
-ssS'Pacific'
-p385
-(dp386
-VFederated States Of Micronesia
-p387
-(lp388
-sVTonga
-p389
-(lp390
-sVSamoa
-p391
-(lp392
-sVNorthern Mariana Islands
-p393
-(lp394
-sVTokelau
-p395
-(lp396
-sVTuvalu
-p397
-(lp398
-sVGuam
-p399
-(lp400
-sVWallis And Futuna
-p401
-(lp402
-sVKiribati
-p403
-(lp404
-sVPitcairn Islands
-p405
-(lp406
-sVNew Caledonia
-p407
-(lp408
-sVSolomon Islands
-p409
-(lp410
-sVMarshall Islands
-p411
-(lp412
-sVNiue
-p413
-(lp414
-sVVanuatu
-p415
-(lp416
-sVPalau
-p417
-(lp418
-sVNauru
-p419
-(lp420
-sVFiji
-p421
-(lp422
-sVAmerican Samoa
-p423
-(lp424
-sVCook Islands
-p425
-(lp426
-sVTahiti And French Polynesia
-p427
-(lp428
-ssS'North America'
-p429
-(dp430
-VCanada
-p431
-(lp432
-VQuebec City
-p433
-aVVancouver
-p434
-aVToronto
-p435
-aVMontreal
-p436
-asVBermuda
-p437
-(lp438
-sVUsa
-p439
-(lp440
-VBaltimore
-p441
-aVSeattle
-p442
-aVMarthas Vineyard
-p443
-aVBoston
-p444
-aVReno
-p445
-aVSedona
-p446
-aVDetroit
-p447
-aVPhoenix
-p448
-aVFort Lauderdale
-p449
-aVPhiladelphia
-p450
-aVJuneau
-p451
-aVDallas
-p452
-aVCape Cod
-p453
-aVHawaii
-p454
-aVSanta Barbara
-p455
-aVMaui
-p456
-aVNashville
-p457
-aVAtlantic City
-p458
-aVAspen
-p459
-aVTaos
-p460
-aVSan Diego
-p461
-aVAtlanta
-p462
-aVSanta Fe
-p463
-aVTucson
-p464
-aVHonolulu
-p465
-aVSan Francisco
-p466
-aVMinneapolis
-p467
-aVMolokai
-p468
-aVKey West
-p469
-aVPortland
-p470
-aVDenver
-p471
-aVOahu
-p472
-aVBranson
-p473
-aVAnchorage
-p474
-aVOrlando
-p475
-aVAustin
-p476
-aVCincinnati
-p477
-aVNew York City
-p478
-aVSalt Lake City
-p479
-aVMiami
-p480
-aVAlbuquerque
-p481
-aVNew Orleans
-p482
-aVWashington Dc
-p483
-aVSan Antonio
-p484
-aVHouston
-p485
-aVNapa Valley
-p486
-aVHalifax
-p487
-aVLas Vegas
-p488
-aVChicago
-p489
-aVAlaska
-p490
-aVMemphis
-p491
-aVScottsdale
-p492
-aVFairbanks
-p493
-aVTampa
-p494
-aVLos Angeles
-p495
-asVMexico
-p496
-(lp497
-VAcapulco
-p498
-aVCabo San Lucas
-p499
-aVMexico City
-p500
-aVCancun
-p501
-aVMazatlan
-p502
-aVCozumel
-p503
-aVPuerto Vallarta
-p504
-aVSan Jose Del Cabo
-p505
-assS'Australasia'
-p506
-(dp507
-VNew Zealand
-p508
-(lp509
-VAuckland
-p510
-aVChristchurch
-p511
-asVAustralia
-p512
-(lp513
-VNew South Wales
-p514
-aVSydney
-p515
-aVAdelaide
-p516
-aVDarwin
-p517
-aVHobart
-p518
-aVBrisbane
-p519
-aVMelbourne
-p520
-aVCanberra
-p521
-aVPerth
-p522
-asVPapua New Guinea
-p523
-(lp524
-ssS'South America'
-p525
-(dp526
-VBrazil
-p527
-(lp528
-VRio De Janeiro
-p529
-asVFalkland Islands
-p530
-(lp531
-sVColombia
-p532
-(lp533
-sVSuriname
-p534
-(lp535
-sVUruguay
-p536
-(lp537
-VMontevideo
-p538
-asVEcuador And The Galapagos Islands
-p539
-(lp540
-sVFrench Guiana
-p541
-(lp542
-sVPeru
-p543
-(lp544
-VLima
-p545
-asVGuyana
-p546
-(lp547
-sVParaguay
-p548
-(lp549
-sVArgentina
-p550
-(lp551
-VBuenos Aires
-p552
-asVBolivia
-p553
-(lp554
-sVVenezuela
-p555
-(lp556
-VCaracas
-p557
-asVChile And Easter Island
-p558
-(lp559
-VSantiago
-p560
-assS'South East Asia'
-p561
-(dp562
-VEast Timor
-p563
-(lp564
-sVBrunei
-p565
-(lp566
-sVMyanmar
-p567
-(lp568
-sVSingapore
-p569
-(lp570
-sVPhilippines
-p571
-(lp572
-VManila
-p573
-asVIndonesia
-p574
-(lp575
-VJava
-p576
-aVJakarta
-p577
-aVLombok
-p578
-aVBali
-p579
-aVSumatra
-p580
-asVCambodia
-p581
-(lp582
-sVMalaysia
-p583
-(lp584
-VKuala Lumpur
-p585
-asVVietnam
-p586
-(lp587
-VHanoi
-p588
-aVHo Chi Minh
-p589
-asVLaos
-p590
-(lp591
-sVThailand
-p592
-(lp593
-VChiang Mai
-p594
-aVBangkok
-p595
-assS'Middle East'
-p596
-(dp597
-VBahrain
-p598
-(lp599
-sVTurkey
-p600
-(lp601
-VIstanbul
-p602
-asVSaudi Arabia
-p603
-(lp604
-sVIran
-p605
-(lp606
-VTehran
-p607
-asVUnited Arab Emirates
-p608
-(lp609
-VDubai
-p610
-aVAbu Dhabi
-p611
-asVAfghanistan
-p612
-(lp613
-sVOman
-p614
-(lp615
-sVIsrael And The Palestinian Territories
-p616
-(lp617
-sVLebanon
-p618
-(lp619
-sVQatar
-p620
-(lp621
-sVJordan
-p622
-(lp623
-sVKuwait
-p624
-(lp625
-sVSyria
-p626
-(lp627
-sVYemen
-p628
-(lp629
-ssS'Central Asia'
-p630
-(dp631
-VUzbekistan
-p632
-(lp633
-sVKyrgyzstan
-p634
-(lp635
-sVKazakstan
-p636
-(lp637
-sVTajikistan
-p638
-(lp639
-sVTurkmenistan
-p640
-(lp641
-ss.
+ass.

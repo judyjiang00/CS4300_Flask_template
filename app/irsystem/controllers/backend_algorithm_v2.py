@@ -18,6 +18,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	"""
 	activity_query = tokenize(input_query[1])
 	location_query = input_query[0].split(' ')
+	location_query = [ll.lower() for ll in location_query]
 	query = [stemmer.stem(w) for w in activity_query]
 	query_word_expaneded = [expand_word(word) for word in query]
 
@@ -145,12 +146,12 @@ def filterRegionWithHierarchy(location):
     	output a list of destinations under the same region
     """
 	out = []
-	if location == 'Asia':
-		lookup_key = [i for i in region_list if 'Asia' in i]
-	elif location == 'India':
-		lookup_key = ['Indian Subcontinent']
-	elif location == 'Australia':
-		lookup_key = ['Australasia']
+	if location == 'asia':
+		lookup_key = [i for i in region_list if 'asia' in i]
+	elif location == 'india':
+		lookup_key = ['indian subcontinent']
+	elif location == 'australia':
+		lookup_key = ['australasia']
 	else:
 		lookup_key = [location]
 

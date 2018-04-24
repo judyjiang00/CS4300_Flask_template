@@ -9,36 +9,34 @@ import backend_algorithm_v2 as v2
 
 project_name = "Where Next - A Travel Destination Recommendation System"
 net_id = "Wanming Hu: wh298, Smit Jain: scj39, Judy Jiang: jj353, Noah Kaplan: nk425, Tatsuhiro Koshi: tk474"
-
+	
 
 @irsystem.route('/', methods=['GET'])
 def search():
+
+
 	#query = request.args.get('search')
 	output_message = ""
 	activity_query = request.args.get('activity')
 	location_query = request.args.get('location')
 	description_query = request.args.get('description')
 	system_version = request.args.get('version')
-	unsplashed_quries = request.args.get('queries')
-
+	unsplashed_queries = request.args.get('queries')
 	if system_version == "v1":
 		if not (location_query):
 			location_query = ""
 		if not (description_query):
 			description_query = ""
 		output_tupes = (location_query, description_query)	
-
-		results = v1.getPlaces(output_tupes[0] + " " + output_tupes[1])	
-		queries = []
+		results = v1.getPlaces(output_tupes[0] + " " + output_tupes[1])
+		queries = []	
 		raw_country = ""
-		for result in results:
-			if(len(result[3]) > 0):
+		for result in results: 	
+			if(len(result[3]) > 0): 
 				raw_country = result[3][0][1]
-				print(raw_country)
 				queries.append(raw_country)
-			else:
+			else: 
 				queries.append(None)
-
 		return render_template('search.html', activity_query = activity_query, 
 			location_query = location_query, 
 			description_query= description_query,
@@ -61,11 +59,9 @@ def search():
 		for result in results:
 			if(len(result[3]) > 0):
 				raw_country = result[3][0][1]
-				print(raw_country)
 				queries.append(raw_country)
 			else:
 				queries.append(None)
-
 		return render_template('search.html', activity_query = activity_query, 
 			location_query = location_query, 
 			description_query= description_query,
@@ -98,4 +94,6 @@ def search():
 			version = system_version,
 			unsplashed_quries = queries,
 			autocomplete_data = "TESTTTTT!")
+
+
 
