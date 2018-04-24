@@ -73,4 +73,4 @@ for region in region_list:
     
 location_to_doc_idx = defaultdict(list)
 for idx, row in enumerate(data):
-    location_to_doc_idx[row[1]].append(idx)
+    location_to_doc_idx[row[1].lower()].append(idx)
