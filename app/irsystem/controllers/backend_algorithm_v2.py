@@ -72,6 +72,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	#print regions
 	snippets = get_snippets(query, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
+	regions = [r for r in regions if r != 'Yugoslavia']
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
 	topPlaces = [[] for _ in range(len(regions))]
 	for i, region in enumerate(regions):
