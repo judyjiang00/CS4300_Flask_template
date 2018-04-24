@@ -10,6 +10,8 @@ import random
 from defs import *
 
 def getPlaces(input_query, maxDistanceKM = -1):
+	print input_query[0]
+	print input_query[1]
 	"""
 	Params:
 		input_query: tuple of (location query, activity query)
@@ -84,8 +86,8 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		topPlaces[i].append(fact_data[region])
 		topPlaces[i].append(scores[i])
 
-	#print regions
-	#print len(regions)
+	print regions
+	print len(regions)
 	return topPlaces
 
 

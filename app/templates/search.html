@@ -131,8 +131,8 @@
                         <h4>{{ result[0] }}</h4><br>
                         <DL>
                         <DT>What's Special?
-                        <DD>{{ result[2] }}
-			<DD>{{ loop.index0 }}
+			<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                        <DD class="figure-caption">{{ result[2] }}
                         <DT>Attraction recommendation:
 
                         {% for recm in result[3] %}
@@ -171,7 +171,7 @@
   <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
   <script type="text/javascript">var results = {{results|tojson}}</script>
   <script type="text/javascript">var version = "{{version}}"</script>
-
+  <script type="text/javascript">var unsplashed_queries = {{unsplashed_queries|tojson}}</script>
   <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
     {% endif %}
     </body>
