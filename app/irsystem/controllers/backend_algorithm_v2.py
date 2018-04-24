@@ -7,6 +7,7 @@ from math import sin, cos, sqrt, atan2, radians
 from collections import Counter
 from itertools import product
 import random
+import datetime
 from defs import *
 
 def getPlaces(input_query, maxDistanceKM = -1):
@@ -86,6 +87,8 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		topPlaces[i].append(getTopPlacesInRegion(region))
 		topPlaces[i].append(fact_data[region])
 		topPlaces[i].append(scores[i])
+		topPlaces[i].append(getWeatherSnippetForRegion(region.lower()))
+		topPlaces[i].append(getTravelAdvisory(region))
 
 	#print len(regions)
 	return topPlaces
@@ -225,3 +228,20 @@ def expand_word(w, n_expansion=2):
 		asort = np.argsort(-sims)[:n_expansion+1]
 		out = [idx_to_vocab[i] for i in asort]
 		return out
+
+def convertCToFAndRound(c):
+    return int(round(9.0/5.0 * c + 32, 0))
+
+def getTravelAdvisory(region):
+    if region in travelAdvisories:
+        return travelAdvisories[region]
+    else:
+        return "No current travel advisory"
+
+def getWeatherSnippetForRegion(region):
+    now = datetime.datetime.now()
+    nowMonth = now.strftime("%B")
+    return "Average temperature in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][1])) + \
+        " F. Historical low and high temperatures in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][0])) + \
+        " F and " + str(convertCToFAndRound(temps[(region, now.month-1)][2])) + " F."
+
