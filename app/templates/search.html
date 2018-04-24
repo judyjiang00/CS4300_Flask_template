@@ -131,7 +131,9 @@
                         <h4>{{ result[0] }}</h4><br>
                         <DL>
                         <DT>What's Special?
-			<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+			{% if unsplashed_queries[loop.index0] != None %}
+				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                        {% endif %}
                         <DD class="figure-caption">{{ result[2] }}
                         <DT>Attraction recommendation:
 

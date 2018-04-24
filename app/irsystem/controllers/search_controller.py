@@ -44,7 +44,7 @@ def search():
 			results = results,
 			map_geo = map_geo,
 			version = system_version,
-			unsplashed_quries = queries)
+			unsplashed_queries = queries)
 	elif system_version == "v2":
 		# change this to the newer version of backend system
 		if not (location_query):
