@@ -22,7 +22,6 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	query = [stemmer.stem(w) for w in activity_query]
 	query_word_expaneded = [expand_word(word) for word in query]
 
-
 	accum = np.zeros(len(data))
 	#print query_word_expaneded
 	for query_expanded in query_word_expaneded:
@@ -85,7 +84,6 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		topPlaces[i].append(fact_data[region])
 		topPlaces[i].append(scores[i])
 
-	#print regions
 	#print len(regions)
 	return topPlaces
 
@@ -154,6 +152,7 @@ def filterRegionWithHierarchy(location):
 		lookup_key = ['australasia']
 	else:
 		lookup_key = [location]
+
 
 	if lookup_key[0] in region_list:
 		for region in lookup_key:
