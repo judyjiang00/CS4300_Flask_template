@@ -64,12 +64,6 @@
         </div>
 
         <div class="form-label-group">
-            <div class = "text-center mb-4">Skiing, hiking, surfing and more:<br />what would you like to do?<br />
-                <input id ="query.activity" placeholder="activity" name="activity">
-            </div>
-        </div>
-
-        <div class="form-label-group">
             <div class = "text-center mb-4">Paris, Barcelona, Hong Kong or maybe somewhere else:<br />where would you like to go?<br />
                 <input id = "query.location" placeholder="location" name="location">
             </div>
@@ -104,7 +98,6 @@
       <img class="featurette-image img-fluid mx-auto" src="../static/pict/generic.jpeg" alt="Generic placeholder image">
   </div>
 </div>
-
 </div>
     {% else %}
 
@@ -139,6 +132,7 @@
                         <DL>
                         <DT>What's Special?
                         <DD>{{ result[2] }}
+			<DD>{{ loop.index0 }}
                         <DT>Attraction recommendation:
 
                         {% for recm in result[3] %}
@@ -153,7 +147,7 @@
                         <h4>{{ result[0] }}</h4><br>
                         <DL>
                         <DT>What's Special?
-                        <DD>{{ result[2] }}
+			<DD>{{ result[2] }}
                         <DT>Attraction recommendation:
 
                         {% for recm in result[3] %}
