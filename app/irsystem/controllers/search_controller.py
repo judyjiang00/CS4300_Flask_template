@@ -22,6 +22,8 @@ def search():
 	description_query = request.args.get('description')
 	system_version = request.args.get('version')
 	unsplashed_queries = request.args.get('queries')
+	max_distance = request.args.get('max_distance')
+
 	if system_version == "v1":
 		if not (location_query):
 			location_query = ""

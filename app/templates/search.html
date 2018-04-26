@@ -17,10 +17,11 @@
     
 
     <link rel="stylesheet" href="/static/main.css">
-    <!-- <link rel="stylesheet" href="/static/bootstrap-toggle.css"> -->
     <link rel="stylesheet" href="/static/app.component.css">
     <link rel="stylesheet" href="/static/map_style.css">
     <link rel="stylesheet" href="/static/toggle_button.min.css">
+
+    <script src="{{ url_for('static', filename='input_form.js' )}}"></script>
 
     <script src="//d3js.org/d3.v4.min.js"></script>
     <script src="//d3js.org/topojson.v2.min.js"></script>
@@ -30,6 +31,9 @@
     <link href="https://fonts.googleapis.com/css?family=Gaegu|Stylish" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/css/bootstrap-slider.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     
 </head>
 <body>
@@ -74,6 +78,14 @@
             <div class = "text-center mb-4">What matters most to you for your upcoming vacation?<br />
                 <!-- <input type="text" id = "query.description" name="description" placeholder="Tropical, surfing, food..."> -->
                 <textarea id = "query.description" name="description" placeholder="Tropical, surfing, food..." cols="22" rows="1"></textarea>
+            </div>
+        </div>
+        <div class="form-label-group">
+            <div class = "text-center mb-4">Farthest distance you want to travel?<br />
+                <span id="distance_span">any distance</span>
+                <input name="max_distance" type="range" min="0" max="15000" value="0" id="distance_slider" oninput="showVal(this.value)">
+                
+                
             </div>
         </div>
 
