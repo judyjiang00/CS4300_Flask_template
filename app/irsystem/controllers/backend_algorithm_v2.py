@@ -47,7 +47,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		ranking_hierarchy += location_to_doc_idx[place]
 	#TODO
 	if activity_query == []:
-		ranking = ranking_hierarchy
+		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
 	elif location_query == ['']:
 		ranking = ranking_distance
 	else:
@@ -186,10 +186,11 @@ def filterRegionsWithinDistance(regionIndices, maxDistanceKM = -1):
 
 	for regionIndex in regionIndices:
 		region = data[regionIndex][1]
-		lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
-		lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
-		if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
-			filteredRegionIndices.append(region)
+		if region.lower() in geocode:
+			lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
+			lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
+			if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
+				filteredRegionIndices.append(regionIndex)
 
 	return filteredRegionIndices
 
@@ -241,7 +242,10 @@ def getTravelAdvisory(region):
 def getWeatherSnippetForRegion(region):
     now = datetime.datetime.now()
     nowMonth = now.strftime("%B")
-    return "Average temperature in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][1])) + \
-        " F. Historical low and high temperatures in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][0])) + \
-        " F and " + str(convertCToFAndRound(temps[(region, now.month-1)][2])) + " F."
+    if (region, now.month-1) not in temps:
+    	return ""
+    else:
+	    return "Average temperature in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][1])) + \
+	        " F. Historical low and high temperatures in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][0])) + \
+	        " F and " + str(convertCToFAndRound(temps[(region, now.month-1)][2])) + " F."
 
