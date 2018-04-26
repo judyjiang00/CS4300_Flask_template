@@ -8,6 +8,7 @@ from collections import Counter
 from itertools import product
 import random
 import datetime
+from requests.exceptions import ConnectionError
 from defs import *
 
 def getPlaces(input_query, maxDistanceKM = -1):
@@ -118,12 +119,15 @@ def tokenize(sent):
 	return re.findall('[a-zA-Z]+', sent)
 
 def getUsersLatLong():
-    send_url = 'http://freegeoip.net/json'
-    r = requests.get(send_url)
-    j = json.loads(r.text)
-    lat = j['latitude']
-    lon = j['longitude']
-    return lat, lon
+	try:
+		send_url = 'http://freegeoip.net/json'
+		r = requests.get(send_url)
+		j = json.loads(r.text)
+		lat = j['latitude']
+		lon = j['longitude']
+		return lat, lon, True
+	except ConnectionError as e:
+		return 0, 0, False
 
 def distBetweenLatLongKM(lat1, lon1, lat2, lon2):
     lat1 = radians(lat1)
@@ -181,18 +185,20 @@ def filterRegionsWithinDistance(regionIndices, maxDistanceKM = -1):
 	if maxDistanceKM == -1:
 		return regionIndices
 
-	userLat, userLong = getUsersLatLong()
+	userLat, userLong, connected = getUsersLatLong()
 	filteredRegionIndices = []
 
-	for regionIndex in regionIndices:
-		region = data[regionIndex][1]
-		if region.lower() in geocode:
-			lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
-			lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
-			if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
-				filteredRegionIndices.append(regionIndex)
-
-	return filteredRegionIndices
+	if connected:
+		for regionIndex in regionIndices:
+			region = data[regionIndex][1]
+			if region.lower() in geocode:
+				lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
+				lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
+				if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
+					filteredRegionIndices.append(regionIndex)
+		return filteredRegionIndices
+	else:
+		return regionIndices
 
 def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 	# Retrieve snippets from LP descriptions
