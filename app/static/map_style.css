@@ -60,8 +60,9 @@ color: #4285F4;
 
 .place_labels{
 	cursor: pointer;
-	font-family: 'Gaegu', cursive;
-	color: #dcdfe5;
+	font-family: 'Libre Baskerville', serif;
+	font-size: 12px;
+	fill: #09105a;
 }
 
 /*.info_boxes{
@@ -69,11 +70,11 @@ color: #4285F4;
 	opacity: 0.75;
 }*/
 
-.info_texts tspan,.info_texts{
+/*.info_texts tspan,.info_texts{
 	fill: #e3e4e8;
 	stroke: none;
 	font-family: 'Stylish', sans-serif;
-}
+}*/
 
 #info_modal { /* Adapted from https://www.w3schools.com/howto/howto_css_modal_images.asp */
     display: none;

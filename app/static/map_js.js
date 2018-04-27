@@ -120,7 +120,6 @@ if (map_geo) {
         .data(loc_to_display);
 
         place_labels = place_labels.enter().append("text")
-        .style("font-size","10px")
         .merge(place_labels);
 
         place_labels
@@ -137,7 +136,6 @@ if (map_geo) {
         .text(function (d,i) {
             return i+1+". "+d[0];
         })
-        .style("font-size","1em")
         // .style("text-anchor",function(d,i) {
         //     if (i%3==0) {return "start";}
         //     if (i%3==1) {return "middle";}
