@@ -11,20 +11,23 @@ import datetime
 from requests.exceptions import ConnectionError
 from defs import *
 
-def getPlaces(input_query, maxDistanceKM = -1):
+def getPlaces(input_query, max_distance):
 	#print input_query[0]
 	#print input_query[1]
 	"""
 	Params:
 		input_query: tuple of (location query, activity query)
+		max_distance: max distance from user's current location that query should consider (in KM)
 	Version 2 Method
 	Use SVD to expand query
 	"""
+
 	activity_query = tokenize(input_query[1])
 	location_query = input_query[0].split(' ')
 	location_query = [ll.lower() for ll in location_query]
 	query = [stemmer.stem(w) for w in activity_query]
 	query_word_expaneded = [expand_word(word) for word in query]
+	queryMaxDistance = int(max_distance)
 
 	accum = np.zeros(len(data))
 	#print query_word_expaneded
@@ -36,8 +39,7 @@ def getPlaces(input_query, maxDistanceKM = -1):
 	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query).items() if q in idf))
 	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
-
-	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM) #input is idx instead of list of regions
+	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], queryMaxDistance) #input is idx instead of list of regions
 	ranking_hierarchy_by_region = []
 	#print location_query
 	for ll in location_query:
@@ -181,8 +183,8 @@ def filterRegionWithHierarchy(location):
 	else:
 		return lookup_key
 
-def filterRegionsWithinDistance(regionIndices, maxDistanceKM = -1):
-	if maxDistanceKM == -1:
+def filterRegionsWithinDistance(regionIndices, maxDistanceKM):
+	if maxDistanceKM == 0:
 		return regionIndices
 
 	userLat, userLong, connected = getUsersLatLong()

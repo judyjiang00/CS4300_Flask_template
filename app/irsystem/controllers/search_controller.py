@@ -55,7 +55,7 @@ def search():
 			description_query = ""
 		output_tupes = (location_query, description_query)
 
-		results = v2.getPlaces(output_tupes)
+		results = v2.getPlaces(output_tupes, max_distance)
 		queries = []
 		raw_country = ""
 		for result in results:
