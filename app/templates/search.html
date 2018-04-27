@@ -160,7 +160,7 @@
             {% elif version == "v2"%}
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}</h4><br>
+                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span></h4><br>
                         <DL>
                         <DT>What's Special?
 			{% if unsplashed_queries[loop.index0] != None %}

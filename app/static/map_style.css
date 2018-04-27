@@ -138,3 +138,24 @@ color: #4285F4;
 	display: block;
 }
 
+.score_span{
+	opacity: 0.75;
+	margin-left: 5em;
+	font-size: 15px;
+}
+
+.blue_score_span{
+	color: #0a53b4;
+}
+
+#info_modal .blue_score_span{
+	color: #63a3f8;
+}
+
+
+
+
+
+
+
+
