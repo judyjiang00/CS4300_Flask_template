@@ -119,8 +119,14 @@
     {% else %}
 
     
-
+    <script type="text/javascript">
+        console.log('{{searched_query}}');
+    </script>
+    
     <h1 class="h3 mb-3 font-weight-normal center result_title">Results</h1>
+    {% if version=='final' %}
+    <h6 class="mb-3 font-weight-light center text-secondary">you searched for <span class="mb-3 font-weight-normal center text-info" id="searched_query_span">{{searched_query}}</span> within <span class="mb-3 font-weight-normal center text-info" id="searched_distance_span">{{searched_distance}}</span></h6>
+    {% endif %}
     {% if results|length > 0%}
     <div class="center" id="toggle_switch_div">
         <span id="switch_list_span">List</span>
@@ -189,6 +195,34 @@
                         </DL>
                     </li>
                 {% endfor %}
+            {% elif version == "final"%}
+                {% for result in results %}
+                    <li class="list-group-item result_rows">
+                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
+                        <DL>
+                            <DT>What's Special?
+                            {% if unsplashed_queries[loop.index0] != None %}
+                                <img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                            {% endif %}
+                                <DD>{{ result[2] }}
+                            <DT>Attraction recommendation:
+
+                            {% for recm in result[3] %}
+                                <DD>{{recm[0].decode('utf-8')}}:
+                                <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
+                            {% endfor %}
+
+                            <DT>Weather
+                                <DD>{{ result[6] }}
+                            <DT>When to Go?
+                                <DD>{{ result[4]['When to Go'] }}
+                            <DT>Events
+                                <DD>{{ result[4]['Events'] }}
+                            <DT>Travel Advisory
+                                <DD class="advisory_info">{{ result[7] }}
+                        </DL>
+                    </li>
+                {% endfor %}
             {% endif %}
         </ul>
     </div>
@@ -202,7 +236,7 @@
         <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
         {% else %}
             <!-- if results length is 0 -->
-            <h3 class="h5 mb-3 font-weight-normal center text-secondary">Sorry we could not find any fitting result, please re-enter your search criteria. </h3>
+            <h5 class="h5 mb-3 font-weight-normal center text-secondary">Sorry we could not find any fitting result, please re-enter your search criteria. </h5>
         {% endif %}
     {% endif %}
     </body>

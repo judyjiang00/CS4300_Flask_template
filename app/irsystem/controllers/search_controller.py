@@ -6,6 +6,8 @@ from defs import *
 import backend_algorithm_v1 as v1
 import backend_algorithm_v2 as v2
 
+from jinja2.ext import do
+
 
 project_name = "Where Next - A Travel Destination Recommendation System"
 net_id = "Wanming Hu: wh298, Smit Jain: scj39, Judy Jiang: jj353, Noah Kaplan: nk425, Tatsuhiro Koshi: tk474"
@@ -43,6 +45,7 @@ def search():
 			location_query = location_query,
 			description_query= description_query,
 			output_message = (output_tupes[0] == "" and output_tupes[1] == ""),
+			max_distance = max_distance,
 			results = results,
 			map_geo = map_geo,
 			version = system_version,
@@ -68,6 +71,7 @@ def search():
 			location_query = location_query,
 			description_query= description_query,
 			output_message = (output_tupes[0] == "" and output_tupes[1] == ""),
+			max_distance = max_distance,
 			results = results,
 			map_geo = map_geo,
 			version = system_version,
@@ -89,10 +93,28 @@ def search():
 				queries.append(raw_country)
 			else:
 				queries.append(None)
+
+		# setup display of what you searched for
+		searched_query=[]
+		if len(location_query) >0:
+			searched_query.append(location_query)
+		if len(description_query) >0:
+			searched_query.append(description_query)
+
+		searched_query = ', '.join(searched_query)
+
+		if max_distance == '0':
+			searched_distance= 'unrestricted distance'
+		else:
+			searched_distance= max_distance+' km'
+
 		return render_template('search.html', activity_query = activity_query,
 			location_query = location_query,
 			description_query= description_query,
 			output_message = (output_tupes[0] == "" and output_tupes[1] == ""),
+			max_distance = max_distance,
+			searched_query = searched_query,
+			searched_distance = searched_distance,
 			results = results,
 			map_geo = map_geo,
 			version = system_version,
@@ -115,6 +137,7 @@ def search():
 			location_query = location_query,
 			description_query= description_query,
 			output_message = True,
+			max_distance = max_distance,
 			results = results,
 			map_geo = map_geo,
 			version = system_version,
