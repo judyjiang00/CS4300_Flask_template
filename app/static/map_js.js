@@ -146,7 +146,7 @@ if (map_geo) {
             d3.select("#info_modal")
             .style("display","block");
             d3.select("#modal_place_name_span")
-            .html(d[0]+'<span class="score_span">score:<span class="blue_score_span">'+d[5]+'</span></span>');
+            .html(d[0]+'<span class="score_span">score:<span class="blue_score_span">'+d[5]+'</span></span>'+'<span class="score_span">distance from you:<span class="blue_score_span">'+'not in the data'+'</span></span>');
             d3.select("#modal_description_span")
             .html(d[2]);
 
@@ -160,6 +160,10 @@ if (map_geo) {
                 
             }
 
+            if (d[6]) {
+                $("div#info_modal").append('<h5 class="modal_temp">Weather: </h5> <span id="modal_weather_span" class="modal_temp indent advisory_info">'+d[6]+'</span>');
+            }
+
             if (d[4]["When to Go"]) {
                 $("div#info_modal").append('<h5 class="modal_temp">When to Go: </h5> <span id="modal_whentogo_span" class="modal_temp indent">'+d[4]["When to Go"]+'</span>');
             }
@@ -167,20 +171,27 @@ if (map_geo) {
                 $("div#info_modal").append('<h5 class="modal_temp">Events: </h5> <span id="modal_events_span" class="modal_temp indent">'+d[4]["Events"]+'</span>');
             }
 
+            if (d[7]) {
+                $("div#info_modal").append('<h5 class="modal_temp">Travel Advisory: </h5> <span id="modal_advisory_span" class="modal_temp indent advisory_info">'+d[7]+'</span>');
+            }
+
+            //more details dropdown
             if (Object.keys(d[4]).length>2) {
                 $("div#info_modal").append('<h5 id="modal_more_detail" class="modal_temp">More details: <span class="lnr lnr-chevron-right"></span></h5>');
                 $("div#info_modal").append('<div id="more_detail_div" class="modal_temp indent">');
                 
-                // d[4].forEach(function(description,index) {
                 for (var index in d[4]){
                     var description = d[4][index];
                     if (index!="When to Go" && index!="Events") {
                         $("div#more_detail_div").append('<h5 class="modal_temp">'+index+': </h5> <span class="modal_temp indent">'+description+'</span>');
                     }
                 }
-                // });
+
+
                 $("div#info_modal").append('</div>');
             }
+
+            
             
 
             //make the place label and dashed line disappear when info box poped up
@@ -191,6 +202,15 @@ if (map_geo) {
             //make the place circle a different color
             d3.select("#place_dot_"+i)
             .style("fill",clicked_place_dots_color);
+
+            //change advisory info color
+            d3.selectAll("#info_modal .advisory_info").style("color",function() {
+                if (d3.select(this).html().includes("normal")) {
+                    return "#cf9d9f";
+                }else if (d3.select(this).html().includes("increased")) {
+                    return "#f87a7f";
+                }
+            });
         })
         .on("mouseover",function(d,i) {
             d3.select("#info_line_"+i)
@@ -461,6 +481,14 @@ if (map_geo) {
         // });
 
 }
+
+d3.selectAll(".advisory_info").style("color",function() {
+    if (d3.select(this).html().includes("normal")) {
+        return "#853737";
+    }else if (d3.select(this).html().includes("increased")) {
+        return "#970006";
+    }
+});
 
 
 

@@ -160,24 +160,28 @@
             {% elif version == "v2"%}
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span></h4><br>
+                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
                         <DL>
-                        <DT>What's Special?
-			{% if unsplashed_queries[loop.index0] != None %}
-				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
-                        {% endif %}
-			<DD class="figure-caption">{{ result[2] }}
-                        <DT>Attraction recommendation:
+                            <DT>What's Special?
+                			{% if unsplashed_queries[loop.index0] != None %}
+                				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                            {% endif %}
+                                <DD class="figure-caption">{{ result[2] }}
+                            <DT>Attraction recommendation:
 
-                        {% for recm in result[3] %}
-                            <DD>{{recm[0].decode('utf-8')}}:
-                            <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
-                        {% endfor %}
+                            {% for recm in result[3] %}
+                                <DD>{{recm[0].decode('utf-8')}}:
+                                <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
+                            {% endfor %}
 
-                        <DT>When to Go?
-                            <DD>{{ result[4]['When to Go'] }}
-                        <DT>Events
-                            <DD>{{ result[4]['Events'] }}
+                            <DT>Weather
+                                <DD>{{ result[6] }}
+                            <DT>When to Go?
+                                <DD>{{ result[4]['When to Go'] }}
+                            <DT>Events
+                                <DD>{{ result[4]['Events'] }}
+                            <DT>Travel Advisory
+                                <DD class="advisory_info">{{ result[7] }}
                         </DL>
                     </li>
                 {% endfor %}
