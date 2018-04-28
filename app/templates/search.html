@@ -127,7 +127,7 @@
     {% if version=='final' %}
     <h6 class="mb-3 font-weight-light center text-secondary">you searched for <span class="mb-3 font-weight-normal center text-info" id="searched_query_span">{{searched_query}}</span> within <span class="mb-3 font-weight-normal center text-info" id="searched_distance_span">{{searched_distance}}</span></h6>
     {% endif %}
-    {% if results|length > 0%}
+    {% if results|length> 0%}
     <div class="center" id="toggle_switch_div">
         <span id="switch_list_span">List</span>
         <label class="switch vertical_align" >
@@ -173,7 +173,7 @@
             {% elif version == "v2"%}
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
+                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{result[8]}}</span></span></h4><br>
                         <DL>
                             <DT>What's Special?
                 			{% if unsplashed_queries[loop.index0] != None %}
