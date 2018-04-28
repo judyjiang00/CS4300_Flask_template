@@ -154,10 +154,13 @@
                     <li class="list-group-item result_rows">
                         <h4>{{ result[0] }}</h4><br>
                         <DL>
+			
                         <DT>What's Special?
             			{% if unsplashed_queries[loop.index0] != None %}
+				<div class="image-wrapper">
             				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
-                        {% endif %}
+                        	</div>
+				{% endif %}
                         <DD>{{ result[2] }}
                         <DT>Attraction recommendation:
 
@@ -174,8 +177,11 @@
                         <DL>
                             <DT>What's Special?
                 			{% if unsplashed_queries[loop.index0] != None %}
-                				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
-                            {% endif %}
+                			
+				<div class="image-wrapper">
+					<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                           	</div>
+			    {% endif %}
                                 <DD>{{ result[2] }}
                             <DT>Attraction recommendation:
 
@@ -198,12 +204,14 @@
             {% elif version == "final"%}
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
                         <DL>
-                            <DT>What's Special?
                             {% if unsplashed_queries[loop.index0] != None %}
-                                <img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
-                            {% endif %}
+                               
+				<div class="image-wrapper" style= "background-image: url(https://source.unsplash.com/1500x400/?{{unsplashed_queries[loop.index0].decode('utf-8')}})">
+                       		 <h4 class="img-cap">{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
+                           	</div>
+			    {% endif %}
+                            <DT>What's Special?
                                 <DD>{{ result[2] }}
                             <DT>Attraction recommendation:
 
