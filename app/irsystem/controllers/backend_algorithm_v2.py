@@ -76,6 +76,8 @@ def getPlaces(input_query, max_distance):
 	regions = [r for r in regions if r != 'Yugoslavia']
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
 	topPlaces = [[] for _ in range(len(regions))]
+	userLat, userLong, connected = getUsersLatLong()
+
 	for i, region in enumerate(regions):
 		latLong = []
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lat'])
@@ -89,6 +91,10 @@ def getPlaces(input_query, max_distance):
 		topPlaces[i].append(scores[i])
 		topPlaces[i].append(getWeatherSnippetForRegion(region.lower()))
 		topPlaces[i].append(getTravelAdvisory(region))
+		if connected:
+			topPlaces[i].append(distBetweenLatLongKM(userLat, userLong, latLong[0], latLong[1]))
+		else:
+			topPlaces[i].append(-1.0)
 
 	#print len(regions)
 	return topPlaces
