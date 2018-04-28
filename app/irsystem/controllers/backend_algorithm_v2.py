@@ -1,6 +1,4 @@
-from . import *
 from app.irsystem.models.helpers import *
-from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
 import requests
 from math import sin, cos, sqrt, atan2, radians
@@ -8,8 +6,9 @@ from collections import Counter
 from itertools import product
 import random
 from defs import *
+import numpy as np
 
-def getPlaces(input_query, maxDistanceKM = -1):
+def getPlaces(input_query, maxDistanceKM=-1):
 	"""
 	Params:
 		input_query: tuple of (location query, activity query)
@@ -35,10 +34,9 @@ def getPlaces(input_query, maxDistanceKM = -1):
 
 	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM) #input is idx instead of list of regions
 	ranking_hierarchy_by_region = []
-	#print location_query
 	for ll in location_query:
 		ranking_hierarchy_by_region += filterRegionWithHierarchy(ll) #list of regions
-	#print ranking_hierarchy_by_region
+	
 	ranking_hierarchy = []
 	for place in ranking_hierarchy_by_region:
 		ranking_hierarchy += location_to_doc_idx[place]
@@ -49,10 +47,9 @@ def getPlaces(input_query, maxDistanceKM = -1):
 		ranking = ranking_distance
 	else:
 		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
-	#print ranking
+	
 	ranking = sorted(ranking, key=lambda x:accum[x])[::-1]
-	#print ranking
-	#print ranking[:20]
+	
 	# Filter out redundancy in regions
 	filt_ranking = []
 	repeated = set()
@@ -209,7 +206,6 @@ def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 					else:
 						snip.append(text[sents[s]:sents[s+1]])
 		snippets[k] = ''.join(snip)
-	#print snippets
 	return snippets
 
 
