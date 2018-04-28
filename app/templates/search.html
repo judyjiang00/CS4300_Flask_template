@@ -17,7 +17,6 @@
     
 
     <link rel="stylesheet" href="/static/main.css">
-    <!-- <link rel="stylesheet" href="/static/bootstrap-toggle.css"> -->
     <link rel="stylesheet" href="/static/app.component.css">
     <link rel="stylesheet" href="/static/map_style.css">
     <link rel="stylesheet" href="/static/toggle_button.min.css">
@@ -27,9 +26,14 @@
     <script src="//d3js.org/d3-geo-projection.v2.min.js"></script>
     <script src="//d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
+    <script src="{{ url_for('static', filename='input_form.js' )}}"></script>
+
     <link href="https://fonts.googleapis.com/css?family=Gaegu|Stylish" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/css/bootstrap-slider.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     
 </head>
 <body>
@@ -41,15 +45,16 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
               <li class="nav-item active">
-                    <a class="nav-link" href="#" id="home_button">Home<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#" id="home_button" onclick="show_home()">Home<span class="sr-only">(current)</span></a>
               </li>
+              {% if output_message%}
               <li class="nav-item">
                 <form>
-                    <a class="nav-link" href="#about" id="about_button">About</a>
+                    <a class="nav-link" href="#" id="about_button" onclick="show_about()">About</a>
                 </form>
                     
               </li>
-              </li>
+              {% endif %}
         </ul>
     </div>
 </nav>
@@ -64,22 +69,34 @@
         </div>
 
         <div class="form-label-group">
-            <div class = "text-center mb-4">Paris, Barcelona, Hong Kong or maybe somewhere else:<br />where would you like to go?<br />
-                <input id = "query.location" placeholder="location" name="location">
+            <div class = "text-center mb-4">Where do you want to go?<br />
+                <!-- <input type="text" id = "query.location" placeholder="Europe, USA, Australia..." name="location"> -->
+                <textarea id = "query.location" name="location" placeholder="Europe, USA, Australia..." cols="22" rows="1"></textarea>
             </div>
         </div>
 
         <div class="form-label-group">
-            <div class = "text-center mb-4">Tropical, urban, or off-beat: describe away!<br />
-                <input id = "query.description" placeholder="description" name="description">
+            <div class = "text-center mb-4">What matters most to you for your upcoming vacation?<br />
+                <!-- <input type="text" id = "query.description" name="description" placeholder="Tropical, surfing, food..."> -->
+                <textarea id = "query.description" name="description" placeholder="Tropical, surfing, food..." cols="22" rows="1"></textarea>
+            </div>
+        </div>
+        <div class="form-label-group">
+            <div class = "text-center mb-4">Farthest distance you want to travel?<br />
+                <span id="distance_span">any distance</span>
+                <input name="max_distance" type="range" min="0" max="15000" value="0" id="distance_slider" oninput="showVal(this.value)">
+                
+                
             </div>
         </div>
 
         <div class="form-label-group">
-            <div class = "text-center mb-4">Which version? V1 or V2:<br />
+            <div class = "text-center mb-4">Which version? V1, V2, or final:<br />
                 <select name="version">
                     <option value="v1">v1</option>
                     <option value="v2">v2</option>
+                    <option value="final">final version</option>
+
                 </select>
             </div>
         </div>
@@ -92,7 +109,7 @@
 <hr class="featurette-divider">
   <div class="col-md-7">
      <h2 class="featurette-heading">About Us. <span class="text-muted">A web application where people can find inspiration for their next travel!</span></h2>
-     <p class="lead">Developed by Smit, Tatsuhiro, Noah, Judy and Jasmine on Heroku + Flask. </p>
+     <p class="lead">Where Next? is a class project for<br /> CS4300 - Language and Information<br />Developed at Cornell University by<br /> Smit Jain scj39,<br />Tatsuhiro Koshi tk474,<br /> Noah Kaplan nk425,<br /> Judy Jiang jj353,<br /> Jasmine Hu wh298.<br />Data collected for academic purpose only. </p>
   </div>
   <div class="col-md-5">
       <img class="featurette-image img-fluid mx-auto" src="../static/pict/generic.jpeg" alt="Generic placeholder image">
@@ -102,8 +119,15 @@
     {% else %}
 
     
-
+    <script type="text/javascript">
+        console.log('{{searched_query}}');
+    </script>
+    
     <h1 class="h3 mb-3 font-weight-normal center result_title">Results</h1>
+    {% if version=='final' %}
+    <h6 class="mb-3 font-weight-light center text-secondary">you searched for <span class="mb-3 font-weight-normal center text-info" id="searched_query_span">{{searched_query}}</span> within <span class="mb-3 font-weight-normal center text-info" id="searched_distance_span">{{searched_distance}}</span></h6>
+    {% endif %}
+    {% if results|length > 0%}
     <div class="center" id="toggle_switch_div">
         <span id="switch_list_span">List</span>
         <label class="switch vertical_align" >
@@ -131,8 +155,10 @@
                         <h4>{{ result[0] }}</h4><br>
                         <DL>
                         <DT>What's Special?
+            			{% if unsplashed_queries[loop.index0] != None %}
+            				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                        {% endif %}
                         <DD>{{ result[2] }}
-			<DD>{{ loop.index0 }}
                         <DT>Attraction recommendation:
 
                         {% for recm in result[3] %}
@@ -144,21 +170,56 @@
             {% elif version == "v2"%}
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}</h4><br>
+                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
                         <DL>
-                        <DT>What's Special?
-			<DD>{{ result[2] }}
-                        <DT>Attraction recommendation:
+                            <DT>What's Special?
+                			{% if unsplashed_queries[loop.index0] != None %}
+                				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                            {% endif %}
+                                <DD>{{ result[2] }}
+                            <DT>Attraction recommendation:
 
-                        {% for recm in result[3] %}
-                            <DD>{{recm[0].decode('utf-8')}}:
-                            <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
-                        {% endfor %}
+                            {% for recm in result[3] %}
+                                <DD>{{recm[0].decode('utf-8')}}:
+                                <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
+                            {% endfor %}
 
-                        <DT>When to Go?
-                            <DD>{{ result[4]['When to Go'] }}
-                        <DT>Events
-                            <DD>{{ result[4]['Events'] }}
+                            <DT>Weather
+                                <DD>{{ result[6] }}
+                            <DT>When to Go?
+                                <DD>{{ result[4]['When to Go'] }}
+                            <DT>Events
+                                <DD>{{ result[4]['Events'] }}
+                            <DT>Travel Advisory
+                                <DD class="advisory_info">{{ result[7] }}
+                        </DL>
+                    </li>
+                {% endfor %}
+            {% elif version == "final"%}
+                {% for result in results %}
+                    <li class="list-group-item result_rows">
+                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
+                        <DL>
+                            <DT>What's Special?
+                            {% if unsplashed_queries[loop.index0] != None %}
+                                <img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                            {% endif %}
+                                <DD>{{ result[2] }}
+                            <DT>Attraction recommendation:
+
+                            {% for recm in result[3] %}
+                                <DD>{{recm[0].decode('utf-8')}}:
+                                <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
+                            {% endfor %}
+
+                            <DT>Weather
+                                <DD>{{ result[6] }}
+                            <DT>When to Go?
+                                <DD>{{ result[4]['When to Go'] }}
+                            <DT>Events
+                                <DD>{{ result[4]['Events'] }}
+                            <DT>Travel Advisory
+                                <DD class="advisory_info">{{ result[7] }}
                         </DL>
                     </li>
                 {% endfor %}
@@ -168,11 +229,15 @@
 <!-- <div class="btn btn-lg btn-primary btn-block" id="map_button">World Map!</div> -->
 
 
-  <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
-  <script type="text/javascript">var results = {{results|tojson}}</script>
-  <script type="text/javascript">var version = "{{version}}"</script>
-
-  <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
+        <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
+        <script type="text/javascript">var results = {{results|tojson}}</script>
+        <script type="text/javascript">var version = "{{version}}"</script>
+        <script type="text/javascript">var unsplashed_queries = {{unsplashed_queries|tojson}}</script>
+        <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
+        {% else %}
+            <!-- if results length is 0 -->
+            <h5 class="h5 mb-3 font-weight-normal center text-secondary">Sorry we could not find any fitting result, please re-enter your search criteria. </h5>
+        {% endif %}
     {% endif %}
     </body>
 </html>

@@ -60,6 +60,12 @@ with open('data/wikitravel_place.pickle') as f:
 with open("data/geo_hierarchy_dict.pickle","rb") as f:
     geo_hierarchy = pickle.load(f)
 
+with open("data/travelAdvisories.pickle","rb") as f:
+    travelAdvisories = pickle.load(f)
+
+with open("data/temperatures.pickle","rb") as f:
+    temps = pickle.load(f)
+
 
 region_list = geo_hierarchy.keys()
 
@@ -73,4 +79,4 @@ for region in region_list:
     
 location_to_doc_idx = defaultdict(list)
 for idx, row in enumerate(data):
-    location_to_doc_idx[row[1]].append(idx)
+    location_to_doc_idx[row[1].lower()].append(idx)

@@ -5,21 +5,28 @@ from math import sin, cos, sqrt, atan2, radians
 from collections import Counter
 from itertools import product
 import random
+import datetime
+from requests.exceptions import ConnectionError
 from defs import *
 import numpy as np
 
-def getPlaces(input_query, maxDistanceKM=-1):
+def getPlaces(input_query, max_distance):
+	#print input_query[0]
+	#print input_query[1]
 	"""
 	Params:
 		input_query: tuple of (location query, activity query)
+		max_distance: max distance from user's current location that query should consider (in KM)
 	Version 2 Method
 	Use SVD to expand query
 	"""
+
 	activity_query = tokenize(input_query[1])
 	location_query = input_query[0].split(' ')
+	location_query = [ll.lower() for ll in location_query]
 	query = [stemmer.stem(w) for w in activity_query]
 	query_word_expaneded = [expand_word(word) for word in query]
-
+	queryMaxDistance = int(max_distance)
 
 	accum = np.zeros(len(data))
 	#print query_word_expaneded
@@ -31,8 +38,7 @@ def getPlaces(input_query, maxDistanceKM=-1):
 	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query).items() if q in idf))
 	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
-
-	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], maxDistanceKM) #input is idx instead of list of regions
+	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], queryMaxDistance) #input is idx instead of list of regions
 	ranking_hierarchy_by_region = []
 	for ll in location_query:
 		ranking_hierarchy_by_region += filterRegionWithHierarchy(ll) #list of regions
@@ -42,7 +48,7 @@ def getPlaces(input_query, maxDistanceKM=-1):
 		ranking_hierarchy += location_to_doc_idx[place]
 	#TODO
 	if activity_query == []:
-		ranking = ranking_hierarchy
+		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
 	elif location_query == ['']:
 		ranking = ranking_distance
 	else:
@@ -67,6 +73,7 @@ def getPlaces(input_query, maxDistanceKM=-1):
 	#print regions
 	snippets = get_snippets(query, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
+	regions = [r for r in regions if r != 'Yugoslavia']
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
 	topPlaces = [[] for _ in range(len(regions))]
 	for i, region in enumerate(regions):
@@ -80,8 +87,9 @@ def getPlaces(input_query, maxDistanceKM=-1):
 		topPlaces[i].append(getTopPlacesInRegion(region))
 		topPlaces[i].append(fact_data[region])
 		topPlaces[i].append(scores[i])
+		topPlaces[i].append(getWeatherSnippetForRegion(region.lower()))
+		topPlaces[i].append(getTravelAdvisory(region))
 
-	#print regions
 	#print len(regions)
 	return topPlaces
 
@@ -110,12 +118,15 @@ def tokenize(sent):
 	return re.findall('[a-zA-Z]+', sent)
 
 def getUsersLatLong():
-    send_url = 'http://freegeoip.net/json'
-    r = requests.get(send_url)
-    j = json.loads(r.text)
-    lat = j['latitude']
-    lon = j['longitude']
-    return lat, lon
+	try:
+		send_url = 'http://freegeoip.net/json'
+		r = requests.get(send_url)
+		j = json.loads(r.text)
+		lat = j['latitude']
+		lon = j['longitude']
+		return lat, lon, True
+	except ConnectionError as e:
+		return 0, 0, False
 
 def distBetweenLatLongKM(lat1, lon1, lat2, lon2):
     lat1 = radians(lat1)
@@ -142,14 +153,15 @@ def filterRegionWithHierarchy(location):
     	output a list of destinations under the same region
     """
 	out = []
-	if location == 'Asia':
-		lookup_key = [i for i in region_list if 'Asia' in i]
-	elif location == 'India':
-		lookup_key = ['Indian Subcontinent']
-	elif location == 'Australia':
-		lookup_key = ['Australasia']
+	if location == 'asia':
+		lookup_key = [i for i in region_list if 'asia' in i]
+	elif location == 'india':
+		lookup_key = ['indian subcontinent']
+	elif location == 'australia':
+		lookup_key = ['australasia']
 	else:
 		lookup_key = [location]
+
 
 	if lookup_key[0] in region_list:
 		for region in lookup_key:
@@ -168,21 +180,24 @@ def filterRegionWithHierarchy(location):
 	else:
 		return lookup_key
 
-def filterRegionsWithinDistance(regionIndices, maxDistanceKM = -1):
-	if maxDistanceKM == -1:
+def filterRegionsWithinDistance(regionIndices, maxDistanceKM):
+	if maxDistanceKM == 0:
 		return regionIndices
 
-	userLat, userLong = getUsersLatLong()
+	userLat, userLong, connected = getUsersLatLong()
 	filteredRegionIndices = []
 
-	for regionIndex in regionIndices:
-		region = data[regionIndex][1]
-		lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
-		lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
-		if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
-			filteredRegionIndices.append(region)
-
-	return filteredRegionIndices
+	if connected:
+		for regionIndex in regionIndices:
+			region = data[regionIndex][1]
+			if region.lower() in geocode:
+				lat = geocode[region.lower()]['results'][0]['geometry']['location']['lat']
+				lon = geocode[region.lower()]['results'][0]['geometry']['location']['lng']
+				if distBetweenLatLongKM(userLat, userLong, lat, lon) <= maxDistanceKM:
+					filteredRegionIndices.append(regionIndex)
+		return filteredRegionIndices
+	else:
+		return regionIndices
 
 def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 	# Retrieve snippets from LP descriptions
@@ -218,3 +233,23 @@ def expand_word(w, n_expansion=2):
 		asort = np.argsort(-sims)[:n_expansion+1]
 		out = [idx_to_vocab[i] for i in asort]
 		return out
+
+def convertCToFAndRound(c):
+    return int(round(9.0/5.0 * c + 32, 0))
+
+def getTravelAdvisory(region):
+    if region in travelAdvisories:
+        return travelAdvisories[region]
+    else:
+        return "No current travel advisory"
+
+def getWeatherSnippetForRegion(region):
+    now = datetime.datetime.now()
+    nowMonth = now.strftime("%B")
+    if (region, now.month-1) not in temps:
+    	return ""
+    else:
+	    return "Average temperature in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][1])) + \
+	        " F. Historical low and high temperatures in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][0])) + \
+	        " F and " + str(convertCToFAndRound(temps[(region, now.month-1)][2])) + " F."
+

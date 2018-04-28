@@ -11,7 +11,7 @@ text-align:center;
 body {
 /*padding-top: 15%;*/
 /*padding-bottom: 15px;*/
-	margin-bottom: 20em;
+/*	margin-bottom: 20em;*/
 }
 
 #result_list{
@@ -60,8 +60,9 @@ color: #4285F4;
 
 .place_labels{
 	cursor: pointer;
-	font-family: 'Gaegu', cursive;
-	color: #dcdfe5;
+	font-family: 'Libre Baskerville', serif;
+	font-size: 12px;
+	fill: #09105a;
 }
 
 /*.info_boxes{
@@ -69,11 +70,11 @@ color: #4285F4;
 	opacity: 0.75;
 }*/
 
-.info_texts tspan,.info_texts{
+/*.info_texts tspan,.info_texts{
 	fill: #e3e4e8;
 	stroke: none;
 	font-family: 'Stylish', sans-serif;
-}
+}*/
 
 #info_modal { /* Adapted from https://www.w3schools.com/howto/howto_css_modal_images.asp */
     display: none;
@@ -137,4 +138,25 @@ color: #4285F4;
 	margin-left: 1.5em;
 	display: block;
 }
+
+.score_span{
+	opacity: 0.75;
+	margin-left: 5em;
+	font-size: 15px;
+}
+
+.blue_score_span{
+	color: #0a53b4;
+}
+
+#info_modal .blue_score_span{
+	color: #63a3f8;
+}
+
+
+
+
+
+
+
 
