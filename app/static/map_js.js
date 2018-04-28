@@ -89,7 +89,10 @@ if (map_geo) {
             return pathGenerator(country);
         })
         .attr("stroke", "grey")
-        .attr("fill",d=>getRandomColor())
+        // .attr("fill",d=>getRandomColor())
+        .attr("fill",function(d,i) {
+            return d3.interpolateGreens((i%5)/5);
+        })
         .style("opacity","0.5")
         .attr("stroke-width","0.8px");
 
