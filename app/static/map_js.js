@@ -156,7 +156,7 @@ if (map_geo) {
             for (var j = 0; j < d[3].length; j++) {
                 if (version=="v1") {
                     $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+': '+'</h6>');
-                }else if (version=="v2") {
+                }else if (version=="v2" || version=="final") {
                     $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+': '+'</h6>'+'<span class="modal_temp indent">'+d[3][j][2])+'</span>';
                 }
                 $("div#info_modal").append('<a class="indent modal_temp" target="_blank" href="'+d[3][j][1]+'" id="modal_recommendation_a_'+j+'">(link)</a>');
