@@ -26,14 +26,22 @@ def getPlaces(input_query, max_distance):
 
 	activity_query = tokenize(input_query[1])
 	location_query = input_query[0].lower()
-	query = [stemmer.stem(w) for w in activity_query]
-	query_word_expaneded = set([expand_word(word) for word in query]).union(set(query))
 	queryMaxDistance = int(max_distance)
+
 	country_flag = (location_query in country_list)
+	if activity_query != []:
+		query = [stemmer.stem(w) for w in activity_query]
+		query_word_expanded = set([expand_word(word) for word in query]).union(set(query))
+	else:
+		query = []
+		query_word_expanded = []
+	
+
+	print country_flag
 
 	accum = np.zeros(len(data))
-	#print query_word_expaneded
-	for query_expanded in query_word_expaneded:
+	#print query_word_expanded
+	for query_expanded in query_word_expanded:
 		for q in query_expanded:
 			if q in vocab_idx:
 				for doc in inv_idx[q]:
@@ -42,7 +50,7 @@ def getPlaces(input_query, max_distance):
 	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
 	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], queryMaxDistance) #input is idx instead of list of regions
-	ranking_hierarchy_by_region = filteredRegionWithHierarchy(location_query)
+	ranking_hierarchy_by_region = filterRegionWithHierarchy(location_query)
 	
 	ranking_hierarchy = []
 	for place in ranking_hierarchy_by_region:
@@ -66,9 +74,11 @@ def getPlaces(input_query, max_distance):
 		if len(regions) == NUM_REGIONS:
 			break
 		region = data[r][1]
-		if country_flag and (region in country_list):
+		#print region
+		#print region.lower() in country_list
+		if country_flag and (region.lower() in country_list):
 			continue
-		if region not in repeated:
+		elif region not in repeated:
 			filt_ranking.append(r)
 			regions.append(region)
 			scores.append(int(round(raw_scores[r]**(1./7)*100)))  # some non-linear transformation
@@ -89,7 +99,6 @@ def getPlaces(input_query, max_distance):
 		topPlaces[i].append(region)
 		topPlaces[i].append(latLong)
 		topPlaces[i].append(snippets[i])
-		topPlaces[i].append(getTopQueryPlaceInRegion(region,query_expanded))
 		topPlaces[i].append(getTopPlacesInRegion(region))
 		topPlaces[i].append(fact_data[region])
 		topPlaces[i].append(scores[i])
@@ -99,19 +108,22 @@ def getPlaces(input_query, max_distance):
 			topPlaces[i].append(distBetweenLatLongKM(userLat, userLong, latLong[0], latLong[1]))
 		else:
 			topPlaces[i].append(-1.0)
+		topPlaces[i].append(getTopQueryPlaceInRegion(region,list(query_word_expanded)))
 
 	#print len(regions)
 	return topPlaces
 
 
 
-def getTopQueryPlaceInRegion(region,query_word_expaneded):
+def getTopQueryPlaceInRegion(region,query_word_expanded):
 	"""
 	Final version method
 	Return: list of spots that's most relevant to query based on spot description
 	"""
+	if query_word_expanded == []:
+		return []
 	try:
-		concat_query = [q + " " for q in query_word_expaneded]
+		concat_query = [q + " " for q in query_word_expanded]
 		full_spots_list = wikitravel_spots[region]
 		description = [spot[2] for spot in full_spots_list]
 		#vecotrize description
