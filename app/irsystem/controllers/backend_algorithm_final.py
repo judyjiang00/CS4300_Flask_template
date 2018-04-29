@@ -62,7 +62,7 @@ def getPlaces(input_query, max_distance):
 	else:
 		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
 	
-	ranking = accum.argsort()[::-1]
+	ranking = sorted(ranking, key=lambda x: accum[x], reverse=True)
 	
 	# Filter out redundancy in regions
 	filt_ranking = []
