@@ -62,7 +62,7 @@ def getPlaces(input_query, max_distance):
 	else:
 		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
 	
-	ranking = sorted(ranking, key=lambda x:accum[x])[::-1]
+	ranking = accum.argsort()[::-1]
 	
 	# Filter out redundancy in regions
 	filt_ranking = []
@@ -83,7 +83,7 @@ def getPlaces(input_query, max_distance):
 			scores.append(int(round(raw_scores[r]**(1./7)*100)))  # some non-linear transformation
 			repeated.add(region)
 	#print regions
-	snippets = get_snippets(query, filt_ranking, stems, data, sent_idx, word_sent_idx)
+	snippets = get_snippets(query_expanded, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
 	regions = [r for r in regions if r != 'Yugoslavia']
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
