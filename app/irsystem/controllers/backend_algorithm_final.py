@@ -28,7 +28,7 @@ def getPlaces(input_query, max_distance):
 	location_query = input_query[0].lower()
 	queryMaxDistance = int(max_distance)
 
-	country_flag = (location_query in country_list)
+	country_flag = (location_query in country_set)
 	if activity_query != []:
 		query = [stemmer.stem(w) for w in activity_query]
 		query_word_expanded = [expand_word(word) for word in query]
@@ -75,7 +75,7 @@ def getPlaces(input_query, max_distance):
 		region = data[r][1]
 		#print region
 		#print region.lower() in country_list
-		if country_flag and (region.lower() in country_list):
+		if country_flag and (region.lower() in country_set):
 			continue
 		elif region not in repeated:
 			filt_ranking.append(r)
@@ -209,7 +209,7 @@ def filterRegionWithHierarchy(location):
 		lookup_key = [location]
 
 
-	if lookup_key[0] in region_list:
+	if lookup_key[0] in region_set:
 		for region in lookup_key:
 			tmp_out = geo_hierarchy[region].keys()
 			out += tmp_out
@@ -217,7 +217,7 @@ def filterRegionWithHierarchy(location):
 				out += geo_hierarchy[region][country]
 		out += lookup_key
 		return out
-	elif lookup_key[0] in country_list:
+	elif lookup_key[0] in country_set:
 		country = lookup_key[0]
 		region = country_to_region[country]
 		out += geo_hierarchy[region][country]
