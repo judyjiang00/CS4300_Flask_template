@@ -27,8 +27,9 @@ def getPlaces(input_query, max_distance):
 	activity_query = tokenize(input_query[1])
 	location_query = input_query[0].lower()
 	query = [stemmer.stem(w) for w in activity_query]
-	query_word_expaneded = set([expand_word(word) for word in query]).intersection(set(query))
+	query_word_expaneded = set([expand_word(word) for word in query]).union(set(query))
 	queryMaxDistance = int(max_distance)
+	country_flag = (location_query in country_list)
 
 	accum = np.zeros(len(data))
 	#print query_word_expaneded
@@ -65,6 +66,8 @@ def getPlaces(input_query, max_distance):
 		if len(regions) == NUM_REGIONS:
 			break
 		region = data[r][1]
+		if country_flag and (region in country_list):
+			continue
 		if region not in repeated:
 			filt_ranking.append(r)
 			regions.append(region)
