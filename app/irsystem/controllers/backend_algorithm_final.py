@@ -31,13 +31,12 @@ def getPlaces(input_query, max_distance):
 	country_flag = (location_query in country_list)
 	if activity_query != []:
 		query = [stemmer.stem(w) for w in activity_query]
-		query_word_expanded = set([expand_word(word) for word in query]).union(set(query))
+		query_word_expanded = [expand_word(word) for word in query]
+		query_word_expanded = [item for sublist in query_word_expanded for item in sublist]
+		query_word_expanded = set(query_word_expanded+query)
 	else:
 		query = []
 		query_word_expanded = []
-	
-
-	print country_flag
 
 	accum = np.zeros(len(data))
 	#print query_word_expanded
@@ -149,6 +148,7 @@ def getTopPlacesInRegion(region):
 	"""
 	try:
 		full_spots_list = wikitravel_spots[region]
+		out_list = []
 		if len(full_spots_list) > 3:
 			spot_list = random.sample(full_spots_list,3)
 		else:
