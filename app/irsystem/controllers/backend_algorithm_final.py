@@ -45,7 +45,7 @@ def getPlaces(input_query, max_distance):
 			if q in vocab_idx:
 				for doc in inv_idx[q]:
 					accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
-	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query).items() if q in idf))
+	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query_expanded).items() if q in idf))
 	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
 	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], queryMaxDistance) #input is idx instead of list of regions
@@ -83,7 +83,7 @@ def getPlaces(input_query, max_distance):
 			scores.append(int(round(raw_scores[r]**(1./7)*100)))  # some non-linear transformation
 			repeated.add(region)
 	#print regions
-	snippets = get_snippets(query_expanded, filt_ranking, stems, data, sent_idx, word_sent_idx)
+	snippets = get_snippets(query_word_expanded, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
 	regions = [r for r in regions if r != 'Yugoslavia']
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
