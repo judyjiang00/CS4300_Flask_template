@@ -159,6 +159,7 @@ body{
 }
 
 .img-cap{
+    padding: 10px;
     font-weight: bold;
     text-shadow: white 0px 0px 7px;
     background-color: #ffffff63;

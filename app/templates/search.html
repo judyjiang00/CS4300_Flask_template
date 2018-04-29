@@ -208,7 +208,7 @@
                             {% if unsplashed_queries[loop.index0] != None %}
                                
 				<div class="image-wrapper" style= "background-image: url(https://source.unsplash.com/1500x400/?{{unsplashed_queries[loop.index0].decode('utf-8')}})">
-                       		 <h4 class="img-cap">{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
+                       		 <h4 class="img-cap">{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{result[8]}}</span></span></h4><br>
                            	</div>
 			    {% endif %}
                             <DT>What's Special?
