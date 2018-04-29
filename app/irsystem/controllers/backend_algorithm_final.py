@@ -45,7 +45,7 @@ def getPlaces(input_query, max_distance):
 			if q in vocab_idx:
 				for doc in inv_idx[q]:
 					accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
-	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query_expanded).items() if q in idf))
+	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query_word_expanded).items() if q in idf))
 	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
 	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], queryMaxDistance) #input is idx instead of list of regions
