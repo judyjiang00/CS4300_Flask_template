@@ -5,6 +5,7 @@ from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 from defs import *
 import backend_algorithm_v1 as v1
 import backend_algorithm_v2 as v2
+import backend_algorithm_final as final
 
 from jinja2.ext import do
 
@@ -84,7 +85,7 @@ def search():
 			description_query = ""
 		output_tupes = (location_query, description_query)
 
-		results = v2.getPlaces(output_tupes, max_distance)
+		results = final.getPlaces(output_tupes, max_distance)
 		queries = []
 		raw_country = ""
 		for result in results:

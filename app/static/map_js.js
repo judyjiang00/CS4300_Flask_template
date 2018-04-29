@@ -89,7 +89,10 @@ if (map_geo) {
             return pathGenerator(country);
         })
         .attr("stroke", "grey")
-        .attr("fill",d=>getRandomColor())
+        // .attr("fill",d=>getRandomColor())
+        .attr("fill",function(d,i) {
+            return d3.interpolateGreens((i%5)/5);
+        })
         .style("opacity","0.5")
         .attr("stroke-width","0.8px");
 
@@ -146,22 +149,34 @@ if (map_geo) {
             d3.select("#info_modal")
             .style("display","block");
             d3.select("#modal_place_name_span")
-            .html(d[0]+'<span class="score_span">score:<span class="blue_score_span">'+d[5]+'</span></span>'+'<span class="score_span">distance from you:<span class="blue_score_span">'+'not in the data'+'</span></span>');
+            .html(d[0]+'<span class="score_span">score:\ <span class="blue_score_span">'+d[5]+'</span></span>'+'<span class="score_span">distance from you:\ <span class="blue_score_span">'+d[8]+'</span></span>');
             d3.select("#modal_description_span")
             .html(d[2]);
+            d3.select("#modal_place_name_only")
+            .html(d[0]);
 
             for (var j = 0; j < d[3].length; j++) {
                 if (version=="v1") {
                     $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+': '+'</h6>');
-                }else if (version=="v2") {
+                }else if (version=="v2" || version=="final") {
                     $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+': '+'</h6>'+'<span class="modal_temp indent">'+d[3][j][2])+'</span>';
                 }
                 $("div#info_modal").append('<a class="indent modal_temp" target="_blank" href="'+d[3][j][1]+'" id="modal_recommendation_a_'+j+'">(link)</a>');
                 
             }
 
+            if (d[9].length>0) {
+                $("div#info_modal").append('<h5 class="modal_temp">Special attraction about "'+description_query+'": </h5> ');
+                for (var j = 0; j < d[9].length; j++) {
+                    
+                    $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_query_special_span_'+j+'">'+d[9][j][0]+': '+'</h6>'+'<span class="modal_temp indent">'+d[9][j][2])+'</span>';
+                    $("div#info_modal").append('<a class="indent modal_temp" target="_blank" href="'+d[9][j][1]+'" id="modal_recommendation_a_'+j+'">(link)</a>');
+                    
+                }
+            }
+
             if (d[6]) {
-                $("div#info_modal").append('<h5 class="modal_temp">Weather: </h5> <span id="modal_weather_span" class="modal_temp indent advisory_info">'+d[6]+'</span>');
+                $("div#info_modal").append('<h5 class="modal_temp">Weather: </h5> <span id="modal_weather_span" class="modal_temp indent">'+d[6]+'</span>');
             }
 
             if (d[4]["When to Go"]) {

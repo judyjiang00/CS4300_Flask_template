@@ -127,7 +127,7 @@
     {% if version=='final' %}
     <h6 class="mb-3 font-weight-light center text-secondary">you searched for <span class="mb-3 font-weight-normal center text-info" id="searched_query_span">{{searched_query}}</span> within <span class="mb-3 font-weight-normal center text-info" id="searched_distance_span">{{searched_distance}}</span></h6>
     {% endif %}
-    {% if results|length > 0%}
+    {% if results|length> 0%}
     <div class="center" id="toggle_switch_div">
         <span id="switch_list_span">List</span>
         <label class="switch vertical_align" >
@@ -141,7 +141,7 @@
         <span class="exit_crosses">X</span>
         <h5>Place Name: </h5><span id="modal_place_name_span"></span>
         <h5>Description: </h5> <span id="modal_description_span"></span>
-        <h5>What's Special? </h5>
+        <h5>What People Like Most about <span id="modal_place_name_only"></span>:</h5>
     </div>
     <svg height="700" width="1200" id="svg_map">
         
@@ -154,10 +154,13 @@
                     <li class="list-group-item result_rows">
                         <h4>{{ result[0] }}</h4><br>
                         <DL>
+			
                         <DT>What's Special?
             			{% if unsplashed_queries[loop.index0] != None %}
+				<div class="image-wrapper">
             				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
-                        {% endif %}
+                        	</div>
+				{% endif %}
                         <DD>{{ result[2] }}
                         <DT>Attraction recommendation:
 
@@ -170,12 +173,15 @@
             {% elif version == "v2"%}
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
+                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{result[8]}}</span></span></h4><br>
                         <DL>
                             <DT>What's Special?
                 			{% if unsplashed_queries[loop.index0] != None %}
-                				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
-                            {% endif %}
+                			
+				<div class="image-wrapper">
+					<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+                           	</div>
+			    {% endif %}
                                 <DD>{{ result[2] }}
                             <DT>Attraction recommendation:
 
@@ -198,19 +204,32 @@
             {% elif version == "final"%}
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">(not in the data)</span></span></h4><br>
                         <DL>
-                            <DT>What's Special?
                             {% if unsplashed_queries[loop.index0] != None %}
-                                <img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
-                            {% endif %}
+                               
+                				<div class="image-wrapper" style= "background-image: url(https://source.unsplash.com/1500x400/?{{unsplashed_queries[loop.index0].decode('utf-8')}})">
+                                    <h4 class="img-cap">{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{result[8]}}</span></span></h4><br>
+                                </div>
+            			    {% endif %}
+                            <DT>What People Like Most about {{result[0]}}?
                                 <DD>{{ result[2] }}
+                            <!-- }
+                            } -->
                             <DT>Attraction recommendation:
 
                             {% for recm in result[3] %}
                                 <DD>{{recm[0].decode('utf-8')}}:
                                 <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
                             {% endfor %}
+
+                            {% if result[9]|length >0 %}
+                                <DT>Special attraction about "{{description_query}}"
+                                {% for recm in result[9] %}
+                                    <DD>{{recm[0]}}:
+                                    <DD class="indent">{{recm[2]}}<a href="{{recm[1]}}" target="_blank">(link)</a>
+                                {% endfor %}
+                            {% endif %}
+
 
                             <DT>Weather
                                 <DD>{{ result[6] }}
@@ -231,6 +250,7 @@
 
         <script type="text/javascript">var map_geo = {{map_geo|tojson}}</script>
         <script type="text/javascript">var results = {{results|tojson}}</script>
+        <script type="text/javascript">var description_query = "{{description_query}}"</script>
         <script type="text/javascript">var version = "{{version}}"</script>
         <script type="text/javascript">var unsplashed_queries = {{unsplashed_queries|tojson}}</script>
         <script src="{{ url_for('static', filename='map_js.js' )}}"></script>
