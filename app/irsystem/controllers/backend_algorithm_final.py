@@ -70,10 +70,12 @@ def getPlaces(input_query, max_distance):
 	repeated = set()
 	regions = []
 	scores = []
+	full_address = []
 	for r in ranking:
 		if len(regions) == NUM_REGIONS:
 			break
 		region = data[r][1]
+		address = data[r][4]
 		if country_flag and (region.lower() in country_set):
 			continue
 		elif region not in repeated:
@@ -81,13 +83,13 @@ def getPlaces(input_query, max_distance):
 			regions.append(region)
 			scores.append(int(round(raw_scores[r]**(1./7)*100)))  # some non-linear transformation
 			repeated.add(region)
+			full_address.append(address)
 
 	snippets = get_snippets(query_word_expanded, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
 	if activity_query == []:
 		scores = [99.0]*len(regions)
 
-	regions = [r for r in regions if r != 'Yugoslavia']
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
 	topPlaces = [[] for _ in range(len(regions))]
 	userLat, userLong, connected = getUsersLatLong()
@@ -97,7 +99,7 @@ def getPlaces(input_query, max_distance):
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lat'])
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lng'])
 
-		topPlaces[i].append(region)
+		topPlaces[i].append(full_address[i])
 		topPlaces[i].append(latLong)
 		topPlaces[i].append(snippets[i])
 		topPlaces[i].append(getTopPlacesInRegion(region))
