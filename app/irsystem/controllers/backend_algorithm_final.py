@@ -89,9 +89,6 @@ def getPlaces(input_query, max_distance):
 
 	snippets = get_snippets(query_word_expanded, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
-	if activity_query == []:
-		scores = [99.0]*len(regions)
-
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
 	topPlaces = [[] for _ in range(len(regions))]
 	userLat, userLong, connected = getUsersLatLong()
