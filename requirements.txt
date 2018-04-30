@@ -4,6 +4,7 @@ aniso8601==1.1.0
 appdirs==1.4.3
 autoenv==1.0.0
 bcrypt==2.0.0
+beautifulsoup4==4.6.0
 cffi==1.6.0
 click==6.7
 Flask==0.10.1
@@ -23,6 +24,7 @@ gunicorn==19.7.0
 hiredis==0.2.0
 itsdangerous==0.24
 Jinja2==2.8
+lxml==4.2.1
 Mako==1.0.4
 MarkupSafe==0.23
 marshmallow==2.7.3
