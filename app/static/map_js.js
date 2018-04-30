@@ -257,6 +257,10 @@ if (map_geo) {
         .force("collision", d3.forceCollide(35))
         .on("tick", label_updateDisplay);
         // Consult the docs: https://github.com/d3/d3-force
+        label_simulation.stop();
+        while (label_simulation.alpha() > 0.001) {
+            label_simulation.tick();
+        }
 
 
         // Tell the simulation about the nodes, attach a self-moving event.
@@ -313,6 +317,8 @@ if (map_geo) {
                 return label_i_y;
             }); 
         }
+
+        label_updateDisplay();
 
         
         //close modal when clicking exit cross
@@ -498,10 +504,14 @@ if (map_geo) {
 }
 
 d3.selectAll(".advisory_info").style("color",function() {
-    if (d3.select(this).html().includes("normal")) {
-        return "#853737";
-    }else if (d3.select(this).html().includes("increased")) {
-        return "#970006";
+    if (d3.select(this).html().includes("1")) {
+        return "#5a0104";
+    }else if (d3.select(this).html().includes("2")) {
+        return "#860018";
+    }else if (d3.select(this).html().includes("3")) {
+        return "#b51431";
+    }else if (d3.select(this).html().includes("4")) {
+        return "#c70000";
     }
 });
 

@@ -85,6 +85,9 @@ def getPlaces(input_query, max_distance):
 	#print regions
 	snippets = get_snippets(query_word_expanded, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
+	if activity_query == []:
+		scores = [99.0]*len(regions)
+
 	regions = [r for r in regions if r != 'Yugoslavia']
 	# The order goes as [region name, region coordinates, snippets, list of Google places, fact dict, score]
 	topPlaces = [[] for _ in range(len(regions))]
@@ -161,9 +164,9 @@ def getTopPlacesInRegion(region):
 		full_spots_list = wikitravel_spots[region]
 		out_list = []
 		if len(full_spots_list) > 3:
-			spot_list = random.sample(full_spots_list,3)
+			spot_list = [spot[:3] for spot in full_spots_list[:3]]
 		else:
-			spot_list = full_spots_list
+			spot_list = [spot[:3] for spot in full_spots_list]
 		for spot in spot_list:
 			out_list.append(spot)
 		return out_list
