@@ -161,9 +161,9 @@ def getTopPlacesInRegion(region):
 		full_spots_list = wikitravel_spots[region]
 		out_list = []
 		if len(full_spots_list) > 3:
-			spot_list = random.sample(full_spots_list,3)
+			spot_list = [spot[:3] for spot in full_spots_list[:3]]
 		else:
-			spot_list = full_spots_list
+			spot_list = [spot[:3] for spot in full_spots_list]
 		for spot in spot_list:
 			out_list.append(spot)
 		return out_list
