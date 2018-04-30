@@ -93,20 +93,30 @@ def search():
 		queries = []
 		raw_country = ""
 		coords = []
+		locs = []
 		for result in results:
 			coords.append(result[1])	
-
-		for coord in coords: 
-			if coord != None: 
-				contents = urllib2.urlopen("http://ws.geonames.org/findNearbyPlaceName?lat=" + str(coord[0]) + "&lng=" + str(coord[1]) + "&username=scj39").read()
-				soup = BeautifulSoup(contents, "lxml")
-				geoname = soup.find("geoname")
-				raw_country = str(geoname.findChildren()[6])
-				country_name = re.findall('>([^<>]*)<', raw_country)[0]
-				if country_name in pics:
-					queries.append(pics[country_name])
+			locs.append(result[0])
+		
+		for indx, loc in enumerate(locs): 
+			if loc != None:
+				result = pics[loc]
+				if result != "":
+					queries.append(result)
 				else:
-					queries.append("")
+					coord = coords[indx] 
+					if coord != None: 					
+						contents = urllib2.urlopen("http://ws.geonames.org/findNearbyPlaceName?lat=" + str(coord[0]) + "&lng=" + str(coord[1]) + "&username=scj39").read()
+						soup = BeautifulSoup(contents, "lxml")
+						geoname = soup.find("geoname")
+						raw_country = str(geoname.findChildren()[6])
+						country_name = re.findall('>([^<>]*)<', raw_country)[0]
+						if country_name in pics:
+							queries.append(pics[country_name])
+						else:
+							queries.append(None)
+					else:
+						queries.append(None)
 			else: 
 				queries.append(None)	
 		# setup display of what you searched for
