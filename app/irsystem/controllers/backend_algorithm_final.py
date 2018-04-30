@@ -101,7 +101,7 @@ def getPlaces(input_query, max_distance):
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lat'])
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lng'])
 
-		topPlaces[i].append(region)
+		topPlaces[i].append(region.encode('utf-8'))
 		topPlaces[i].append(latLong)
 		topPlaces[i].append(snippets[i])
 		topPlaces[i].append(getTopPlacesInRegion(region))
@@ -114,7 +114,7 @@ def getPlaces(input_query, max_distance):
 		else:
 			topPlaces[i].append(-1.0)
 		topPlaces[i].append(getTopQueryPlaceInRegion(region,list(query_word_expanded)))
-		topPlaces[i].append(full_address[i])
+		topPlaces[i].append(full_address[i].encode('utf-8'))
 
 	return topPlaces
 

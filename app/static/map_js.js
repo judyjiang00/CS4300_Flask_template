@@ -149,7 +149,7 @@ if (map_geo) {
             d3.select("#info_modal")
             .style("display","block");
             d3.select("#modal_place_name_span")
-            .html(d[0]+'<span class="score_span">score:\ <span class="blue_score_span">'+d[5]+'</span></span>'+'<span class="score_span">distance from you:\ <span class="blue_score_span">'+parseFloat(d[8]).toFixed(2)+'</span></span>');
+            .html(d[10]+'<span class="score_span">score:\ <span class="blue_score_span">'+d[5]+'</span></span>'+'<span class="score_span">distance from you:\ <span class="blue_score_span">'+parseFloat(d[8]).toFixed(2)+'</span></span>');
 
             if (d[2].length>0) {
                 $("div#info_modal").append('<h5 class="modal_temp">What People Like Most about <span class="modal_temp">'+d[0]+'</span>:</h5><span class="modal_temp indent">'+d[2]+'</span>')

@@ -208,7 +208,11 @@
                             {% if unsplashed_queries[loop.index0] != None %}
                                
                 	       	<div class="image-wrapper" style= "background-image: url({{unsplashed_queries[loop.index0].decode('utf-8')}})">
-                                    <h4 class="img-cap">{{ result[0].decode('utf-8') }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{'%0.2f' % result[8]|float }}</span></span></h4><br>
+                                    <h4 class="img-cap">{{ result[10].decode('utf-8') }}
+                                        <span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span>
+                                        <span class="score_span">distance from you:
+                                            <span class="blue_score_span">{{'%0.2f' % result[8]|float }}</span></span>
+                                    </h4>
                                 </div>
             			    {% endif %}
 
