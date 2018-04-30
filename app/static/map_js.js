@@ -504,10 +504,14 @@ if (map_geo) {
 }
 
 d3.selectAll(".advisory_info").style("color",function() {
-    if (d3.select(this).html().includes("normal")) {
-        return "#853737";
-    }else if (d3.select(this).html().includes("increased")) {
-        return "#970006";
+    if (d3.select(this).html().includes("1")) {
+        return "#5a0104";
+    }else if (d3.select(this).html().includes("2")) {
+        return "#860018";
+    }else if (d3.select(this).html().includes("3")) {
+        return "#b51431";
+    }else if (d3.select(this).html().includes("4")) {
+        return "#c70000";
     }
 });
 
