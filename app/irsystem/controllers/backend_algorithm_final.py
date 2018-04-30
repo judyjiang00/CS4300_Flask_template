@@ -47,9 +47,11 @@ def getPlaces(input_query, max_distance):
 				for doc in inv_idx[q]:
 					accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
 	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query_word_expanded).items() if q in idf))
-	raw_scores = accum / q_norm if q_norm > 0 else np.zeros_like(accum)
 
-	ranking_distance = filterRegionsWithinDistance(accum.argsort()[::-1], queryMaxDistance) #input is idx instead of list of regions
+	# use popularity*0.25 as default score
+	raw_scores = np.divide(accum, q_norm, out=popularity*0.25, where=q_norm>0) * popularity
+
+	ranking_distance = filterRegionsWithinDistance(raw_scores.argsort()[::-1], queryMaxDistance) #input is idx instead of list of regions
 	ranking_hierarchy_by_region = filterRegionWithHierarchy(location_query)
 	
 	ranking_hierarchy = []
@@ -63,7 +65,7 @@ def getPlaces(input_query, max_distance):
 	else:
 		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
 	
-	ranking = sorted(ranking, key=lambda x:accum[x])[::-1]
+	ranking = sorted(ranking, key=lambda x:raw_scores[x])[::-1]
 	
 	# Filter out redundancy in regions
 	filt_ranking = []
@@ -81,7 +83,7 @@ def getPlaces(input_query, max_distance):
 		elif region not in repeated:
 			filt_ranking.append(r)
 			regions.append(region)
-			scores.append(int(round(raw_scores[r]**(1./7)*100)))  # some non-linear transformation
+			scores.append(min(100, int(round(raw_scores[r]**(1./4)*100+25))))  # some non-linear transformation
 			repeated.add(region)
 			full_address.append(address)
 
@@ -99,7 +101,7 @@ def getPlaces(input_query, max_distance):
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lat'])
 		latLong.append(geocode[region.lower()]['results'][0]['geometry']['location']['lng'])
 
-		topPlaces[i].append(full_address[i])
+		topPlaces[i].append(region)
 		topPlaces[i].append(latLong)
 		topPlaces[i].append(snippets[i])
 		topPlaces[i].append(getTopPlacesInRegion(region))
@@ -112,6 +114,7 @@ def getPlaces(input_query, max_distance):
 		else:
 			topPlaces[i].append(-1.0)
 		topPlaces[i].append(getTopQueryPlaceInRegion(region,list(query_word_expanded)))
+		topPlaces[i].append(full_address[i])
 
 	return topPlaces
 
