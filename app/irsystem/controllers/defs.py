@@ -25,9 +25,6 @@ with open("data/inv_idx.pickle","rb") as f:
 with open("data/tfidf_mat.pickle","rb") as f:
 	doc_mat = pickle.load(f)
 
-with open("data/vocab_idx.pickle","rb") as f:
-	vocab_idx = pickle.load(f)
-
 with open('data/stems.pickle', 'rb') as f:
 	stems = pickle.load(f)
 
@@ -54,6 +51,8 @@ with open('data/words_compressed.pickle') as f:
 
 with open('data/idx_to_vocab.pickle') as f:
 	idx_to_vocab = pickle.load(f)
+
+vocab_idx = {w: i for i, w in enumerate(idx_to_vocab)}
 
 with open("data/geo_hierarchy_dict.pickle","rb") as f:
     geo_hierarchy = pickle.load(f)
