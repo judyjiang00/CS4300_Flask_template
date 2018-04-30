@@ -57,7 +57,7 @@ def getPlaces(input_query, max_distance):
 	#TODO
 	if activity_query == []:
 		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
-	elif location_query == ['']:
+	elif location_query == '':
 		ranking = ranking_distance
 	else:
 		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
