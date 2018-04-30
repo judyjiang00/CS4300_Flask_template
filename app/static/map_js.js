@@ -220,10 +220,14 @@ if (map_geo) {
 
             //change advisory info color
             d3.selectAll("#info_modal .advisory_info").style("color",function() {
-                if (d3.select(this).html().includes("normal")) {
-                    return "#cf9d9f";
-                }else if (d3.select(this).html().includes("increased")) {
-                    return "#f87a7f";
+                if (d3.select(this).html().includes("1")) {
+                    return "#ca9ea1";
+                }else if (d3.select(this).html().includes("2")) {
+                    return "#dc8b92";
+                }else if (d3.select(this).html().includes("3")) {
+                    return "#b16168";
+                }else if (d3.select(this).html().includes("4")) {
+                    return "#a5414a";
                 }
             });
         })
