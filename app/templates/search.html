@@ -214,16 +214,16 @@
 
                             {% if result[2]|length > 0%}
                             <DT>What People Like Most about {{result[0].decode('utf-8')}}?
-                                <DD>{{ result[2] }}
+                                <DD class="indent">{{ result[2] }}
                             {% endif %}
 
                             {% if result[3]|length > 0%}
                             <DT>Attraction recommendation:
                                 {% for recm in result[3] %}
-                                    <DD>{{recm[0].decode('utf-8')}}:
-                                    <DD class="indent">{{recm[2].decode('utf-8')}}
+                                    <DD class="indent"><span class="lnr lnr-location"></span> {{recm[0].decode('utf-8')}}:
+                                    <DD class="indent"><span class="indent">{{recm[2].decode('utf-8')}}
                                         {% if recm[1]|length > 0%}
-                                        <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a>
+                                        <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a></span>
                                         {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -231,32 +231,32 @@
                             {% if result[9]|length >0 %}
                                 <DT>Special attraction about "{{description_query}}"
                                 {% for recm in result[9] %}
-                                    <DD>{{recm[0].decode('utf-8')}}:
-                                    <DD class="indent">{{recm[2].decode('utf-8')}}
+                                    <DD class="indent"><span class="lnr lnr-star"></span> {{recm[0].decode('utf-8')}}:
+                                    <DD class="indent"><span class="indent">{{recm[2].decode('utf-8')}}
                                         {% if recm[1]|length > 0%}
-                                        <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a>
+                                        <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a></span>
                                         {% endif %}
                                 {% endfor %}
                             {% endif %}
 
                             {% if result[6]|length > 0%}
                             <DT>Weather
-                                <DD>{{ result[6]}}
+                                <DD class="indent">{{ result[6]}}
                             {% endif %}
 
                             {% if result[4]['When to Go']|length > 0%}
                             <DT>When to Go?
-                                <DD>{{ result[4]['When to Go'] }}
+                                <DD class="indent">{{ result[4]['When to Go'] }}
                             {% endif %}
 
                             {% if result[4]['Events']|length > 0%}
                             <DT>Events
-                                <DD>{{ result[4]['Events']}}
+                                <DD class="indent">{{ result[4]['Events']}}
                             {% endif %}
 
                             {% if result[7]|length > 0%}
                             <DT>Travel Advisory
-                                <DD class="advisory_info">{{ result[7].decode('utf-8') }}
+                                <DD class="advisory_info indent">{{ result[7].decode('utf-8') }}
                             {% endif %}
                         </DL>
                     </li>
