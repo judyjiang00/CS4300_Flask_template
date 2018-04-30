@@ -139,9 +139,9 @@
 
     <div id="info_modal">
         <span class="exit_crosses">X</span>
-        <h5>Place Name: </h5><span id="modal_place_name_span"></span>
-        <h5>Description: </h5> <span id="modal_description_span"></span>
-        <h5>What People Like Most about <span id="modal_place_name_only"></span>:</h5>
+        <h5>Place Name: </h5><span id="modal_place_name_span" class="indent"></span>
+        <!-- <h5>What People Like Most about <span id="modal_place_name_only"></span>:</h5><span id="modal_description_span"></span>
+        <h5>Attraction Recommendation:</h5> -->
     </div>
     <svg height="700" width="1200" id="svg_map">
         
@@ -152,7 +152,7 @@
         
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}</h4><br>
+                        <h4>{{ result[0].decode('utf-8') }}</h4><br>
                         <DL>
 			
                         <DT>What's Special?
@@ -161,7 +161,7 @@
             				<img src= "{{unsplashed_queries[loop.index0]}}.decode('utf-8')" class="figure-img img-thumbnail img-fluid rounded float-left">
                         	</div>
 				{% endif %}
-                        <DD>{{ result[2] }}
+                        <DD>{{ result[2].decode('utf-8') }}
                         <DT>Attraction recommendation:
 
                         {% for recm in result[3] %}
@@ -173,7 +173,7 @@
             {% elif version == "v2"%}
                 {% for result in results %}
                     <li class="list-group-item result_rows">
-                        <h4>{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{result[8]}}</span></span></h4><br>
+                        <h4>{{ result[0].decode('utf-8') }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{result[8]}}</span></span></h4><br>
                         <DL>
                             <DT>What's Special?
                 			{% if unsplashed_queries[loop.index0] != None %}
@@ -182,22 +182,22 @@
 					<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
                            	</div>
 			    {% endif %}
-                                <DD>{{ result[2] }}
+                                <DD>{{ result[2].decode('utf-8') }}
                             <DT>Attraction recommendation:
 
                             {% for recm in result[3] %}
                                 <DD>{{recm[0].decode('utf-8')}}:
-                                <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
+                                <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a>
                             {% endfor %}
 
                             <DT>Weather
-                                <DD>{{ result[6] }}
+                                <DD>{{ result[6]}}
                             <DT>When to Go?
                                 <DD>{{ result[4]['When to Go'] }}
                             <DT>Events
                                 <DD>{{ result[4]['Events'] }}
                             <DT>Travel Advisory
-                                <DD class="advisory_info">{{ result[7] }}
+                                <DD class="advisory_info">{{ result[7].decode('utf-8') }}
                         </DL>
                     </li>
                 {% endfor %}
@@ -208,22 +208,25 @@
                             {% if unsplashed_queries[loop.index0] != None %}
                                
                 	       	<div class="image-wrapper" style= "background-image: url({{unsplashed_queries[loop.index0]}})">
-                                    <h4 class="img-cap">{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{'%0.2f' % result[8]|float }}</span></span></h4><br>
+                                    <h4 class="img-cap">{{ result[0].decode('utf-8') }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{'%0.2f' % result[8]|float }}</span></span></h4><br>
                                 </div>
             			    {% endif %}
-                            <DT>What People Like Most about {{result[0]}}?
-                                <DD>{{ result[2] }}
-                            <!-- }
-                            } -->
-                            <DT>Attraction recommendation:
 
-                            {% for recm in result[3] %}
-                                <DD>{{recm[0].decode('utf-8')}}:
-                                <DD class="indent">{{recm[2].decode('utf-8')}}
-                                    {% if recm[1]|length > 0%}
-                                    <a href="{{recm[1]}}" target="_blank">(link)</a>
-                                    {% endif %}
-                            {% endfor %}
+                            {% if result[2]|length > 0%}
+                            <DT>What People Like Most about {{result[0].decode('utf-8')}}?
+                                <DD>{{ result[2] }}
+                            {% endif %}
+
+                            {% if result[3]|length > 0%}
+                            <DT>Attraction recommendation:
+                                {% for recm in result[3] %}
+                                    <DD>{{recm[0].decode('utf-8')}}:
+                                    <DD class="indent">{{recm[2].decode('utf-8')}}
+                                        {% if recm[1]|length > 0%}
+                                        <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a>
+                                        {% endif %}
+                                {% endfor %}
+                            {% endif %}
 
                             {% if result[9]|length >0 %}
                                 <DT>Special attraction about "{{description_query}}"
@@ -231,20 +234,30 @@
                                     <DD>{{recm[0].decode('utf-8')}}:
                                     <DD class="indent">{{recm[2].decode('utf-8')}}
                                         {% if recm[1]|length > 0%}
-                                        <a href="{{recm[1]}}" target="_blank">(link)</a>
+                                        <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a>
                                         {% endif %}
                                 {% endfor %}
                             {% endif %}
 
-
+                            {% if result[6]|length > 0%}
                             <DT>Weather
-                                <DD>{{ result[6] }}
+                                <DD>{{ result[6]}}
+                            {% endif %}
+
+                            {% if result[4]['When to Go']|length > 0%}
                             <DT>When to Go?
                                 <DD>{{ result[4]['When to Go'] }}
+                            {% endif %}
+
+                            {% if result[4]['Events']|length > 0%}
                             <DT>Events
-                                <DD>{{ result[4]['Events'] }}
+                                <DD>{{ result[4]['Events']}}
+                            {% endif %}
+
+                            {% if result[7]|length > 0%}
                             <DT>Travel Advisory
-                                <DD class="advisory_info">{{ result[7] }}
+                                <DD class="advisory_info">{{ result[7].decode('utf-8') }}
+                            {% endif %}
                         </DL>
                     </li>
                 {% endfor %}
