@@ -226,7 +226,7 @@
                                 <DT>Special attraction about "{{description_query}}"
                                 {% for recm in result[9] %}
                                     <DD>{{recm[0]}}:
-                                    <DD class="indent">{{recm[2]}}<a href="{{recm[1]}}" target="_blank">(link)</a>
+                                    <DD class="indent">{{recm[2].decode('utf-8')}}<a href="{{recm[1]}}" target="_blank">(link)</a>
                                 {% endfor %}
                             {% endif %}
 
