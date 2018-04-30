@@ -103,7 +103,10 @@ def search():
 				geoname = soup.find("geoname")
 				raw_country = str(geoname.findChildren()[6])
 				country_name = re.findall('>([^<>]*)<', raw_country)[0]
-				queries.append(pics[country_name])
+				if country_name in pics:
+					queries.append(pics[country_name])
+				else:
+					queries.append("")
 			else: 
 				queries.append(None)	
 		# setup display of what you searched for
