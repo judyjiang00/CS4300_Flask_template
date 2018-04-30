@@ -158,7 +158,7 @@
                         <DT>What's Special?
             			{% if unsplashed_queries[loop.index0] != None %}
 				<div class="image-wrapper">
-            				<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
+            				<img src= "{{unsplashed_queries[loop.index0]}}.decode('utf-8')" class="figure-img img-thumbnail img-fluid rounded float-left">
                         	</div>
 				{% endif %}
                         <DD>{{ result[2] }}
@@ -207,7 +207,7 @@
                         <DL>
                             {% if unsplashed_queries[loop.index0] != None %}
                                
-                				<div class="image-wrapper" style= "background-image: url(https://source.unsplash.com/1500x400/?{{unsplashed_queries[loop.index0].decode('utf-8')}})">
+                	       	<div class="image-wrapper" style= "background-image: url({{unsplashed_queries[loop.index0]}})">
                                     <h4 class="img-cap">{{ result[0] }}<span class="score_span">score:<span class="blue_score_span">{{result[5]}}</span></span><span class="score_span">distance from you:<span class="blue_score_span">{{result[8]}}</span></span></h4><br>
                                 </div>
             			    {% endif %}

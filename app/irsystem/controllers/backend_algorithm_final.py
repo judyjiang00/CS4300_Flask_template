@@ -298,4 +298,6 @@ def getWeatherSnippetForRegion(region):
 	    return "Average temperature in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][1])) + \
 	        " F. Historical low and high temperatures in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][0])) + \
 	        " F and " + str(convertCToFAndRound(temps[(region, now.month-1)][2])) + " F."
+def get_pictures():
+	return pictures
 

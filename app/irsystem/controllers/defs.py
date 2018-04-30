@@ -67,6 +67,10 @@ with open("data/temperatures.pickle","rb") as f:
 with open("data/wikitravel_spots.pickle","rb") as f:
 	wikitravel_spots = pickle.load(f)
 
+with open("data/pictures.pickle") as f: 
+    	pictures = pickle.load(f)
+
+
 region_list = geo_hierarchy.keys()
 region_set = set(region_list)
 

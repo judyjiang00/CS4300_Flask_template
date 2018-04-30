@@ -6,9 +6,12 @@ from defs import *
 import backend_algorithm_v1 as v1
 import backend_algorithm_v2 as v2
 import backend_algorithm_final as final
+import urllib2
+import bs4
 
+from bs4 import BeautifulSoup
 from jinja2.ext import do
-
+import re
 
 project_name = "Where Next - A Travel Destination Recommendation System"
 net_id = "Wanming Hu: wh298, Smit Jain: scj39, Judy Jiang: jj353, Noah Kaplan: nk425, Tatsuhiro Koshi: tk474"
@@ -78,6 +81,7 @@ def search():
 			version = system_version,
 			unsplashed_queries = queries)
 	elif system_version == "final":
+		pics = final.get_pictures()
 		# change this to the final final version of backend system
 		if not (location_query):
 			location_query = ""
@@ -88,13 +92,20 @@ def search():
 		results = final.getPlaces(output_tupes, max_distance)
 		queries = []
 		raw_country = ""
+		coords = []
 		for result in results:
-			if(len(result[3]) > 0):
-				raw_country = result[3][0][1]
-				queries.append(raw_country)
-			else:
-				queries.append(None)
+			coords.append(result[1])	
 
+		for coord in coords: 
+			if coord != None: 
+				contents = urllib2.urlopen("http://ws.geonames.org/findNearbyPlaceName?lat=" + str(coord[0]) + "&lng=" + str(coord[1]) + "&username=scj39").read()
+				soup = BeautifulSoup(contents, "lxml")
+				geoname = soup.find("geoname")
+				raw_country = str(geoname.findChildren()[6])
+				country_name = re.findall('>([^<>]*)<', raw_country)[0]
+				queries.append(pics[country_name])
+			else: 
+				queries.append(None)	
 		# setup display of what you searched for
 		searched_query=[]
 		if len(location_query) >0:
@@ -108,7 +119,6 @@ def search():
 			searched_distance= 'unrestricted distance'
 		else:
 			searched_distance= max_distance+' km'
-
 		return render_template('search.html', activity_query = activity_query,
 			location_query = location_query,
 			description_query= description_query,
