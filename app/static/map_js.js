@@ -257,6 +257,10 @@ if (map_geo) {
         .force("collision", d3.forceCollide(35))
         .on("tick", label_updateDisplay);
         // Consult the docs: https://github.com/d3/d3-force
+        label_simulation.stop();
+        while (label_simulation.alpha() > 0.001) {
+            label_simulation.tick();
+        }
 
 
         // Tell the simulation about the nodes, attach a self-moving event.
@@ -313,6 +317,8 @@ if (map_geo) {
                 return label_i_y;
             }); 
         }
+
+        label_updateDisplay();
 
         
         //close modal when clicking exit cross
