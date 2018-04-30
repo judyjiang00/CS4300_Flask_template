@@ -14,8 +14,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 def getPlaces(input_query, max_distance):
-	#print input_query[0]
-	#print input_query[1]
 	"""
 	Params:
 		input_query: tuple of (location query, activity query)
@@ -26,6 +24,10 @@ def getPlaces(input_query, max_distance):
 
 	activity_query = tokenize(input_query[1])
 	location_query = input_query[0].lower()
+	if location_query in US_syn:
+		location_query = 'usa'
+	elif location_query in UK_syn:
+		location_query = 'england'
 	queryMaxDistance = int(max_distance)
 
 	country_flag = (location_query in country_set)
@@ -39,7 +41,6 @@ def getPlaces(input_query, max_distance):
 		query_word_expanded = []
 
 	accum = np.zeros(len(data))
-	#print query_word_expanded
 	for query_expanded in query_word_expanded:
 		for q in query_expanded:
 			if q in vocab_idx:
@@ -54,7 +55,7 @@ def getPlaces(input_query, max_distance):
 	ranking_hierarchy = []
 	for place in ranking_hierarchy_by_region:
 		ranking_hierarchy += location_to_doc_idx[place]
-	#TODO
+
 	if activity_query == []:
 		ranking = list(set(ranking_hierarchy).intersection(set(ranking_distance)))
 	elif location_query == '':
@@ -73,8 +74,6 @@ def getPlaces(input_query, max_distance):
 		if len(regions) == NUM_REGIONS:
 			break
 		region = data[r][1]
-		#print region
-		#print region.lower() in country_list
 		if country_flag and (region.lower() in country_set):
 			continue
 		elif region not in repeated:
@@ -82,7 +81,7 @@ def getPlaces(input_query, max_distance):
 			regions.append(region)
 			scores.append(int(round(raw_scores[r]**(1./7)*100)))  # some non-linear transformation
 			repeated.add(region)
-	#print regions
+
 	snippets = get_snippets(query_word_expanded, filt_ranking, stems, data, sent_idx, word_sent_idx)
 
 	if activity_query == []:
@@ -112,7 +111,6 @@ def getPlaces(input_query, max_distance):
 			topPlaces[i].append(-1.0)
 		topPlaces[i].append(getTopQueryPlaceInRegion(region,list(query_word_expanded)))
 
-	#print len(regions)
 	return topPlaces
 
 
@@ -137,16 +135,10 @@ def getTopQueryPlaceInRegion(region,query_word_expanded):
 		tfidf_mat = vect.fit_transform(concat_query + description)
 		cosine_sim = cosine_similarity(tfidf_mat[0:1], tfidf_mat)[0]
 		top_idx = np.argsort(cosine_sim)[::-1][1:4]
-		#print concat_query
-		#print len(concat_query)
-		#print top_idx
 		top_idx = [idx-1 for idx in top_idx if cosine_sim[idx] != 0]
-		#print top_idx
-		#print len(full_spots_list)
 		if top_idx == []:
 			return []
 		spots = [full_spots_list[idx] for idx in top_idx]
-		print spots
 		return spots
 	except:
 		return []
