@@ -121,8 +121,12 @@ def getTopQueryPlaceInRegion(region,query_word_expanded):
 	"""
 	if query_word_expanded == []:
 		return []
+
 	try:
-		concat_query = [q + " " for q in query_word_expanded]
+		qq = ''
+		for q in query_word_expanded:
+			qq = qq + q.encode("utf-8") + " "
+		concat_query = [qq]
 		full_spots_list = wikitravel_spots[region]
 		description = [spot[2] for spot in full_spots_list]
 		#vecotrize description
@@ -130,13 +134,20 @@ def getTopQueryPlaceInRegion(region,query_word_expanded):
 		tfidf_mat = vect.fit_transform(concat_query + description)
 		cosine_sim = cosine_similarity(tfidf_mat[0:1], tfidf_mat)[0]
 		top_idx = np.argsort(cosine_sim)[::-1][1:4]
-		top_idx = [idx for idx in top_idx if cosine_sim[idx] != 0]
+		#print concat_query
+		#print len(concat_query)
+		#print top_idx
+		top_idx = [idx-1 for idx in top_idx if cosine_sim[idx] != 0]
+		#print top_idx
+		#print len(full_spots_list)
 		if top_idx == []:
 			return []
 		spots = [full_spots_list[idx] for idx in top_idx]
+		print spots
 		return spots
 	except:
 		return []
+
 
 
 def getTopPlacesInRegion(region):
