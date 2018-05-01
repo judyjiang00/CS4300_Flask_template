@@ -222,7 +222,7 @@
                             {% endif %}
 
                             {% if result[3]|length > 0%}
-                            <DT>Attraction recommendation:
+                            <DT>Attraction Recommendation:
                                 {% for recm in result[3] %}
                                     <DD class="indent"><span class="lnr lnr-location"></span> {{recm[0].decode('utf-8')}}
                                     {% if recm[1]|length>0 or recm[2]|length>0 %}
@@ -236,7 +236,7 @@
                             {% endif %}
 
                             {% if result[9]|length >0 %}
-                                <DT>Special attraction about "{{description_query}}"
+                                <DT>Special Attraction about "{{description_query}}"
                                 {% for recm in result[9] %}
                                     <DD class="indent"><span class="lnr lnr-star"></span> {{recm[0].decode('utf-8')}}
                                     {% if recm[1]|length>0 or recm[2]|length>0 %}
