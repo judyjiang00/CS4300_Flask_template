@@ -182,29 +182,29 @@ def getUsersLatLong():
 		return 0, 0, False
 
 def distBetweenLatLongKM(lat1, lon1, lat2, lon2):
-    lat1 = radians(lat1)
-    lon1 = radians(lon1)
-    lat2 = radians(lat2)
-    lon2 = radians(lon2)
+	lat1 = radians(lat1)
+	lon1 = radians(lon1)
+	lat2 = radians(lat2)
+	lon2 = radians(lon2)
 
-    R = 6373.0
+	R = 6373.0
 
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
+	dlon = lon2 - lon1
+	dlat = lat2 - lat1
 
-    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+	a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+	c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
-    distance = R * c
-    
-    return distance
+	distance = R * c
+	
+	return distance
 
 
 def filterRegionWithHierarchy(location):
 	"""
-    When input is a destinaiton with higher granualrity:
-    	output a list of destinations under the same region
-    """
+	When input is a destinaiton with higher granualrity:
+		output a list of destinations under the same region
+	"""
 	out = []
 	if location == 'asia':
 		lookup_key = [i for i in region_list if 'asia' in i]
@@ -277,10 +277,10 @@ def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 
 		# if no snippets matched, return first 3 sentences
 		if not snip:
-        	if len(sents) <= MAX_SNIPPETS:
-            	snippets[k] = text
-        	else:
-            	snippets[k] = text[:sents[MAX_SNIPPETS]]
+			if len(sents) <= MAX_SNIPPETS:
+				snippets[k] = text
+			else:
+				snippets[k] = text[:sents[MAX_SNIPPETS]]
 	return snippets
 
 
@@ -295,23 +295,23 @@ def expand_word(w, n_expansion=2):
 		return out
 
 def convertCToFAndRound(c):
-    return int(round(9.0/5.0 * c + 32, 0))
+	return int(round(9.0/5.0 * c + 32, 0))
 
 def getTravelAdvisory(region):
-    if region in travelAdvisories:
-        return travelAdvisories[region]
-    else:
-        return "No current travel advisory"
+	if region in travelAdvisories:
+		return travelAdvisories[region]
+	else:
+		return "No current travel advisory"
 
 def getWeatherSnippetForRegion(region):
-    now = datetime.datetime.now()
-    nowMonth = now.strftime("%B")
-    if (region, now.month-1) not in temps:
-    	return ""
-    else:
-	    return "Average temperature in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][1])) + \
-	        " F. Historical low and high temperatures in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][0])) + \
-	        " F and " + str(convertCToFAndRound(temps[(region, now.month-1)][2])) + " F."
+	now = datetime.datetime.now()
+	nowMonth = now.strftime("%B")
+	if (region, now.month-1) not in temps:
+		return ""
+	else:
+		return "Average temperature in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][1])) + \
+			" F. Historical low and high temperatures in " + str(nowMonth) + ": " + str(convertCToFAndRound(temps[(region, now.month-1)][0])) + \
+			" F and " + str(convertCToFAndRound(temps[(region, now.month-1)][2])) + " F."
 def get_pictures():
 	return pictures
 
