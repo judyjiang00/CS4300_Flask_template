@@ -41,11 +41,10 @@ def getPlaces(input_query, max_distance):
 		query_word_expanded = []
 
 	accum = np.zeros(len(data))
-	for query_expanded in query_word_expanded:
-		for q in query_expanded:
-			if q in vocab_idx:
-				for doc in inv_idx[q]:
-					accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
+	for q in query_word_expanded:
+		if q in vocab_idx:
+			for doc in inv_idx[q]:
+				accum[doc] += idf[q] * doc_mat[doc, vocab_idx[q]]
 	q_norm = sqrt(sum((cnt * idf[q])**2 for q, cnt in Counter(query_word_expanded).items() if q in idf))
 
 	# use popularity*0.25 as default score
@@ -275,6 +274,13 @@ def get_snippets(query, ranking, stems, data, sent_idx, word_sent_idx):
 					else:
 						snip.append(text[sents[s]:sents[s+1]])
 		snippets[k] = ''.join(snip)
+
+		# if no snippets matched, return first 3 sentences
+		if not snip:
+        	if len(sents) <= MAX_SNIPPETS:
+            	snippets[k] = text
+        	else:
+            	snippets[k] = text[:sents[MAX_SNIPPETS]]
 	return snippets
 
 
