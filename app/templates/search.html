@@ -157,9 +157,7 @@
 			
                         <DT>What's Special?
             			{% if unsplashed_queries[loop.index0] != None %}
-				<div class="image-wrapper">
-            				<img src= "{{unsplashed_queries[loop.index0]}}.decode('utf-8')" class="figure-img img-thumbnail img-fluid rounded float-left">
-                        	</div>
+				
 				{% endif %}
                         <DD>{{ result[2].decode('utf-8') }}
                         <DT>Attraction recommendation:
@@ -182,7 +180,7 @@
 					<img src= "https://source.unsplash.com/800x600/?{{unsplashed_queries[loop.index0].decode('utf-8')}}" class="figure-img img-thumbnail img-fluid rounded float-left">
                            	</div>
 			    {% endif %}
-                                <DD>{{ result[2].decode('utf-8') }}
+                                <DD>{{ result[2] }}
                             <DT>Attraction recommendation:
 
                             {% for recm in result[3] %}
