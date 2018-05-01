@@ -182,7 +182,7 @@ if (map_geo) {
             }
 
             if (d[9].length>0) {
-                $("div#info_modal").append('<h5 class="modal_temp">Special attraction about "'+description_query+'": </h5> ');
+                $("div#info_modal").append('<h5 class="modal_temp">Special Attraction about "'+description_query+'": </h5> ');
                 for (var j = 0; j < d[9].length; j++) {
                     if (d[9][j][2] || d[9][j][1]) {
                         var temp = ":";
