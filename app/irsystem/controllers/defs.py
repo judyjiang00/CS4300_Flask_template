@@ -87,5 +87,5 @@ location_to_doc_idx = defaultdict(list)
 for idx, row in enumerate(data):
     location_to_doc_idx[row[1].lower()].append(idx)
 
-US_syn = ['us','usa','united states','united states of america','u.s.','u.s.a']
-UK_syn = ['uk','united kingdom','britain']
+US_syn = ['us','usa','united states','united states of america','u.s.','u.s.a', 'america']
+UK_syn = ['uk','united kingdom','britain', 'u.k.']
