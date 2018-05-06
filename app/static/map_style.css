@@ -141,8 +141,15 @@ color: #4285F4;
 
 .score_span{
 	opacity: 0.75;
-	margin-left: 5em;
 	font-size: 15px;
+}
+
+.img-cap .score_span{
+	margin-left: 5em;
+}
+
+#info_modal .score_span{
+	margin-left: 5em;
 }
 
 .blue_score_span{

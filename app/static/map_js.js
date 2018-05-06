@@ -165,12 +165,13 @@ if (map_geo) {
                     if (version=="v1") {
                         $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+': '+'</h6>');
                     }else if (version=="v2" || version=="final") {
-                        if (d[3][j][2] || d[3][j][1]) {
-                            var temp = ":";
-                        }else{
-                            var temp = "";
-                        }
-                        $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+temp+'</h6>'+'<span class="modal_temp indent"><span class="modal_temp indent">'+d[3][j][2]+'</span></span>');
+                        // if (d[3][j][2] || d[3][j][1]) {
+                        //     var temp = ":";
+                        // }else{
+                        //     var temp = "";
+                        // }
+                        $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_recommendation_span_'+j+'">'+d[3][j][0]+':</h6>');
+                        $("div#info_modal").append('<span class="indent modal_temp"><span class="indent"><span class="lnr lnr-smile"></span><span class="lnr lnr-sad"></span> reviews rating: '+parseInt(d[3][j][3])+'/100</span></span><br><span class="modal_temp indent"><span class="modal_temp indent">'+d[3][j][2]+'</span></span>');
                     }
 
                     if (d[3][j][1]) {
@@ -184,12 +185,14 @@ if (map_geo) {
             if (d[9].length>0) {
                 $("div#info_modal").append('<h5 class="modal_temp">Special Attraction about "'+description_query+'": </h5> ');
                 for (var j = 0; j < d[9].length; j++) {
-                    if (d[9][j][2] || d[9][j][1]) {
-                        var temp = ":";
-                    }else{
-                        var temp = "";
-                    }
-                    $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_query_special_span_'+j+'">'+d[9][j][0]+temp+'</h6>'+'<span class="modal_temp indent"><span class="modal_temp indent">'+d[9][j][2]+'</span></span>');
+                    // if (d[9][j][2] || d[9][j][1]) {
+                    // //     var temp = ":";
+                    // // }else{
+                    // //     var temp = "";
+                    // // }
+                    // $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_query_special_span_'+j+'">'+d[9][j][0]+temp+'</h6>'+'<span class="modal_temp indent"><span class="modal_temp indent">'+d[9][j][2]+'</span></span>');
+                    $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_query_special_span_'+j+'">'+d[9][j][0]+':</h6>');
+                    $("div#info_modal").append('<span class="indent modal_temp"><span class="indent"><span class="lnr lnr-smile"></span><span class="lnr lnr-sad"></span> reviews rating: '+parseInt(d[9][j][3])+'/100</span></span><br><span class="modal_temp indent"><span class="modal_temp indent">'+d[9][j][2]+'</span></span>');
                     if (d[9][j][1]) {
                         $("div#info_modal").append('<span class="modal_temp indent"><a class="indent modal_temp" target="_blank" href="'+d[9][j][1]+'" id="modal_recommendation_a_'+j+'">(link)</a></span>');
                     }

@@ -168,3 +168,19 @@ body{
 #about{
   display: none;
 }
+
+.lnr-smile{
+  color: #186900;
+}
+
+.lnr-sad{
+  color: #5d0000;
+}
+
+#info_modal .lnr-smile{
+  color: #72af72;
+}
+
+#info_modal .lnr-sad{
+  color: #d65f5f;
+}

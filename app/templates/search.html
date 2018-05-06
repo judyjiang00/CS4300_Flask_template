@@ -222,9 +222,9 @@
                             {% if result[3]|length > 0%}
                             <DT>Attraction Recommendation:
                                 {% for recm in result[3] %}
-                                    <DD class="indent"><span class="lnr lnr-location"></span> {{recm[0].decode('utf-8')}}
+                                    <DD class="indent"><span class="lnr lnr-location"></span> {{recm[0].decode('utf-8')}}:
+                                        <DD class="indent"><span class="indent score_span"><span class="lnr lnr-smile"></span><span class="lnr lnr-sad"></span> reviews rating: {{recm[3]|int }}/100</span>
                                     {% if recm[1]|length>0 or recm[2]|length>0 %}
-                                        :
                                         <DD class="indent"><span class="indent">{{recm[2].decode('utf-8')}}
                                             {% if recm[1]|length > 0%}
                                                 <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a></span>
@@ -236,14 +236,12 @@
                             {% if result[9]|length >0 %}
                                 <DT>Special Attraction about "{{description_query}}"
                                 {% for recm in result[9] %}
-                                    <DD class="indent"><span class="lnr lnr-star"></span> {{recm[0].decode('utf-8')}}
-                                    {% if recm[1]|length>0 or recm[2]|length>0 %}
-                                        :
-                                        <DD class="indent"><span class="indent">{{recm[2].decode('utf-8')}}
-                                            {% if recm[1]|length > 0%}
-                                                <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a></span>
-                                            {% endif %}
-                                    {% endif %}
+                                    <DD class="indent"><span class="lnr lnr-star"></span> {{recm[0].decode('utf-8')}}:
+                                        <DD class="indent"><span class="indent score_span"><span class="lnr lnr-smile"></span><span class="lnr lnr-sad"></span> reviews rating: {{recm[3]|int }}/100</span>
+                                    <DD class="indent"><span class="indent">{{recm[2].decode('utf-8')}}
+                                        {% if recm[1]|length > 0%}
+                                            <a href="{{recm[1].decode('utf-8')}}" target="_blank">(link)</a></span>
+                                        {% endif %}
                                 {% endfor %}
                             {% endif %}
 
