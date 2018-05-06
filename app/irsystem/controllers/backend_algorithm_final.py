@@ -158,10 +158,10 @@ def getTopPlacesInRegion(region):
 		full_spots_list = wikitravel_spots[region]
 		out_list = []
 		if len(full_spots_list) > 3:
-			spot_list = [spot[:3].append((spot[3]/5.0+spot[4])*50) for spot in full_spots_list[:3]]
+			spot_list = [spot[:3]+[(spot[3]/5.0+spot[4])*50] for spot in full_spots_list[:3]]
 			#print spot_list
 		else:
-			spot_list = [spot[:3].append((spot[3]/5.0+spot[4])*50) for spot in full_spots_list]
+			spot_list = [spot[:3]+[(spot[3]/5.0+spot[4])*50] for spot in full_spots_list]
 		for spot in spot_list:
 			out_list.append(spot)
 			#print spot_list
