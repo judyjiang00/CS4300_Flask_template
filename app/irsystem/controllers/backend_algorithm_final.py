@@ -41,6 +41,7 @@ def getPlaces(input_query, max_distance):
 		query_word_expanded = []
 
 	accum = np.zeros(len(data))
+	#print query_word_expanded
 	for q in query_word_expanded:
 		if q in vocab_idx:
 			for doc in inv_idx[q]:
@@ -157,11 +158,13 @@ def getTopPlacesInRegion(region):
 		full_spots_list = wikitravel_spots[region]
 		out_list = []
 		if len(full_spots_list) > 3:
-			spot_list = [spot[:3] for spot in full_spots_list[:3]]
+			spot_list = [spot[:3].append((spot[3]/5.0+spot[4])*50) for spot in full_spots_list[:3]]
+			#print spot_list
 		else:
-			spot_list = [spot[:3] for spot in full_spots_list]
+			spot_list = [spot[:3].append((spot[3]/5.0+spot[4])*50) for spot in full_spots_list]
 		for spot in spot_list:
 			out_list.append(spot)
+			#print spot_list
 		return out_list
 	except:
 		return []
