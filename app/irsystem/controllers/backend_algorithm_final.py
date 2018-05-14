@@ -141,6 +141,9 @@ def getTopQueryPlaceInRegion(region,query_word_expanded):
 		if top_idx == []:
 			return []
 		spots = [full_spots_list[idx] for idx in top_idx]
+		spots = [spot[:3]+[max(-1,(spot[3]/5.0+spot[4])*50)] for spot in spots]
+		spots = sorted(spots,key=lambda x: x[3])[::-1]
+		print(spots)
 		return spots
 	except:
 		return []
@@ -158,13 +161,13 @@ def getTopPlacesInRegion(region):
 		full_spots_list = wikitravel_spots[region]
 		out_list = []
 		if len(full_spots_list) > 3:
-			spot_list = [spot[:3]+[(spot[3]/5.0+spot[4])*50] for spot in full_spots_list[:3]]
+			spot_list = [spot[:3]+[max(-1,(spot[3]/5.0+spot[4])*50)] for spot in full_spots_list[:3]]
 			#print spot_list
 		else:
-			spot_list = [spot[:3]+[(spot[3]/5.0+spot[4])*50] for spot in full_spots_list]
+			spot_list = [spot[:3]+[max(-1,(spot[3]/5.0+spot[4])*50)] for spot in full_spots_list]
 		for spot in spot_list:
 			out_list.append(spot)
-			#print spot_list
+		out_list = sorted(out_list,key=lambda x: x[3])[::-1]
 		return out_list
 	except:
 		return []
