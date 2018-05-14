@@ -197,7 +197,7 @@ if (map_geo) {
                     // // }
                     // $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_query_special_span_'+j+'">'+d[9][j][0]+temp+'</h6>'+'<span class="modal_temp indent"><span class="modal_temp indent">'+d[9][j][2]+'</span></span>');
                     $("div#info_modal").append('<h6 class="modal_temp indent" id="modal_query_special_span_'+j+'">'+d[9][j][0]+':</h6>');
-                    if (parseInt(d[3][j][3]) != -1) {
+                    if (parseInt(d[9][j][3]) != -1) {
                             $("div#info_modal").append('<span class="indent modal_temp"><span class="indent"><span class="lnr lnr-smile"></span><span class="lnr lnr-sad"></span> reviews rating: '+parseInt(d[9][j][3])+'/100</span></span><br class="modal_temp"><span class="modal_temp indent"><span class="modal_temp indent">'+d[9][j][2]+'</span></span>');
                         }else{
                             $("div#info_modal").append('<span class="indent modal_temp"><span class="indent"><span class="lnr lnr-smile"></span><span class="lnr lnr-sad"></span> reviews rating: N/A</span></span><br class="modal_temp"><span class="modal_temp indent"><span class="modal_temp indent">'+d[9][j][2]+'</span></span>');
